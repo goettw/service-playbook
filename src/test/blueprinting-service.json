@@ -1,0 +1,26 @@
+{
+'_id' : '12131212312',
+
+'label' : 'Data Center Blueprinting',
+'summary' : 'Akkurate und schnelle agentenlose Erfassung und Inventarisierung von Netzwerken, Systemen und Applikationen zur Analyse, zum Monitoring und zum Reporting der IT durch ein intelligentes nahe-echtzeit Analyse IT Data-Warehouse',
+		
+'whyEMC' : 'Der Datacenter Blueprinting Service ist einzigartig in Bezug auf- Vollständigkeit der erfassten Informationen\n- Mächtigkeit der Darstellung in Reports und einem Data-Warehouse\n- ideale Ergänzung zu bestehenden Werkzeugen im ITIL - Umfeld',
+'addedValue' : 'E2E Sicht auf die reale IT mit detaillierter Analyse der Beziehungen und Abhängigkeiten von Services, Apps, IT Elementen.',
+'emcContacts' : [
+	 {'label' : 'alle CSDs', 'url' : 'mailto:Ger-GS-PS CSDs', 'responsible' : 'false', 'role' : 'sales'},
+	 {'label' : 'Stefan Kubacki', 'url' : 'mailto:stefan.kubacki@emc.com', 'responsible' : 'true', 'role' : 'Solution Principle'}],
+'salesCollateral' : [
+	{'label':'Standard Slidedeck (detailed)', 'url':'https://my.syncplicity.com/share/9fvojrsqhe/EMC_Consulting_Data_Center_Blueprinting_7-12'},
+	{'label':'TÜV Nord Vertriebspräsentation, 5 Slides', 'url':'http://one.emc.com/clearspace/servlet/JiveServlet/download/67235-2-211029/T%C3%9CV%20Nord%20ADM%20Picture%2009082012_V2.pptx'}
+],
+
+'caseStudies' : [
+	{'label':'T-Systems', 'url':'https://my.syncplicity.com/share/u7e2040lcv/EMC_Consulting_Blueprint_T-Systems_EDIv0.2'}
+],
+'relatedInformation' : [
+	 {'label':'Kalkulation', 'url':'https://my.syncplicity.com/share/ut8qdm24kv/Blueprinting_LOE_-_Effort_and_Cost_Estimation_Tool_v1.0'},
+	 {'label':'Beispiel SOW', 'url':'https://my.syncplicity.com/share/h0nxqojwdj/FirstData_-_EDCCT_Discovery_Services_UK_only_SOW_v0_15-clean'}
+],
+'dealValue' : '70k - 300k'
+
+}

@@ -1,0 +1,14 @@
+---
+applications:
+- name: spl
+  memory: 256M
+  instances: 1
+  host: spl
+  domain: cfapps.io
+  path: target/service-playbook.war
+  services:
+    mongolab-60ca:
+      label: mongolab
+      provider: mongolab
+      version: n/a
+      plan: sandbox
