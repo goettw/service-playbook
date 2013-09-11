@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.view.RedirectView;
 
 import serviceplaybook.model.ServiceCategory;
 import serviceplaybook.model.ServiceLine;
@@ -53,9 +51,9 @@ public class ServiceController {
 	}
 
 	@RequestMapping(value = "/serviceOffer/delete/{id}", method = RequestMethod.GET)
-	public View deleteServiceOfferById(@PathVariable String id, ModelMap model) {
+	public String deleteServiceOfferById(@PathVariable String id, ModelMap model) {
 		serviceOfferService.deleteServiceOffer(serviceOfferService.findServiceOfferById(id));
-		return new RedirectView("/service-playbook/serviceOfferList");
+		return "redirect:/serviceOfferList";
 	}
 
 	@RequestMapping(value = "/serviceOffer/{id}", method = RequestMethod.GET)
@@ -106,7 +104,7 @@ public class ServiceController {
 	}
 
 	@RequestMapping(value = "/serviceOfferEdit/submit", method = RequestMethod.POST)
-	public View serviceOfferEditSubmit(@RequestParam String action, @ModelAttribute ServiceOffer serviceOffer, ModelMap model) {
+	public String serviceOfferEditSubmit(@RequestParam String action, @ModelAttribute ServiceOffer serviceOffer, ModelMap model) {
 		System.out.println(action);
 		if (action.equals("Save")) {
 			if (StringUtils.hasText(serviceOffer.getId())) {
@@ -116,8 +114,8 @@ public class ServiceController {
 			}
 		}
 		if (serviceOffer.getId() == null || serviceOffer.getId().equals(""))
-			return new RedirectView("/service-playbook/serviceOfferList");
-		return new RedirectView("/service-playbook/serviceOffer/" + serviceOffer.getId());
+			return "redirect:/serviceOfferList";
+		return "redirect:/serviceOffer/" + serviceOffer.getId();
 	}
 
 }

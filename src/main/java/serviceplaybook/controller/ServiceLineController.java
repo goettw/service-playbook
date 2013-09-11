@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.view.RedirectView;
 
 import serviceplaybook.model.ServiceLine;
 import serviceplaybook.service.ServiceCategoryService;
@@ -41,9 +39,9 @@ public class ServiceLineController {
 	}
 
 	@RequestMapping(value = "/serviceLine/delete/{id}", method = RequestMethod.GET)
-	public View deleteserviceLineById(@PathVariable String id, ModelMap model) {
+	public String deleteserviceLineById(@PathVariable String id, ModelMap model) {
 		serviceLineService.deleteServiceLine(serviceLineService.findServiceLineById(id));
-		return new RedirectView("/service-playbook/serviceLineList");
+		return "redirect:/serviceLineList";
 	}
 
 	@RequestMapping(value = "/serviceLine/{id}", method = RequestMethod.GET)
@@ -75,7 +73,7 @@ public class ServiceLineController {
 	}
 
 	@RequestMapping(value = "/serviceLineEdit/submit", method = RequestMethod.POST)
-	public View serviceLineEditSubmit(@RequestParam String action, @ModelAttribute ServiceLine serviceLine, ModelMap model) {
+	public String serviceLineEditSubmit(@RequestParam String action, @ModelAttribute ServiceLine serviceLine, ModelMap model) {
 		System.out.println(action);
 		if (action.equals("Save")) {
 			if (StringUtils.hasText(serviceLine.getId())) {
@@ -85,7 +83,7 @@ public class ServiceLineController {
 			}
 		}
 		if (serviceLine.getId() == null || serviceLine.getId().equals(""))
-			return new RedirectView("/service-playbook/serviceLineList");
-		return new RedirectView("/service-playbook/serviceLine/" + serviceLine.getId());
+			return "redirect:/serviceLineList";
+		return "redirect:/serviceLine" + serviceLine.getId();
 	}
 }

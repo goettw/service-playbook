@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.view.RedirectView;
 
 import serviceplaybook.model.ServiceCategory;
 import serviceplaybook.model.ServiceLine;
@@ -34,9 +32,9 @@ public class ServiceCategoryController {
 	}
 
 	@RequestMapping(value = "/serviceCategory/delete/{id}", method = RequestMethod.GET)
-	public View deleteserviceCategoryById(@PathVariable String id, ModelMap model) {
+	public String deleteserviceCategoryById(@PathVariable String id, ModelMap model) {
 		serviceCategoryService.deleteServiceCategory(serviceCategoryService.findServiceCategoryById(id));
-		return new RedirectView("/service-playbook/serviceCategoryList");
+		return "redirect:/serviceCategoryList";
 	}
 	 
 	@RequestMapping(value = "/serviceCategory/{id}", method = RequestMethod.GET)
@@ -74,7 +72,7 @@ public class ServiceCategoryController {
 	}
 
 	@RequestMapping(value = "/serviceCategoryEdit/submit", method = RequestMethod.POST)
-	public View serviceCategoryEditSubmit(@RequestParam String action, @ModelAttribute ServiceCategory serviceCategory, ModelMap model) {
+	public String serviceCategoryEditSubmit(@RequestParam String action, @ModelAttribute ServiceCategory serviceCategory, ModelMap model) {
 		System.out.println(action);
 		if (action.equals("Save")) {
 			if (StringUtils.hasText(serviceCategory.getId())) { 
@@ -84,7 +82,7 @@ public class ServiceCategoryController {
 			}
 		}
 		if (serviceCategory.getId() == null || serviceCategory.getId().equals(""))
-			return new RedirectView("/service-playbook/serviceCategoryList/"); 
-		return new RedirectView("/service-playbook/serviceCategory/" + serviceCategory.getId());
+			return "redirect:/serviceCategoryList/"; 
+		return "redirect:/serviceCategory/" + serviceCategory.getId();
 	}
 }
