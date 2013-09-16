@@ -29,6 +29,13 @@ public class ServiceOffer {
 	private String addedValue;
 	private String dealValue;
 	private String serviceCategory;
+	private FileMeta image;
+	public FileMeta getImage() {
+		return image;
+	}
+	public void setImage(FileMeta image) {
+		this.image = image;
+	}
 	private ArrayList<String> bigPlay;
 	public ArrayList<String> getBigPlay() {
 		return bigPlay;

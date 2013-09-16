@@ -6,6 +6,7 @@
 		<!-- put-attribute name="meta" value="/WEB-INF/tiles/{2}/meta.jsp" / -->
 		<put-attribute name="header" value="/WEB-INF/tiles/blank.jsp" />
 		<put-attribute name="banner" value="/WEB-INF/tiles/banner.jsp" />
+		<put-attribute name="image" value="/WEB-INF/tiles/blank.jsp" />
 
 		<put-attribute name="body" value="/WEB-INF/tiles/blank.jsp" />
 		<put-attribute name="floatRightBody" value="/WEB-INF/tiles/blank.jsp" />
@@ -37,7 +38,7 @@
 			value="/WEB-INF/jsp/serviceofferList/bigplayoverview.jsp" />
 		<put-attribute name="header"
 			value="/WEB-INF/jsp/serviceofferList/serviceofferListHeader.jsp" />
-			<put-attribute name="title" value="Service Overview" />
+		<put-attribute name="title" value="Service Overview" />
 	</definition>
 	<definition name="serviceoffer" extends=".floatRightTemplate">
 		<put-attribute name="body"
@@ -47,6 +48,8 @@
 		<put-attribute name="header"
 			value="/WEB-INF/jsp/serviceoffer/serviceofferHeader.jsp" />
 		<put-attribute name="title" value="Service Offer" />
+		<put-attribute name="image"
+			value="/WEB-INF/jsp/serviceoffer/serviceofferImage.jsp" />
 	</definition>
 	<definition name="serviceofferEdit" template="/WEB-INF/tiles/layout-wide.jsp">
 		<put-attribute name="banner" value="/WEB-INF/tiles/banner.jsp" />
@@ -55,6 +58,7 @@
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/serviceofferEdit/serviceofferEdit.jsp" />
 		<put-attribute name="title" value="Service Offer Editor" />
+
 	</definition>
 	<!-- Service Line Definitions -->
 	<definition name="serviceLine" extends=".mainTemplate">

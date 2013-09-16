@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<script src="<c:url value='/jquery/jquery-1.9.1.js' />"></script>
-<script src="<c:url value="/jquery/ui/jquery.ui.core.js"/>"></script>
+<script src="<c:url value='/js/jquery/jquery-1.9.1.js' />"></script>
+<script src="<c:url value="/js/jquery/ui/jquery.ui.core.js"/>"></script>
 <c:url var="findServiceLinesURL" value="/serviceLinesJSON" />
 
 <!-- script type="text/javascript">

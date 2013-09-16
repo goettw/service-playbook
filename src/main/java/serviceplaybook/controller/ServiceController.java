@@ -3,6 +3,8 @@ package serviceplaybook.controller;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,11 +14,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import serviceplaybook.model.FileMeta;
 import serviceplaybook.model.ServiceCategory;
 import serviceplaybook.model.ServiceLine;
 import serviceplaybook.model.ServiceOffer;
 import serviceplaybook.mongorepo.BigPlayRepository;
+import serviceplaybook.service.FileFormService;
 import serviceplaybook.service.ServiceCategoryService;
 import serviceplaybook.service.ServiceLineService;
 import serviceplaybook.service.ServiceOfferService;
@@ -34,7 +40,9 @@ public class ServiceController {
 	private BigPlayRepository bigPlayRepository;
 	@Autowired
 	private SessionContext sessionContext;
-
+	@Autowired
+	FileFormService fileFormService;
+	
 	@RequestMapping(value = "/bigPlayOverview", method = RequestMethod.GET)
 	public String bigPlayList (ModelMap model) {
 		model.addAttribute("sessionContext", sessionContext);
@@ -90,16 +98,26 @@ public class ServiceController {
 
 		return "serviceofferEdit";
 	}
-
+	
+	@RequestMapping(value="/serviceOffer/uploadImage", method = RequestMethod.POST)
+	public @ResponseBody FileMeta upload(MultipartHttpServletRequest request, HttpServletResponse response) {
+		FileMeta fileMeta = fileFormService.upload(request, response);
+		sessionContext.getServiceOffer().setImage(fileMeta);
+		fileMeta.setUrl(request.getContextPath()+"/file-controller/get/"+fileMeta.getId());
+		return fileMeta;
+	}
+	
 	@RequestMapping(value = "/serviceOfferEdit/{id}", method = RequestMethod.GET)
 	public String editById(@PathVariable String id, ModelMap model) {
 		List<String> statusList = new LinkedList<String>();
 		statusList.add("draft");
 		statusList.add("released");
-		model.addAttribute("serviceOffer", serviceOfferService.findServiceOfferById(id));
+		ServiceOffer serviceOffer = serviceOfferService.findServiceOfferById(id);
+		model.addAttribute("serviceOffer", serviceOffer);
 		model.addAttribute("serviceCategoryList", serviceCategoryService.listServiceCategory());
 		model.addAttribute("statusList", statusList);
 		model.addAttribute("bigPlayList",bigPlayRepository.findAll());
+		sessionContext.setServiceOffer(serviceOffer);
 		return "serviceofferEdit";
 	}
 
@@ -107,6 +125,8 @@ public class ServiceController {
 	public String serviceOfferEditSubmit(@RequestParam String action, @ModelAttribute ServiceOffer serviceOffer, ModelMap model) {
 		System.out.println(action);
 		if (action.equals("Save")) {
+			if(sessionContext.getServiceOffer().getImage() != null)
+				serviceOffer.setImage(sessionContext.getServiceOffer().getImage());
 			if (StringUtils.hasText(serviceOffer.getId())) {
 				serviceOfferService.updateServiceOffer(serviceOffer);
 			} else {

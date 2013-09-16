@@ -7,8 +7,10 @@
 <title><tiles:getAsString name="title" /> <c:if
 		test="${subtitle} ">/</c:if> ${subtitle}</title>
 <link rel="stylesheet"
-	href="<c:url value="/jquery/themes/base/jquery.ui.all.css"/>" />
+	href="<c:url value="/js/jquery/themes/base/jquery.ui.all.css"/>" />
 <link rel="stylesheet" href="<c:url value="/css/service.css"/>">
+<script src="<c:url value='/bootstrap/js/bootstrap.min.js'/>"></script>
+<link href="<c:url value='/bootstrap/css/bootstrap.css'/>" type="text/css" rel="stylesheet" />
 </head>
 <body class="text">
 	<tiles:insertAttribute name="banner" />

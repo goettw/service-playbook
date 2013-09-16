@@ -33,9 +33,22 @@
 			value="test" / -->
 		<constructor-arg ref="mongoDbFactory" />
 	</bean>
+<bean id="gridFsTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+		<constructor-arg ref="mongoDbFactory" />
+		<constructor-arg ref="mongoMappingConverter" />
+</bean>
+	<bean id="mongoMappingConverter"
+		class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
+		<constructor-arg ref="mongoDbFactory" />
+		<constructor-arg ref="mappingContext" />
+
+	</bean>
+	<bean id="mappingContext"
+		class="org.springframework.data.mongodb.core.mapping.MongoMappingContext">
+	</bean>
 
 	<mongo:db-factory id="mongoDbFactory" dbname="test"
-		host="127.0.0.1" />
+		host="192.168.232.156" />
 
 	<!-- Use this post processor to translate any MongoExceptions thrown in 
 		@Repository annotated classes -->
@@ -61,7 +74,10 @@
 
 	<mvc:resources mapping="/css/**" location="/WEB-INF/css/*" />
 	<mvc:resources mapping="/images/**" location="/WEB-INF/images/*" />
-	<mvc:resources mapping="/jquery/**" location="/WEB-INF/jquery/*" />
+	<mvc:resources mapping="/js/**" location="/WEB-INF/js/*" />
+	<mvc:resources mapping="/bootstrap/**" location="/WEB-INF/bootstrap/*" />
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 	<mvc:annotation-driven></mvc:annotation-driven>
 
 </beans>

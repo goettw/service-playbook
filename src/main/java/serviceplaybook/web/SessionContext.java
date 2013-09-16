@@ -1,11 +1,17 @@
 package serviceplaybook.web;
 
+import java.io.Serializable;
+
 import serviceplaybook.controller.ServiceNavigator;
 import serviceplaybook.model.ServiceCategory;
 import serviceplaybook.model.ServiceLine;
 import serviceplaybook.model.ServiceOffer;
 
-public class SessionContext {
+public class SessionContext implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4841375616956625352L;
 	private ServiceCategory serviceCategory;
 	private ServiceLine serviceLine;
 	private ServiceOffer serviceOffer;

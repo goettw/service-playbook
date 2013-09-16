@@ -1,5 +1,6 @@
 package serviceplaybook.controller;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,7 +15,11 @@ import serviceplaybook.model.ServiceOffer;
 import serviceplaybook.mongorepo.BigPlayRepository;
 import serviceplaybook.service.ServiceOfferService;
 
-public class ServiceNavigator {
+public class ServiceNavigator implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 375822192143855910L;
 	private ArrayList<ListContainer<ListContainer<ServiceListEntry>>> bigDataCatalog = null;
 	@Autowired
 	BigPlayRepository bigPlayRepository;

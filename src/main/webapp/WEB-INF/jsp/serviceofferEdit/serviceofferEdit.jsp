@@ -2,10 +2,14 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 
-<script src="<c:url value='/jquery/jquery-1.9.1.js' />"></script>
-<script src="<c:url value="/jquery/ui/jquery.ui.core.js"/>"></script>
-<script src="<c:url value="/jquery/ui/jquery.ui.widget.js"/>"></script>
-<script src="<c:url value="/jquery/ui/jquery.ui.tabs.js"/>"></script>
+<script src="<c:url value='/js/jquery/jquery-1.9.1.js' />"></script>
+<script src="<c:url value="/js/jquery/ui/jquery.ui.core.js"/>"></script>
+<script src="<c:url value="/js/jquery/ui/jquery.ui.widget.js"/>"></script>
+<script src="<c:url value="/js/jquery/ui/jquery.ui.tabs.js"/>"></script>
+<script src="<c:url value='/js/jquery/jquery.fileupload.js' />"></script>
+<link href="<c:url value='/css/dropzone.css'/>" type="text/css" rel="stylesheet" />
+
+<script src="<c:url value='/js/fileupload.js'/>"></script>
 
 <script>
 	$(function() {
@@ -14,6 +18,8 @@
 </script>
 
 <div class="edit">
+
+
 	<c:url var="addUrl" value="/serviceOfferEdit/submit" />
 	<form:form method="POST" action="${addUrl}" commandName="serviceOffer">
 		<table class="buttons">
@@ -25,13 +31,22 @@
 		<div id="tabs">
 			<ul>
 				<li><a href="#tabs-1">Header</a></li>
+				<li><a href="#tabs-7">Image</a></li>
 				<li><a href="#tabs-2">Contacts</a></li>
 				<li><a href="#tabs-3">Case Studies</a></li>
 				<li><a href="#tabs-4">Vertriebsmaterial</a></li>
 				<li><a href="#tabs-5">Info</a></li>
 				<li><a href="#tabs-6">Structure</a></li>
 			</ul>
-
+			<div id="tabs-7">
+			<div id="imgcontainer">
+			</div>
+				<input id="fileupload" type="file" name="files[]" data-url="<c:url value='/serviceOffer/uploadImage'/>" multiple >
+				<div id="dropzone" class="fade well">Drop files here</div>
+				<div id="progress" class="progress">
+    				<div class="bar" style="width: 0%;"></div>
+				</div>
+			</div>
 			<div id="tabs-6">
 				<table>
 					<tr>
@@ -65,6 +80,7 @@
 						<td class="label"><form:label path="id">_id</form:label></td>
 						<td><form:input path="id" readonly="true" /></td>
 					</tr>
+
 					<tr>
 						<td class="label"><form:label path="label">Label</form:label></td>
 						<td><form:input path="label" /></td>

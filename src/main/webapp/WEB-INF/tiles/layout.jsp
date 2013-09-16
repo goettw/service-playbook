@@ -7,7 +7,7 @@
 <title><tiles:getAsString name="title" /> <c:if
 		test="${subtitle} ">/</c:if> ${subtitle}</title>
 <link rel="stylesheet"
-	href="<c:url value="/jquery/themes/base/jquery.ui.all.css"/>" />
+	href="<c:url value="/js/jquery/themes/base/jquery.ui.all.css"/>" />
 <link rel="stylesheet" href="<c:url value="/css/service.css"/>">
 </head>
 <body class="text">
@@ -38,9 +38,7 @@
 					<div class="contentHalfMidNoTabBodyInner">
 						<div>
 							<div>
-								<a target="_blank" href="resources/bp.jpg"> <!-- img class="body"
-									src="resources/bp.jpg"-->
-								</a>
+								<tiles:insertAttribute name="image" />
 							</div>
 
 							<tiles:insertAttribute name="floatRight" />

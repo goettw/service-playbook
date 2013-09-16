@@ -1,0 +1,1 @@
+<a href="${serviceOffer.image.url}" target="_blank"><img class="body" src ="${serviceOffer.image.url}" /></a>
