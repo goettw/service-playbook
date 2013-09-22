@@ -18,27 +18,31 @@ public class ServiceOfferService {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
-	public static final String COLLECTION_NAME = "serviceOffer";
+	private String COLLECTION_NAME = "serviceOffer";
 	
+	public String getCOLLECTION_NAME() {
+		return COLLECTION_NAME;
+	}
+
 	public void addServiceOffer(ServiceOffer serviceOffer) {
 		if (!mongoTemplate.collectionExists(ServiceOffer.class)) {
 			mongoTemplate.createCollection(ServiceOffer.class);
 		}		
 		serviceOffer.setId(UUID.randomUUID().toString());
-		mongoTemplate.insert(serviceOffer, COLLECTION_NAME);
+		mongoTemplate.insert(serviceOffer, getCollectionName());
 	}
 	
 	public List<ServiceOffer> listServiceOffer() {
-		return mongoTemplate.findAll(ServiceOffer.class, COLLECTION_NAME);
+		return mongoTemplate.findAll(ServiceOffer.class, getCollectionName());
 	}
 	
 	public void deleteServiceOffer(ServiceOffer serviceOffer) {
-		mongoTemplate.remove(serviceOffer, COLLECTION_NAME);
+		mongoTemplate.remove(serviceOffer, getCollectionName());
 	}
 	
 	
 	public void updateServiceOffer(ServiceOffer serviceOffer) {
-		mongoTemplate.save(serviceOffer, COLLECTION_NAME);		
+		mongoTemplate.save(serviceOffer, getCollectionName());		
 	}
 	
 	public ServiceOffer findServiceOfferById (String id) {
@@ -55,6 +59,10 @@ public class ServiceOfferService {
 		Query query = new Query() ;
 		query.addCriteria(new Criteria().andOperator(Criteria.where("bigPlay").in(id),Criteria.where("status").is("released")));
 		return mongoTemplate.find(query ,ServiceOffer.class);
+	}
+
+	public String getCollectionName() {
+		return COLLECTION_NAME;
 	}
 	
 }

@@ -16,9 +16,9 @@
 																	"#salesCollateral")
 																	.append(
 																			'<tr> \
-															<td><input id="salesCollateral' + index +'.label" name="salesCollateral[' + index + '].label" type="text" value=""/></td> \
-															<td><input id="salesCollateral' + index +'.url" name="salesCollateral[' + index + '].url" type="text" value=""/></td> \
-															<td><a href="javascript:void(0);" class="remColl">Remove</a></td>\
+															<td><input class="form-control" id="salesCollateral' + index +'.label" name="salesCollateral[' + index + '].label" type="text" value=""/></td> \
+															<td><input class="form-control" id="salesCollateral' + index +'.url" name="salesCollateral[' + index + '].url" type="text" value=""/></td> \
+															<td><a href="javascript:void(0);" class="remColl btn btn-default">Remove</a></td>\
 														</tr>');
 														});
 
@@ -50,9 +50,9 @@
 							items="${serviceOffer.salesCollateral}">
 							<tr>
 								<td><form:input
-										path="salesCollateral[${status.index}].label" /></td>
-								<td><form:input path="salesCollateral[${status.index}].url" /></td>
-								<td><a href="javascript:void(0);" class="remColl">Remove</a>
+										class="form-control" path="salesCollateral[${status.index}].label" /></td>
+								<td><form:input class="form-control" path="salesCollateral[${status.index}].url" /></td>
+								<td><a href="javascript:void(0);" class="remColl  btn btn-defaul">Remove</a>
 
 								</td>
 							</tr>
@@ -60,7 +60,7 @@
 					</tbody>
 				</table>
 				<div style="text-align: right; width: 99%;">
-					<a href="javascript:void(0);" id="addColl">Add</a>
+					<a href="javascript:void(0);" id="addColl" class=" btn btn-defaul">Add</a>
 				</div>
 
 			</div>

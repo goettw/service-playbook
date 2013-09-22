@@ -10,7 +10,14 @@ public class FileMeta {
 	private String fileType;
 	private String id;
 	private String URL;
+	private MongoLocalEntity source;
 	
+	public MongoLocalEntity getSource() {
+		return source;
+	}
+	public void setSource(MongoLocalEntity source) {
+		this.source = source;
+	}
 	public String getUrl() {
 		return URL;
 	}

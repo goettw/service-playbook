@@ -4,62 +4,61 @@
 <head>
 
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title><tiles:getAsString name="title" /> <c:if
 		test="${subtitle} ">/</c:if> ${subtitle}</title>
-<link rel="stylesheet"
-	href="<c:url value="/js/jquery/themes/base/jquery.ui.all.css"/>" />
-<link rel="stylesheet" href="<c:url value="/css/service.css"/>">
+<script src="<c:url value='/bootstrap/assets/js/jquery.js'/>"></script>
+
+
+<link href="<c:url value='/bootstrap/css/bootstrap.css'/>"
+	type="text/css" rel="stylesheet" />
+<link href="<c:url value='/bootstrap/css/bootstrap-theme.min.css'/>"
+	type="text/css" rel="stylesheet" />
+<link rel="stylesheet" href="<c:url value="/css/theme.css"/>">
+<!--[if lt IE 9]>
+      <script src="<c:url value='/bootstrap/assets/js/html5shiv.js'/>"></script>
+      <script src="<c:url value='/bootstrap/assets/js/respond.min.js'/>"></script>
+    <![endif]-->
 </head>
-<body class="text">
-	<tiles:insertAttribute name="banner" />
+<body>
 
-	<div id="newWrap" style="height: 77px;">
-		<div id="contentLeftMenu">
-			<tiles:insertAttribute name="navigation" />
-		</div>
-		<div id="content">
-			<div id="midBodyHeader"></div>
-			<div id="contentMid561">
-				<div class="bannerContainer.marginTop5">
-					<img width="550"
-						src="<c:url value="/images/ic-offering-greenit.jpg"/>">
-					<div class="mid550Banner marginTop20">
-						<div class="mid550BannerText servicesOfferingText">
-							<tiles:insertAttribute name="header" />
-						</div>
-					</div>
-				</div>
-				<div class="solutionSubTopicMid550BannerRight">
-					<br>
-				</div>
-				<div class="clearBoth"></div>
-				<div class="contentHalfMidNoTabNoMargin">
-					<div class="contentHalfMidNoTabTop"></div>
-					<div class="contentHalfMidNoTabBodyInner">
-						<div>
-							<div>
-								<tiles:insertAttribute name="image" />
-							</div>
 
-							<tiles:insertAttribute name="floatRight" />
-							<div class="marginBottom15">
-								<tiles:insertAttribute name="body" />
-							</div>
-						</div>
-					</div>
-					<div class="contentHalfMidNoTabBottom">
-						<img width="1" height="1" alt="" src="images/common/spacer.gif">
-					</div>
-
-				</div>
-				<div class="footnote">Service Playbook is based on Pivotal 3rd
-					Generation Platform Technology, created by Wolfgang Goette</div>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Service Playbook</a>
 			</div>
-
-
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="<%=request.getContextPath()%>">Home</a></li>
+					<li><a href="#about">About</a></li>
+					<li><a href="#contact">Contact</a></li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
 		</div>
 	</div>
+	<div class="container theme-showcase">
 
+		<div id="content" class="container theme">
+			<tiles:insertAttribute name="content" />
+		</div>
+		
+	
+
+<hr/>
+		
+			<footer><p>Service Playbook is based on Pivotal 3rd Generation
+				Platform Technology, created by Wolfgang Goette</p></footer>
+		
+</div>	
+	<script src="<c:url value='/bootstrap/js/bootstrap.js'/>"></script>
 
 </body>
 </html>

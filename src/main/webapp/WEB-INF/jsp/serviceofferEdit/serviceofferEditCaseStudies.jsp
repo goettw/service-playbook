@@ -16,9 +16,9 @@
 																		"#caseStudies")
 																		.append(
 																				'<tr> \
-															<td><input id="caseStudies' + index +'.label" name="caseStudies[' + index + '].label" type="text" value=""/></td> \
-															<td><input id="caseStudies' + index +'.url" name="caseStudies[' + index + '].url" type="text" value=""/></td> \
-															<td><a href="javascript:void(0);" class="remCaseStudy">Remove</a></td>\
+															<td><input class="form-control" id="caseStudies' + index +'.label" name="caseStudies[' + index + '].label" type="text" value=""/></td> \
+															<td><input class="form-control" id="caseStudies' + index +'.url" name="caseStudies[' + index + '].url" type="text" value=""/></td> \
+															<td><a href="javascript:void(0);" class="remCaseStudy btn btn-default">Remove</a></td>\
 														</tr>');
 															});
 
@@ -54,9 +54,9 @@
 							<c:forEach var="caseStudy" varStatus="status"
 								items="${serviceOffer.caseStudies}">
 								<tr>
-									<td><form:input path="caseStudies[${status.index}].label" /></td>
-									<td><form:input path="caseStudies[${status.index}].url" /></td>
-									<td><a href="javascript:void(0);" class="remCaseStudy">Remove</a>
+									<td><form:input class="form-control" path="caseStudies[${status.index}].label" /></td>
+									<td><form:input class="form-control" path="caseStudies[${status.index}].url" /></td>
+									<td><a href="javascript:void(0);" class="remCaseStudy btn btn-default">Remove</a>
 
 									</td>
 								</tr>
@@ -64,7 +64,7 @@
 						</tbody>
 					</table>
 					<div style="text-align: right; width: 99%;">
-						<a href="javascript:void(0);" id="addCaseStudy">Add</a>
+						<a href="javascript:void(0);" id="addCaseStudy" class="btn btn-default">Add</a>
 					</div>
 
 				</div>

@@ -15,7 +15,7 @@ $(function() {
 							
 						
 							$("#imgcontainer").html(data.result.url);
-							$("#imgcontainer").html("<img src='" + data.result.url + "'/>");
+							$("#imgcontainer").html("<img src='" + data.result.url + "' style='width:100%;'/>");
 						}		
 					}
 			);

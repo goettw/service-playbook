@@ -1,39 +1,40 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<table style="font-size: 11px;">
-	<tbody>
-		<c:forEach items="${sessionContext.serviceNavigator.bigDataCatalog}"
-			var="level1Item">
-			<tr>
-				<td
-					style="background-color: rgb(44, 148, 220); width: 60px; color: rgb(255, 255, 255); text-align: center;">${level1Item.label}
-				</td>
-				<c:forEach items="${level1Item.entries}" var="level2Item">
-					<td style="vertical-align: top;">
-						<table style="font-size: 11px;">
-							<tbody>
-								<tr height="30px"
-									style="vertical-align: top; color: rgb(255, 255, 255)">
-									<td
-										style="background-color: rgb(44, 148, 220); vertical-align: middle; text-align: center;"
-										width="250px">${level2Item.label}</td>
-								</tr>
-								<c:forEach items="${level2Item.entries}" var="level3Item">
-									<tr>
-										<td style="">
-											<ul class="ref">
-												<li class="ref"><a
-													href="<c:url value='/serviceOffer/${level3Item.id}'/>"
-													style="">${level3Item.label}</a></li>
+<div class="container">
+	<c:forEach items="${sessionContext.serviceNavigator.bigDataCatalog}"
+		var="level1Item">
+		<div class="row">
+			<div class="col-md-2">
 
-											</ul>
-										</td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					</td>
+
+				<div class="well well-sm">
+					${level1Item.label}</div>
+					
+			</div>
+			<div class="col-md-10">
+				<c:forEach items="${level1Item.entries}" var="level2Item">
+					<div class="col-md-4">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<div class="panel-title">${level2Item.label}</div>
+							</div>
+							<div class="panel-body">
+								<ul class="ref">
+									<c:forEach items="${level2Item.entries}" var="level3Item">
+
+
+										<li class="ref"><a
+											href="<c:url value='/serviceOffer/${level3Item.id}'/>">${level3Item.label}</a></li>
+
+
+
+									</c:forEach>
+								</ul>
+							</div>
+						</div>
+
+					</div>
 				</c:forEach>
-			</tr>
-		</c:forEach>
-	</tbody>
-</table>
+			</div>
+		</div>
+	</c:forEach>
+</div>

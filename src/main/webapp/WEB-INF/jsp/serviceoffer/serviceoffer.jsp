@@ -1,10 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<div class="subTitleBlue marginTop15">Mehrwert f&uuml;r den Kunden</div>
+<h3>Mehrwert f&uuml;r den Kunden</h3>
 ${serviceOffer.addedValueAsHTML}
-<div class="subTitleBlue marginTop15">Why EMC</div>
+<h3>Why EMC</h3>
 ${serviceOffer.whyEMCAsHTML}
-<div class="subTitleBluemarginTop15">EMC Ansprechpartner</div>
+<h3>EMC Ansprechpartner</h3>
 <c:forEach var="contact" items="${serviceOffer.emcContacts}">
 	<ul class="disc marginTop10">
 		<li class="disc"><a href="${contact.url}">${contact.label}</a>

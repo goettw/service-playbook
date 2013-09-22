@@ -1,1 +1,1 @@
-<a href="${serviceOffer.image.url}" target="_blank"><img class="body" src ="${serviceOffer.image.url}" /></a>
+<a href="${imageUrl}" target="_blank"><img  class="img-rounded" src ="${imageUrl}" style="width:100%;"/></a>
