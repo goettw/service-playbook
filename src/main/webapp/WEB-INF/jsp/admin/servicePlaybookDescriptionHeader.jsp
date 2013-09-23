@@ -3,9 +3,9 @@
 
 
 
-<h1>${serviceOffer.label}</h1>
+<h1>${servicePlaybookDescription.label}</h1>
 
 
 
-<p>${serviceOffer.summary}</p>
+<p>${servicePlaybookDescription.summary}</p>
 

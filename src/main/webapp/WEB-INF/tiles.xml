@@ -23,11 +23,12 @@
 		<put-attribute name="content" value="/WEB-INF/tiles/layout-float.jsp"
 			cascade="true" />
 	</definition>
-	<definition name="serviceofferList" extends=".mainTemplate">
+	<definition name="serviceofferList" extends=".wideTemplate">
 		<put-attribute name="body"
-			value="/WEB-INF/jsp/serviceofferList/serviceofferList.jsp" />
+			value="/WEB-INF/jsp/serviceofferList/serviceofferList.jsp" cascade="true" />
 		<put-attribute name="header"
-			value="/WEB-INF/jsp/serviceofferList/serviceofferListHeader.jsp" />
+			value="/WEB-INF/jsp/serviceofferList/serviceofferListHeader.jsp"
+			cascade="true" />
 	</definition>
 	<definition name=".wideTemplate" template="/WEB-INF/tiles/layout.jsp">
 		<put-attribute name="banner" value="/WEB-INF/tiles/banner.jsp" />
@@ -47,7 +48,7 @@
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/serviceofferList/bigplayoverview.jsp" cascade="true" />
 		<put-attribute name="header"
-			value="/WEB-INF/jsp/serviceofferList/serviceofferListHeader.jsp"
+			value="/WEB-INF/jsp/admin/servicePlaybookDescriptionHeader.jsp"
 			cascade="true" />
 		<put-attribute name="title" value="Service Overview"
 			cascade="true" />
@@ -65,12 +66,14 @@
 			value="/WEB-INF/jsp/serviceoffer/serviceofferImage.jsp" cascade="true" />
 	</definition>
 	<definition name="serviceofferEdit" extends=".wideTemplate">
-		<put-attribute name="banner" value="/WEB-INF/tiles/banner.jsp" cascade="true"/>
+		<put-attribute name="banner" value="/WEB-INF/tiles/banner.jsp"
+			cascade="true" />
 		<put-attribute name="header"
-			value="/WEB-INF/jsp/serviceoffer/serviceofferHeader.jsp" cascade="true"/>
+			value="/WEB-INF/jsp/serviceoffer/serviceofferHeader.jsp" cascade="true" />
 		<put-attribute name="body"
-			value="/WEB-INF/jsp/serviceofferEdit/serviceofferEdit.jsp" cascade="true"/>
-		<put-attribute name="title" value="Service Offer Editor" cascade="true"/>
+			value="/WEB-INF/jsp/serviceofferEdit/serviceofferEdit.jsp" cascade="true" />
+		<put-attribute name="title" value="Service Offer Editor"
+			cascade="true" />
 
 	</definition>
 	<!-- Service Line Definitions -->
@@ -125,13 +128,41 @@
 		<put-attribute name="title" value="Service Offer Editor" />
 	</definition>
 
-	<definition name="bigPlayList" extends=".mainTemplate">
-		<put-attribute name="body" value="/WEB-INF/jsp/admin/bigPlayList.jsp" />
+	<definition name="bigPlayList" extends=".wideTemplate">
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/admin/bigPlayListHeader.jsp" cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/bigPlayList.jsp"
+			cascade="true" />
 	</definition>
 
-	<definition name="bigPlayItemEdit" extends=".mainTemplate">
+	<definition name="bigPlayItemEdit" extends=".wideTemplate">
 		<put-attribute name="body"
-			value="/WEB-INF/jsp/admin/bigPlayItemEdit.jsp" />
+			value="/WEB-INF/jsp/admin/bigPlayItemEdit.jsp" cascade="true" />
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/bigPlay/bigPlayHeader.jsp" cascade="true" />
+	</definition>
+
+	<definition name="servicePlaybookDescriptionEdit" extends=".wideTemplate">
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/servicePlaybookDescriptionEdit.jsp"
+			cascade="true" />
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/admin/servicePlaybookDescriptionHeader.jsp"
+			cascade="true" />
+	</definition>
+	<definition name="servicePlaybookDescription" extends=".wideTemplate">
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/servicePlaybookDescription.jsp" cascade="true" />
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/admin/servicePlaybookDescriptionHeader.jsp"
+			cascade="true" />
+	</definition>
+
+	<definition name="bigPlayItem" extends=".wideTemplate">
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/bigPlay/bigPlayItem.jsp" cascade="true" />
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/bigPlay/bigPlayHeader.jsp" cascade="true" />
 	</definition>
 
 </tiles-definitions>

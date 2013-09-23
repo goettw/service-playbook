@@ -3,9 +3,9 @@
 
 
 
-<h1>${serviceOffer.label}</h1>
+<h1>${bigPlayItem.label}</h1>
 
 
 
-<p>${serviceOffer.summary}</p>
+<p>${bigPlayItem.summary}</p>
 

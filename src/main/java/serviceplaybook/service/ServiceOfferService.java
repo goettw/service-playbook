@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -33,7 +35,10 @@ public class ServiceOfferService {
 	}
 	
 	public List<ServiceOffer> listServiceOffer() {
-		return mongoTemplate.findAll(ServiceOffer.class, getCollectionName());
+		Query query = new Query();
+		query.with(new Sort(Direction.ASC,"label"));
+		return mongoTemplate.find(query, ServiceOffer.class);
+		//return mongoTemplate.findAll(ServiceOffer.class, getCollectionName());
 	}
 	
 	public void deleteServiceOffer(ServiceOffer serviceOffer) {
@@ -58,6 +63,7 @@ public class ServiceOfferService {
 	public List<ServiceOffer> findServiceOfferByPlay(String id) {
 		Query query = new Query() ;
 		query.addCriteria(new Criteria().andOperator(Criteria.where("bigPlay").in(id),Criteria.where("status").is("released")));
+		query.with(new Sort(Direction.ASC,"label"));
 		return mongoTemplate.find(query ,ServiceOffer.class);
 	}
 

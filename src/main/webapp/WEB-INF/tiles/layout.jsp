@@ -11,10 +11,9 @@
 <script src="<c:url value='/bootstrap/assets/js/jquery.js'/>"></script>
 
 
-<link href="<c:url value='/bootstrap/css/bootstrap.css'/>"
+<link href="<c:url value='/bootstrap/dist/css/bootstrap-flatly.css'/>"
 	type="text/css" rel="stylesheet" />
-<link href="<c:url value='/bootstrap/css/bootstrap-theme.min.css'/>"
-	type="text/css" rel="stylesheet" />
+
 <link rel="stylesheet" href="<c:url value="/css/theme.css"/>">
 <!--[if lt IE 9]>
       <script src="<c:url value='/bootstrap/assets/js/html5shiv.js'/>"></script>
@@ -32,13 +31,29 @@
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Service Playbook</a>
+				<a class="navbar-brand" href="<%=request.getContextPath()%>">Service
+					Playbook</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="<%=request.getContextPath()%>">Home</a></li>
-					<li><a href="#about">About</a></li>
-					<li><a href="#contact">Contact</a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">Admin <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a
+								href="<%=request.getContextPath()%>/admin/bigPlayItemList">BigPlays</a></li>
+							<li><a
+								href="<%=request.getContextPath()%>/admin/serviceOfferList">Service
+									Offers</a></li>
+							<c:if test="${not empty editUrl}">
+								<li class="divider" />
+								<li><a href="<%=request.getContextPath()%>${editUrl}">Edit</a></li>
+							</c:if>
+						</ul></li>
+					<li><a
+						href="<%=request.getContextPath()%>/admin/servicePlaybookDescription">About</a></li>
+
+
 				</ul>
 			</div>
 			<!--/.nav-collapse -->
@@ -49,15 +64,17 @@
 		<div id="content" class="container theme">
 			<tiles:insertAttribute name="content" />
 		</div>
-		
-	
 
-<hr/>
-		
-			<footer><p>Service Playbook is based on Pivotal 3rd Generation
-				Platform Technology, created by Wolfgang Goette</p></footer>
-		
-</div>	
+
+
+		<hr />
+
+		<footer>
+			<p>Service Playbook is based on Pivotal 3rd Generation Platform
+				Technology, created by Wolfgang Goette</p>
+		</footer>
+
+	</div>
 	<script src="<c:url value='/bootstrap/js/bootstrap.js'/>"></script>
 
 </body>

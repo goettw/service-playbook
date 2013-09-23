@@ -158,8 +158,9 @@ public class FileFormService {
 		System.out.println("get-id" + id);
 
 		GridFSDBFile gridfsdbfile = gridFsTemplate.findOne(query(where("_id").is(new ObjectId(id))));
-		response.setContentType(gridfsdbfile.getContentType());
-		response.setHeader("Content-disposition", "attachment; filename=\"" + gridfsdbfile.getFilename() + "\"");
+		response.setContentType( (String)gridfsdbfile.getMetaData().get("contentType"));
+		System.out.println("content type: " + gridfsdbfile.getMetaData().get("contentType"));
+		//response.setHeader("Content-disposition", "attachment; filename=\"" + gridfsdbfile.getFilename() + "\"");
 		gridfsdbfile.writeTo(response.getOutputStream());
 	}
 }

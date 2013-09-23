@@ -1,9 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<table>
-	<tr>
-		<td><div class="formInnerTable">
+<div class="container">
 				<script>
 					$(document)
 							.ready(
@@ -40,11 +38,12 @@
 												});
 									});
 				</script>
-				<table id="salesCollateral">
+				<table id="salesCollateral" class="table">
 					<tbody>
 						<tr>
 							<th>Label</th>
 							<th>URL</th>
+							<th>Action</th>
 						</tr>
 						<c:forEach var="salesColItem" varStatus="status"
 							items="${serviceOffer.salesCollateral}">
@@ -52,7 +51,7 @@
 								<td><form:input
 										class="form-control" path="salesCollateral[${status.index}].label" /></td>
 								<td><form:input class="form-control" path="salesCollateral[${status.index}].url" /></td>
-								<td><a href="javascript:void(0);" class="remColl  btn btn-defaul">Remove</a>
+								<td><a href="javascript:void(0);" class="remColl  btn btn-default">Remove</a>
 
 								</td>
 							</tr>
@@ -60,10 +59,9 @@
 					</tbody>
 				</table>
 				<div style="text-align: right; width: 99%;">
-					<a href="javascript:void(0);" id="addColl" class=" btn btn-defaul">Add</a>
+					<a href="javascript:void(0);" id="addColl" class=" btn btn-default">Add</a>
 				</div>
 
 			</div>
-	</tr>
-</table>
+	
 

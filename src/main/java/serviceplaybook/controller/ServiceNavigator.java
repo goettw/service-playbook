@@ -7,15 +7,18 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 import serviceplaybook.model.BigPlayItem;
 import serviceplaybook.model.ListContainer;
+import serviceplaybook.model.MongoLocalEntity;
 import serviceplaybook.model.ServiceListEntry;
 import serviceplaybook.model.ServiceOffer;
 import serviceplaybook.mongorepo.BigPlayRepository;
 import serviceplaybook.service.ServiceOfferService;
 
-public class ServiceNavigator implements Serializable{
+public class ServiceNavigator implements Serializable {
 	/**
 	 * 
 	 */
@@ -28,9 +31,9 @@ public class ServiceNavigator implements Serializable{
 
 	public void reloadBigPlays() {
 		bigDataCatalog = new ArrayList<ListContainer<ListContainer<ServiceListEntry>>>();
-		List<BigPlayItem> level1List = bigPlayRepository.findLevel1Distinct();
+		List<BigPlayItem> level1List = bigPlayRepository.findAll(new Sort(Direction.ASC,"sortOrderNo","level1","level2"));
 		HashMap<String, String> disctinctLevel1 = new HashMap<String, String>();
-
+		
 		for (Iterator<BigPlayItem> it = level1List.iterator(); it.hasNext();) {
 			ListContainer<ListContainer<ServiceListEntry>> level1Container = new ListContainer<ListContainer<ServiceListEntry>>();
 			BigPlayItem bigPlayItem = it.next();
@@ -39,13 +42,15 @@ public class ServiceNavigator implements Serializable{
 				continue;
 			disctinctLevel1.put(level1Label, level1Label);
 			level1Container.setLabel(level1Label);
-			List<BigPlayItem> level2List = bigPlayRepository.findItemsByLevel1(level1Label);
+			List<BigPlayItem> level2List = bigPlayRepository.findItemsByLevel1(level1Label,new Sort(Direction.ASC,"sortOrderNo","level1","level2"));
 			ArrayList<ListContainer<ServiceListEntry>> level2ContainerList = new ArrayList<ListContainer<ServiceListEntry>>();
 			for (Iterator<BigPlayItem> it2 = level2List.iterator(); it2.hasNext();) {
 				ListContainer<ServiceListEntry> level2Container = new ListContainer<ServiceListEntry>();
 				BigPlayItem bigPlayItem2 = it2.next();
 				String level2Label = bigPlayItem2.getLevel2();
 				level2Container.setLabel(level2Label);
+				level2Container.setSummary(bigPlayItem2.getSummary());
+				level2Container.setLocalEntity(new MongoLocalEntity("bigPlay", bigPlayItem2.getId(), null));
 				List<ServiceOffer> serviceOfferList = serviceOfferService.findServiceOfferByPlay(bigPlayItem2.getId());
 				ArrayList<ServiceListEntry> serviceListEntryList = new ArrayList<ServiceListEntry>();
 				for (Iterator<ServiceOffer> it3 = serviceOfferList.iterator(); it3.hasNext();) {
@@ -64,8 +69,8 @@ public class ServiceNavigator implements Serializable{
 	}
 
 	public ArrayList<ListContainer<ListContainer<ServiceListEntry>>> getBigDataCatalog() {
-		//if (bigDataCatalog == null)
-			reloadBigPlays();
+		// if (bigDataCatalog == null)
+		reloadBigPlays();
 		return bigDataCatalog;
 	}
 }

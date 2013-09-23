@@ -1,60 +1,47 @@
 package serviceplaybook.controller;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import serviceplaybook.model.BigPlayItem;
-import serviceplaybook.mongorepo.BigPlayRepository;
+import serviceplaybook.model.ServicePlaybookDescription;
+import serviceplaybook.mongorepo.ServicePlaybookDescriptionRepository;
 
 @Controller
 public class AdminController {
 	@Autowired
-	BigPlayRepository bigPlayRepository;
+	ServicePlaybookDescriptionRepository servicePlaybookDescriptionRepository;
 
-	@RequestMapping(value = "/admin/bigPlayItem/List", method = RequestMethod.GET)
-	public String getBigPlayList(ModelMap model) {
-		model.addAttribute("bigPlayList", bigPlayRepository.findAll());
-		return "bigPlayList";
-	}
-
-	@RequestMapping(value = "/admin/bigPlayItem/new", method = RequestMethod.GET)
-	public String getBigPlayNew(ModelMap model) {
-		model.addAttribute("bigPlayItem", new BigPlayItem());
-		return "bigPlayItemEdit";
-	}
-
-	@RequestMapping(value = "/admin/bigPlayItem/edit/{id}", method = RequestMethod.GET)
-	public String bigPlayItemEdit(@PathVariable String id, ModelMap model) {
-		BigPlayItem bigPlayItem = bigPlayRepository.findOne(id);
-		model.addAttribute("bigPlayItem", bigPlayItem);
-		return "bigPlayItemEdit";
-	}
-
-	@RequestMapping(value = "/admin/bigPlayItem/submit", method = RequestMethod.POST)
-	public String bigPlayItemSubmit(@RequestParam String action, @ModelAttribute BigPlayItem bigPlayItem, ModelMap model) {
-
-		if (action.equals("Save")) {
-			if (bigPlayItem.getId().equals(""))
-				bigPlayItem.setId(UUID.randomUUID().toString());
-			bigPlayItem = bigPlayRepository.save(bigPlayItem);
-		}
-
-		return "redirect:/admin/bigPlayItem/List";
-
+	@RequestMapping(value = "/admin/servicePlaybookDescription", method = RequestMethod.GET)
+	public String getServicePlaybookDescription(ModelMap model) {
+		model.put("servicePlaybookDescription", getServicePlaybookDescription());
+		model.put("editUrl","/admin/servicePlaybookDescription/edit");
+		return "servicePlaybookDescription";
 	}
 	
-	@RequestMapping(value = "/admin/bigPlayItem/delete/{id}", method = RequestMethod.GET)
-	public String bigPlayItemDelete(@PathVariable String id, ModelMap model) {
-		bigPlayRepository.delete(id);
-		
-		return "redirect:/admin/bigPlayItem/List";
+	@RequestMapping(value = "/admin/servicePlaybookDescription/edit", method = RequestMethod.GET)
+	public String editServicePlaybookDescription(ModelMap model) {
+		model.put("servicePlaybookDescription", getServicePlaybookDescription());
+		return "servicePlaybookDescriptionEdit";
 	}
+	
+	@RequestMapping(value = "/admin/servicePlaybookDescription/submit", method = RequestMethod.POST)
+	public String saveServicePlaybookDescription (@RequestParam String action, @ModelAttribute ServicePlaybookDescription servicePlaybookDescription) {
+		servicePlaybookDescriptionRepository.save(servicePlaybookDescription);
+		return "redirect:/admin/servicePlaybookDescription";
+	}
+	
+	
+	private ServicePlaybookDescription getServicePlaybookDescription() {
+		Iterable<ServicePlaybookDescription> it = servicePlaybookDescriptionRepository.findAll();
+		if (it == null || it.iterator().hasNext() == false)
+			return new ServicePlaybookDescription();
+		ServicePlaybookDescription servicePlaybookDescription = it.iterator().next();
+		return servicePlaybookDescription;
+	}
+
 }

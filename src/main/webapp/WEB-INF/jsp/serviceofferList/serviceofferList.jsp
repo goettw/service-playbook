@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-				<div class="edit">
-					<table>
+				<div class="container">
+					<table class="table">
 						<tbody>
 							<c:forEach items="${serviceOfferList}" var="serviceOffer">
 								<tr>

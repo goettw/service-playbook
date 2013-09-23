@@ -1,1 +1,0 @@
-<a href="${imageUrl}" target="_blank"><img  class="img-rounded" src ="${imageUrl}" style="width:100%;"/></a>

@@ -6,9 +6,11 @@ import java.io.StringReader;
 
 public class RTItem {
 	static public String convertToHtml(String in) {
+		if (in==null)return "";
 		LineNumberReader lnr = new LineNumberReader(new StringReader(in));
 		String line;
 		String rtItem="";
+		
 		boolean listFlag=false;
 		try {
 			while ((line = lnr.readLine()) != null) {

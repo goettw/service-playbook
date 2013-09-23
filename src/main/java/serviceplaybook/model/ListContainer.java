@@ -3,6 +3,13 @@ package serviceplaybook.model;
 import java.util.List;
 
 public class ListContainer <E>{
+	private MongoLocalEntity localEntity;
+	public MongoLocalEntity getLocalEntity() {
+		return localEntity;
+	}
+	public void setLocalEntity(MongoLocalEntity localEntity) {
+		this.localEntity = localEntity;
+	}
 	public String getLabel() {
 		return Label;
 	}
@@ -17,4 +24,11 @@ public class ListContainer <E>{
 	}
 	private String Label;
 	private List<E> entries;
+	private String summary;
+	public String getSummary() {
+		return summary;
+	}
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
 }

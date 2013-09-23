@@ -52,11 +52,11 @@ public class FileController {
 	 * @param value : value from the URL
 	 * @return void
 	 ****************************************************/
-	@RequestMapping(value = "/get/{value}", method = RequestMethod.GET)
-	 public void get(HttpServletResponse response,@PathVariable String value){
+	@RequestMapping(value = "/get/{id}/{filename}", method = RequestMethod.GET)
+	 public void get(HttpServletResponse response,@PathVariable String id, @PathVariable String filename){
 		 
 		 try {		
-			 	fileFormService.get(value,response);
+			 	fileFormService.get(id,response);
 		 }catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

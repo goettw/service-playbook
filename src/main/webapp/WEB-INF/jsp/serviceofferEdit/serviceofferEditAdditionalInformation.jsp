@@ -1,9 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-	<table>
-		<tr>
-			<td><div class="formInnerTable">
+	<div class="container">
 					<script>
 						$(document)
 								.ready(
@@ -39,11 +37,12 @@
 													});
 										});
 					</script>
-					<table id="relatedInformation">
+					<table id="relatedInformation" class="table">
 						<tbody>
 																	<tr>
 											<th>Label</th>
 											<th>URL</th>
+											<th>Action</th>
 										</tr>
 										<c:forEach var="link" varStatus="status"
 											items="${serviceOffer.relatedInformation}">
@@ -65,7 +64,6 @@
 					</div>
 
 				</div>
-		</tr>
-	</table>
+
 
 		

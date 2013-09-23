@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -26,6 +28,7 @@ import serviceplaybook.model.ServiceCategory;
 import serviceplaybook.model.ServiceLine;
 import serviceplaybook.model.ServiceOffer;
 import serviceplaybook.mongorepo.BigPlayRepository;
+import serviceplaybook.service.AdminService;
 import serviceplaybook.service.FileFormService;
 import serviceplaybook.service.ServiceCategoryService;
 import serviceplaybook.service.ServiceLineService;
@@ -47,16 +50,19 @@ public class ServiceController {
 	private SessionContext sessionContext;
 	@Autowired
 	FileFormService fileFormService;
+	@Autowired
+	AdminService adminService;
 	private static final String FOLDER_IMAGE = "image";
 
 	@RequestMapping(value = "/bigPlayOverview", method = RequestMethod.GET)
 	public String bigPlayList(ModelMap model) {
 		model.addAttribute("sessionContext", sessionContext);
 		model.addAttribute("serviceLineList", serviceLineService.listServiceLine());
+		model.addAttribute("servicePlaybookDescription",adminService.getServicePlaybookDescription());
 		return "bigPlayOverview";
 	}
 
-	@RequestMapping(value = "/serviceOfferList", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/serviceOfferList", method = RequestMethod.GET)
 	public String getServiceOfferList(ModelMap model) {
 		model.addAttribute("serviceOfferList", serviceOfferService.listServiceOffer());
 		return "serviceofferList";
@@ -65,7 +71,7 @@ public class ServiceController {
 	@RequestMapping(value = "/serviceOffer/delete/{id}", method = RequestMethod.GET)
 	public String deleteServiceOfferById(@PathVariable String id, ModelMap model) {
 		serviceOfferService.deleteServiceOffer(serviceOfferService.findServiceOfferById(id));
-		return "redirect:/serviceOfferList";
+		return "redirect:/admin/serviceOfferList";
 	}
 
 	@RequestMapping(value = "/serviceOffer/{id}", method = RequestMethod.GET)
@@ -74,19 +80,23 @@ public class ServiceController {
 		model.addAttribute("serviceOffer", serviceOffer);
 		ServiceCategory serviceCategory = serviceCategoryService.findServiceCategoryById(serviceOffer.getServiceCategory());
 
-		if (serviceCategory != null) {
-			ServiceLine serviceLine = serviceLineService.findServiceLineById(serviceCategory.getServiceLine());
-			model.addAttribute("serviceCategoryId", serviceCategory.getId());
-			model.addAttribute("serviceLineId", serviceLine.getId());
-			model.addAttribute("serviceCategoryList", serviceCategoryService.findServiceCategoryByServiceLine(serviceLine.getId()));
-			model.addAttribute("serviceLineList", serviceLineService.listServiceLine());
-			model.addAttribute("serviceOfferList", serviceOfferService.findServiceOfferByCategory(serviceCategory.getId()));
-			if (getImageId(id) != null)
-				model.addAttribute("imageUrl", request.getContextPath()+"/file-controller/get/" + getImageId(id));
-		}
-		sessionContext.setServiceOffer(serviceOffer);
+		//if (serviceCategory != null) {
+			//ServiceLine serviceLine = serviceLineService.findServiceLineById(serviceCategory.getServiceLine());
+			
+			//model.addAttribute("serviceCategoryId", serviceCategory.getId());
+			//model.addAttribute("serviceLineId", serviceLine.getId());
+			//model.addAttribute("serviceCategoryList", serviceCategoryService.findServiceCategoryByServiceLine(serviceLine.getId()));
+			//model.addAttribute("serviceLineList", serviceLineService.listServiceLine());
+			//model.addAttribute("serviceOfferList", serviceOfferService.findServiceOfferByCategory(serviceCategory.getId()));
+			
+		//}
+		//sessionContext.setServiceOffer(serviceOffer);
 		model.addAttribute("sessionContext", sessionContext);
 		model.addAttribute("subtitle", serviceOffer.getLabel());
+		model.addAttribute("editUrl","/serviceOfferEdit/"+id);
+		String imageUrl = getImageUrl(request, id);
+		if (imageUrl != null)
+			model.addAttribute("imageUrl", imageUrl);
 		return "serviceoffer";
 	}
 
@@ -98,7 +108,7 @@ public class ServiceController {
 		model.addAttribute("serviceOffer", new ServiceOffer());
 		model.addAttribute("serviceCategoryList", serviceCategoryService.listServiceCategory());
 		model.addAttribute("statusList", statusList);
-		model.addAttribute("bigPlayList", bigPlayRepository.findAll());
+		model.addAttribute("bigPlayList", bigPlayRepository.findAll(new Sort(Direction.ASC,"sortOrderNo","level1","level2")));
 		return "serviceofferEdit";
 	}
 
@@ -107,7 +117,7 @@ public class ServiceController {
 	FileMeta uploadImage(@PathVariable String id, MultipartHttpServletRequest request, HttpServletResponse response) {
 		MongoLocalEntity mongoLocalEntity = new MongoLocalEntity(serviceOfferService.getCollectionName(), id, FOLDER_IMAGE);
 		FileMeta fileMeta = fileFormService.upload(mongoLocalEntity, request, response, true);
-		fileMeta.setUrl(request.getContextPath() + "/file-controller/get/" + fileMeta.getId());
+		fileMeta.setUrl(request.getContextPath() + "/file-controller/get/" + fileMeta.getId() + "/" + fileMeta.getFileName());
 		return fileMeta;
 	}
 
@@ -118,11 +128,12 @@ public class ServiceController {
 		statusList.add("released");
 		ServiceOffer serviceOffer = serviceOfferService.findServiceOfferById(id);
 		model.addAttribute("serviceOffer", serviceOffer);
-		model.addAttribute("serviceCategoryList", serviceCategoryService.listServiceCategory());
+		//model.addAttribute("serviceCategoryList", serviceCategoryService.listServiceCategory());
 		model.addAttribute("statusList", statusList);
-		model.addAttribute("bigPlayList", bigPlayRepository.findAll());
-		if (getImageId(id) != null)
-			model.addAttribute("imageUrl", request.getContextPath()+"/file-controller/get/" + getImageId(id));
+		model.addAttribute("bigPlayList", bigPlayRepository.findAll(new Sort(Direction.ASC,"sortOrderNo","level1","level2")));
+		String imageUrl = getImageUrl(request, id);
+		if (imageUrl != null)
+			model.addAttribute("imageUrl", imageUrl);
 		sessionContext.setServiceOffer(serviceOffer);
 		return "serviceofferEdit";
 	}
@@ -138,16 +149,21 @@ public class ServiceController {
 				serviceOfferService.addServiceOffer(serviceOffer);
 			}
 		}
+		
 		if (serviceOffer.getId() == null || serviceOffer.getId().equals(""))
 			return "redirect:/serviceOfferList";
+		model.addAttribute("editUrl","/serviceOfferEdit/"+serviceOffer.getId());
 		return "redirect:/serviceOffer/" + serviceOffer.getId();
 	}
 
-	private String getImageId(String serviceOfferId) {
+	private String getImageUrl(HttpServletRequest request, String serviceOfferId) {
 		List<GridFSDBFile> files = fileFormService.findFiles(new MongoLocalEntity(serviceOfferService.getCOLLECTION_NAME(), serviceOfferId, FOLDER_IMAGE));
-		
-		if (files.size() > 0)
-			return files.get(0).getId().toString();
+
+		if (files.size() > 0) {
+			GridFSDBFile file = files.get(0);
+			return request.getContextPath() + "/file-controller/get/" + file.getId().toString() + "/" + file.getFilename();
+
+		}
 		return null;
 
 	}

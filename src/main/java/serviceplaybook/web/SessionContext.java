@@ -2,10 +2,14 @@ package serviceplaybook.web;
 
 import java.io.Serializable;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import serviceplaybook.controller.ServiceNavigator;
 import serviceplaybook.model.ServiceCategory;
 import serviceplaybook.model.ServiceLine;
 import serviceplaybook.model.ServiceOffer;
+import serviceplaybook.model.ServicePlaybookDescription;
+import serviceplaybook.service.AdminService;
 
 public class SessionContext implements Serializable{
 	/**
@@ -17,6 +21,9 @@ public class SessionContext implements Serializable{
 	private ServiceOffer serviceOffer;
 	
 	private ServiceNavigator serviceNavigator;
+	
+@Autowired
+	
 	public ServiceNavigator getServiceNavigator() {
 		return serviceNavigator;
 	}
@@ -41,4 +48,5 @@ public class SessionContext implements Serializable{
 	public void setServiceOffer(ServiceOffer serviceOffer) {
 		this.serviceOffer = serviceOffer;
 	}
+
 }

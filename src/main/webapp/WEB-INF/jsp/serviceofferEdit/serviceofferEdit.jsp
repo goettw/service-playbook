@@ -46,16 +46,20 @@
 				<li><a href="#tabs-6">Structure</a></li>
 			</ul>
 			<div id="tabs-7">
+			<!--[if lt IE 9]>
+			<div class="alert alert-warning">
+			Upload of images is not possible with IE 8 and below. Please install a browser that supports HTML5 like Internet Explorer 10, <a href="https://www.google.com/intl/de/chrome/browser/" target="_blank">Chrome</a> or <a href="https://www.mozilla.org/firefox">Firefox</a>.
+			</div>
+			   <![endif]--> 
 				<div class="container">
 					<div class="row">
 					<div class="col-md-8">
 							<input id="fileupload" type="file" name="files[]"
-								data-url="<c:url value='/serviceOffer/uploadImage/${serviceOffer.id} '/>"
-								multiple>
-							<div id="dropzone" class="fade panel panel-default">Drop
+								data-url="<c:url value='/serviceOffer/uploadImage/${serviceOffer.id} '/>">
+							<div id="dropzone" class="panel panel-default" style="width:100%;">Drop
 								files here</div>
 							<div id="progress" class="progress">
-								<div class="bar" style="width: 0%;"></div>
+								<div class="bar progress-bar" style="width: 0%;"></div>
 							</div>
 						</div>
 						<div id="imgcontainer" class="col-md-4">
@@ -75,18 +79,18 @@
 					<form:select id="status" path="status" items="${statusList}"
 						class="form-control" />
 				</div>
-				<div class="form-group">
+				<!-- >div class="form-group">
 					<form:label path="serviceCategory">Service Category</form:label>
 					<form:select id="serviceCategories" path="serviceCategory"
 						class="form-control">
 						<form:options items="${serviceCategoryList}" itemValue="id"
 							itemLabel="label" />
 					</form:select>
-				</div>
+				</div-->
 				<div class="form-group">
 					<form:label path="bigPlay" for="bigPlay">Big Plays</form:label>
 					<form:select class="form-control" id="bigPlay" path="bigPlay"
-						multiple="true" style="height:200px">
+						multiple="true" style="height:250px">
 						<form:options items="${bigPlayList}" itemValue="id"
 							itemLabel="display" />
 					</form:select>
@@ -110,11 +114,11 @@
 				<div class="form-group">
 					<form:label path="addedValue">Mehrwert f&uuml;r den Kunden</form:label>
 
-					<form:textarea class="form-control" path="addedValue" />
+					<form:textarea class="form-control" path="addedValue" style="height:250px"/>
 				</div>
 				<div class="form-group">
 					<form:label path="whyEMC">Why EMC</form:label>
-					<form:textarea class="form-control" path="whyEMC" />
+					<form:textarea class="form-control" path="whyEMC" style="height:250px"/>
 				</div>
 				<div class="form-group">
 					<form:label path="price">Price</form:label>

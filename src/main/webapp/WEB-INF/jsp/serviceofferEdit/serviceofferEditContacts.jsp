@@ -1,9 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<table>
-	<tr>
-		<td><div>
+<div class="container">
 				<script>
 					$(document)
 							.ready(
@@ -18,7 +16,7 @@
 															<td><input id="emcContacts' + index +'.label" name="emcContacts[' + index + '].label" type="text" value="" class="form-control"/></td> \
 															<td><input id="emcContacts' + index +'.url" name="emcContacts[' + index + '].url" type="text" value=""  class="form-control"/></td> \
 															<td><input id="emcContacts' + index +'.role" name="emcContacts[' + index + '].role" type="text" value=""  class="form-control"/></td> \
-															<td><input id="emcContacts' + index +'.responsible" name="emcContacts[' + index + '].responsible" type="text" value=""  class="form-control"/></td> \
+															<td><input type="checkbox" id="emcContacts' + index +'.responsible" name="emcContacts[' + index + '].responsible" type="text" value=""  class="form-control"/></td> \
 															<td><a href="javascript:void(0);" class="remContact btn btn-default">Remove</a></td>\
 														</tr>');
 														});
@@ -84,13 +82,14 @@
 														});
 									});
 				</script>
-				<table id="contacts">
+				<table id="contacts" class="table">
 					<tbody>
 						<tr>
 							<th>Label</th>
 							<th>URL</th>
 							<th>Role</th>
 							<th>Responsible</th>
+							<th>Action</th>
 						</tr>
 						<c:forEach var="contact" varStatus="status"
 							items="${serviceOffer.emcContacts}">
@@ -101,7 +100,7 @@
 										class="form-control" /></td>
 								<td><form:input path="emcContacts[${status.index}].role"
 										class="form-control" /></td>
-								<td><form:input
+								<td><form:checkbox
 										path="emcContacts[${status.index}].responsible"
 										class="form-control" /></td>
 								<td><a href="javascript:void(0);" class="remContact btn btn-default"
@@ -116,6 +115,4 @@
 				</div>
 
 			</div>
-	</tr>
-</table>
 

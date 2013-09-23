@@ -23,6 +23,7 @@ import serviceplaybook.model.type.RTItem;
 public class ServiceOffer {
 	@Id
 	private String id;
+	
 	private String label;
 	private String summary;
 	private String whyEMC;
