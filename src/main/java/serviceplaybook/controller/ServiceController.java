@@ -24,13 +24,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import serviceplaybook.model.FileMeta;
 import serviceplaybook.model.MongoLocalEntity;
-import serviceplaybook.model.ServiceCategory;
 import serviceplaybook.model.ServiceOffer;
 import serviceplaybook.mongorepo.BigPlayRepository;
 import serviceplaybook.service.AdminService;
 import serviceplaybook.service.FileFormService;
-import serviceplaybook.service.ServiceCategoryService;
-import serviceplaybook.service.ServiceLineService;
 import serviceplaybook.service.ServiceOfferService;
 import serviceplaybook.web.SessionContext;
 
@@ -41,10 +38,8 @@ public class ServiceController {
 
 	@Autowired
 	private ServiceOfferService serviceOfferService;
-	@Autowired
-	private ServiceCategoryService serviceCategoryService;
-	@Autowired
-	private ServiceLineService serviceLineService;
+
+
 	@Autowired
 	private BigPlayRepository bigPlayRepository;
 	@Autowired
@@ -58,7 +53,7 @@ public class ServiceController {
 	@RequestMapping(value = "/bigPlayOverview", method = RequestMethod.GET)
 	public String bigPlayList(ModelMap model) {
 		model.addAttribute("sessionContext", sessionContext);
-		model.addAttribute("serviceLineList", serviceLineService.listServiceLine());
+		
 		model.addAttribute("servicePlaybookDescription",adminService.getServicePlaybookDescription());
 		return "bigPlayOverview";
 	}
@@ -69,7 +64,7 @@ public class ServiceController {
 		return "serviceofferList";
 	}
 
-	@RequestMapping(value = "/serviceOffer/delete/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "author/serviceOffer/delete/{id}", method = RequestMethod.GET)
 	public String deleteServiceOfferById(@PathVariable String id, ModelMap model) {
 		serviceOfferService.deleteServiceOffer(serviceOfferService.findServiceOfferById(id));
 		return "redirect:/admin/serviceOfferList";
@@ -79,7 +74,7 @@ public class ServiceController {
 	public String getById(@PathVariable String id, ModelMap model, HttpServletRequest request) {
 		ServiceOffer serviceOffer = serviceOfferService.findServiceOfferById(id);
 		model.addAttribute("serviceOffer", serviceOffer);
-		ServiceCategory serviceCategory = serviceCategoryService.findServiceCategoryById(serviceOffer.getServiceCategory());
+		
 
 		//if (serviceCategory != null) {
 			//ServiceLine serviceLine = serviceLineService.findServiceLineById(serviceCategory.getServiceLine());
@@ -94,35 +89,36 @@ public class ServiceController {
 		//sessionContext.setServiceOffer(serviceOffer);
 		model.addAttribute("sessionContext", sessionContext);
 		model.addAttribute("subtitle", serviceOffer.getLabel());
-		model.addAttribute("editUrl","/serviceOfferEdit/"+id);
+		model.addAttribute("editUrl","/author/serviceOffer/edit/"+id);
 		String imageUrl = getImageUrl(request, id);
 		if (imageUrl != null)
 			model.addAttribute("imageUrl", imageUrl);
 		return "serviceoffer";
 	}
 
-	@RequestMapping(value = "/serviceOffer/new", method = RequestMethod.GET)
+	@RequestMapping(value = "author/serviceOffer/new", method = RequestMethod.GET)
 	public String create(ModelMap model) {
 		List<String> statusList = new LinkedList<String>();
 		statusList.add("draft");
 		statusList.add("released");
 		model.addAttribute("serviceOffer", new ServiceOffer());
-		model.addAttribute("serviceCategoryList", serviceCategoryService.listServiceCategory());
+		
 		model.addAttribute("statusList", statusList);
 		model.addAttribute("bigPlayList", bigPlayRepository.findAll(new Sort(Direction.ASC,"sortOrderNo","level1","level2")));
 		return "serviceofferEdit";
 	}
 
-	@RequestMapping(value = "/serviceOffer/uploadImage/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "author/serviceOffer/uploadImage/{id}", method = RequestMethod.POST)
 	public @ResponseBody
 	FileMeta uploadImage(@PathVariable String id, MultipartHttpServletRequest request, HttpServletResponse response) {
+		System.out.println("upload image");
 		MongoLocalEntity mongoLocalEntity = new MongoLocalEntity(serviceOfferService.getCollectionName(), id, FOLDER_IMAGE);
 		FileMeta fileMeta = fileFormService.upload(mongoLocalEntity, request, response, true);
 		fileMeta.setUrl(request.getContextPath() + "/file-controller/get/" + fileMeta.getId() + "/" + fileMeta.getFileName());
 		return fileMeta;
 	}
 
-	@RequestMapping(value = "/serviceOfferEdit/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "author/serviceOffer/edit/{id}", method = RequestMethod.GET)
 	public String editById(@PathVariable String id, ModelMap model, HttpServletRequest request) {
 		List<String> statusList = new LinkedList<String>();
 		statusList.add("draft");
@@ -135,11 +131,11 @@ public class ServiceController {
 		String imageUrl = getImageUrl(request, id);
 		if (imageUrl != null)
 			model.addAttribute("imageUrl", imageUrl);
-		sessionContext.setServiceOffer(serviceOffer);
+		
 		return "serviceofferEdit";
 	}
 
-	@RequestMapping(value = "/serviceOfferEdit/submit", method = RequestMethod.POST)
+	@RequestMapping(value = "author/serviceOffer/submit", method = RequestMethod.POST)
 	public String serviceOfferEditSubmit(@RequestParam String action, @Valid @ModelAttribute ServiceOffer serviceOffer, BindingResult bindingResult, ModelMap model) {
 
 		if (action.equals("Save")) {
@@ -154,7 +150,7 @@ if (bindingResult.hasErrors())
 		
 		if (serviceOffer.getId() == null || serviceOffer.getId().equals(""))
 			return "redirect:/serviceOfferList";
-		model.addAttribute("editUrl","/serviceOfferEdit/"+serviceOffer.getId());
+		model.addAttribute("editUrl","author/serviceOffer/edit/"+serviceOffer.getId());
 		return "redirect:/serviceOffer/" + serviceOffer.getId();
 	}
 

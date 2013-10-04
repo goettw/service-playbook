@@ -9,16 +9,16 @@
 									<td>${serviceOffer.status}</td>
 									<td>
 									<a
-										href="<c:url value='/serviceOfferEdit/${serviceOffer.id}'/>">Edit</a>
+										href="<c:url value='/author/serviceOffer/edit/${serviceOffer.id}'/>">Edit</a>
 									</td>
 									<td><a
-										href="<c:url value='/serviceOffer/delete/${serviceOffer.id}'/>">Delete</a>
+										href="<c:url value='/author/serviceOffer/delete/${serviceOffer.id}'/>">Delete</a>
 									</td>
 								</tr>
 
 							</c:forEach>
 							<tr>
-								<td><a href="<c:url value='/serviceOffer/new'/>">New</a></td>
+								<td><a href="<c:url value='/author/serviceOffer/new'/>">New</a></td>
 							</tr>
 						</tbody>
 					</table>

@@ -24,7 +24,7 @@
 <div class="edit">
 
 
-	<c:url var="addUrl" value="/serviceOfferEdit/submit" />
+	<c:url var="addUrl" value="/author/serviceOffer/submit" />
 	<form:form method="POST" action="${addUrl}" commandName="serviceOffer"
 		role="form">
 		<table class="buttons">
@@ -55,7 +55,7 @@
 					<div class="row">
 						<div class="col-md-8">
 							<input id="fileupload" type="file" name="files[]"
-								data-url="<c:url value='/serviceOffer/uploadImage/${serviceOffer.id} '/>">
+								data-url="<c:url value='/author/serviceOffer/uploadImage/${serviceOffer.id} '/>">
 							<div id="dropzone" class="panel panel-default"
 								style="width: 100%;">Drop files here</div>
 							<div id="progress" class="progress">
@@ -79,14 +79,7 @@
 					<form:select id="status" path="status" items="${statusList}"
 						class="form-control" />
 				</div>
-				<!-- >div class="form-group">
-					<form:label path="serviceCategory">Service Category</form:label>
-					<form:select id="serviceCategories" path="serviceCategory"
-						class="form-control">
-						<form:options items="${serviceCategoryList}" itemValue="id"
-							itemLabel="label" />
-					</form:select>
-				</div-->
+	
 				<div class="form-group">
 					<form:label path="bigPlay" for="bigPlay">Big Plays</form:label>
 					<form:select class="form-control" id="bigPlay" path="bigPlay"

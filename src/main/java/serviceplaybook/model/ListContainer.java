@@ -1,8 +1,13 @@
 package serviceplaybook.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ListContainer <E>{
+public class ListContainer <E> implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3160414153529040211L;
 	private MongoLocalEntity localEntity;
 	public MongoLocalEntity getLocalEntity() {
 		return localEntity;

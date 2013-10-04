@@ -33,7 +33,7 @@ public class ServiceNavigator implements Serializable {
 		bigDataCatalog = new ArrayList<ListContainer<ListContainer<ServiceListEntry>>>();
 		List<BigPlayItem> level1List = bigPlayRepository.findAll(new Sort(Direction.ASC,"sortOrderNo","level1","level2"));
 		HashMap<String, String> disctinctLevel1 = new HashMap<String, String>();
-		
+	
 		for (Iterator<BigPlayItem> it = level1List.iterator(); it.hasNext();) {
 			ListContainer<ListContainer<ServiceListEntry>> level1Container = new ListContainer<ListContainer<ServiceListEntry>>();
 			BigPlayItem bigPlayItem = it.next();

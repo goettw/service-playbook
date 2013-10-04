@@ -44,7 +44,7 @@ public class FileFormService {
 		while (it.hasNext()) {
 
 			mpf = request.getFile(it.next());
-			System.out.println(mpf.getOriginalFilename() + " uploaded! " + files.size());
+			
 
 			// 2.3 create new fileMeta
 			FileMeta fileMeta = new FileMeta();
@@ -57,8 +57,8 @@ public class FileFormService {
 				DBObject metaData = new BasicDBObject();
 
 				metaData.put("contentType", mpf.getContentType());
-				GridFSFile gridfsfile = gridFsTemplate.store(mpf.getInputStream(), mpf.getOriginalFilename(), metaData);
-				System.out.println("gridfs-id" + gridfsfile.getId());
+				gridFsTemplate.store(mpf.getInputStream(), mpf.getOriginalFilename(), metaData);
+			
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -159,8 +159,6 @@ public class FileFormService {
 
 		GridFSDBFile gridfsdbfile = gridFsTemplate.findOne(query(where("_id").is(new ObjectId(id))));
 		response.setContentType( (String)gridfsdbfile.getMetaData().get("contentType"));
-		System.out.println("content type: " + gridfsdbfile.getMetaData().get("contentType"));
-		//response.setHeader("Content-disposition", "attachment; filename=\"" + gridfsdbfile.getFilename() + "\"");
 		gridfsdbfile.writeTo(response.getOutputStream());
 	}
 }
