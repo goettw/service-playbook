@@ -1,7 +1,11 @@
 package serviceplaybook.model.type;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class Link {
+@NotEmpty
 private String label;
+@NotEmpty
 private String url;
 public String getLabel() {
 	return label;

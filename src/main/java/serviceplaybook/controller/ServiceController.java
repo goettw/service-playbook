@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.mongodb.gridfs.GridFSDBFile;
-
 import serviceplaybook.model.FileMeta;
 import serviceplaybook.model.MongoLocalEntity;
 import serviceplaybook.model.ServiceCategory;
-import serviceplaybook.model.ServiceLine;
 import serviceplaybook.model.ServiceOffer;
 import serviceplaybook.mongorepo.BigPlayRepository;
 import serviceplaybook.service.AdminService;
@@ -34,6 +33,8 @@ import serviceplaybook.service.ServiceCategoryService;
 import serviceplaybook.service.ServiceLineService;
 import serviceplaybook.service.ServiceOfferService;
 import serviceplaybook.web.SessionContext;
+
+import com.mongodb.gridfs.GridFSDBFile;
 
 @Controller
 public class ServiceController {
@@ -139,10 +140,11 @@ public class ServiceController {
 	}
 
 	@RequestMapping(value = "/serviceOfferEdit/submit", method = RequestMethod.POST)
-	public String serviceOfferEditSubmit(@RequestParam String action, @ModelAttribute ServiceOffer serviceOffer, ModelMap model) {
+	public String serviceOfferEditSubmit(@RequestParam String action, @Valid @ModelAttribute ServiceOffer serviceOffer, BindingResult bindingResult, ModelMap model) {
 
 		if (action.equals("Save")) {
-
+if (bindingResult.hasErrors())
+	return "serviceofferEdit";
 			if (StringUtils.hasText(serviceOffer.getId())) {
 				serviceOfferService.updateServiceOffer(serviceOffer);
 			} else {

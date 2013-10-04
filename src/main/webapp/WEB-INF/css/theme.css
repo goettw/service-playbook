@@ -14,6 +14,9 @@
 	padding-top: 0px;
 	text-align: left;
 }*/
+.error {
+	color: rgb(255, 0, 0);
+}
 div.panel { 
 	border: solid;
 	padding: 10px;

@@ -8,8 +8,6 @@ import serviceplaybook.controller.ServiceNavigator;
 import serviceplaybook.model.ServiceCategory;
 import serviceplaybook.model.ServiceLine;
 import serviceplaybook.model.ServiceOffer;
-import serviceplaybook.model.ServicePlaybookDescription;
-import serviceplaybook.service.AdminService;
 
 public class SessionContext implements Serializable{
 	/**

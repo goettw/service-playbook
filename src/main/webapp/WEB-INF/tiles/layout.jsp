@@ -70,8 +70,8 @@
 		<hr />
 
 		<footer>
-			<p>Service Playbook is based on Pivotal 3rd Generation Platform
-				Technology, created by Wolfgang Goette</p>
+			<p>Service Playbook is created by Wolfgang G&ouml;tte, based on Pivotal 3rd Generation Platform
+				Technology</p>
 		</footer>
 
 	</div>

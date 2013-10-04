@@ -13,6 +13,9 @@ package serviceplaybook.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -23,10 +26,13 @@ import serviceplaybook.model.type.RTItem;
 public class ServiceOffer {
 	@Id
 	private String id;
-	
+	@NotEmpty
 	private String label;
+	@NotEmpty
 	private String summary;
+	@NotEmpty
 	private String whyEMC;
+	@NotEmpty
 	private String addedValue;
 	private String dealValue;
 	private String serviceCategory;

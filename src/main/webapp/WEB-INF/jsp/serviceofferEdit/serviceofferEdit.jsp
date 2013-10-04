@@ -46,18 +46,18 @@
 				<li><a href="#tabs-6">Structure</a></li>
 			</ul>
 			<div id="tabs-7">
-			<!--[if lt IE 9]>
+				<!--[if lt IE 9]>
 			<div class="alert alert-warning">
 			Upload of images is not possible with IE 8 and below. Please install a browser that supports HTML5 like Internet Explorer 10, <a href="https://www.google.com/intl/de/chrome/browser/" target="_blank">Chrome</a> or <a href="https://www.mozilla.org/firefox">Firefox</a>.
 			</div>
-			   <![endif]--> 
+			   <![endif]-->
 				<div class="container">
 					<div class="row">
-					<div class="col-md-8">
+						<div class="col-md-8">
 							<input id="fileupload" type="file" name="files[]"
 								data-url="<c:url value='/serviceOffer/uploadImage/${serviceOffer.id} '/>">
-							<div id="dropzone" class="panel panel-default" style="width:100%;">Drop
-								files here</div>
+							<div id="dropzone" class="panel panel-default"
+								style="width: 100%;">Drop files here</div>
 							<div id="progress" class="progress">
 								<div class="bar progress-bar" style="width: 0%;"></div>
 							</div>
@@ -67,7 +67,7 @@
 								style="width: 100%;" src="${imageUrl}" /></a>
 						</div>
 
-						
+
 					</div>
 				</div>
 
@@ -104,21 +104,25 @@
 				<div class="form-group">
 					<form:label path="label">Label</form:label>
 					<form:input class="form-control" path="label" />
+					<form:errors path="label" class="error"></form:errors>
 
 				</div>
 				<div class="form-group">
 					<form:label path="summary">Zusammenfassung</form:label>
 					<form:textarea class="form-control" path="summary" />
-
+					<form:errors path="summary" class="error"></form:errors>
 				</div>
 				<div class="form-group">
 					<form:label path="addedValue">Mehrwert f&uuml;r den Kunden</form:label>
-
-					<form:textarea class="form-control" path="addedValue" style="height:250px"/>
+					<form:textarea class="form-control" path="addedValue"
+						style="height:250px" />
+					<form:errors path="addedValue" class="error"></form:errors>
 				</div>
 				<div class="form-group">
 					<form:label path="whyEMC">Why EMC</form:label>
-					<form:textarea class="form-control" path="whyEMC" style="height:250px"/>
+					<form:textarea class="form-control" path="whyEMC"
+						style="height:250px" />
+						<form:errors path="whyEMC" class="error"></form:errors>
 				</div>
 				<div class="form-group">
 					<form:label path="price">Price</form:label>
