@@ -1,6 +1,12 @@
 package serviceplaybook.model;
 
-public class MongoLocalEntity {
+import java.io.Serializable;
+
+public class MongoLocalEntity implements Serializable{
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2899110202073696560L;
 private String collectionName;
 private String id;
 private String folder; 

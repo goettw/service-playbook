@@ -38,8 +38,6 @@ public class ServiceController {
 
 	@Autowired
 	private ServiceOfferService serviceOfferService;
-
-
 	@Autowired
 	private BigPlayRepository bigPlayRepository;
 	@Autowired
@@ -53,8 +51,7 @@ public class ServiceController {
 	@RequestMapping(value = "/bigPlayOverview", method = RequestMethod.GET)
 	public String bigPlayList(ModelMap model) {
 		model.addAttribute("sessionContext", sessionContext);
-		
-		model.addAttribute("servicePlaybookDescription",adminService.getServicePlaybookDescription());
+		model.addAttribute("servicePlaybookDescription", adminService.getServicePlaybookDescription());
 		return "bigPlayOverview";
 	}
 
@@ -74,22 +71,9 @@ public class ServiceController {
 	public String getById(@PathVariable String id, ModelMap model, HttpServletRequest request) {
 		ServiceOffer serviceOffer = serviceOfferService.findServiceOfferById(id);
 		model.addAttribute("serviceOffer", serviceOffer);
-		
-
-		//if (serviceCategory != null) {
-			//ServiceLine serviceLine = serviceLineService.findServiceLineById(serviceCategory.getServiceLine());
-			
-			//model.addAttribute("serviceCategoryId", serviceCategory.getId());
-			//model.addAttribute("serviceLineId", serviceLine.getId());
-			//model.addAttribute("serviceCategoryList", serviceCategoryService.findServiceCategoryByServiceLine(serviceLine.getId()));
-			//model.addAttribute("serviceLineList", serviceLineService.listServiceLine());
-			//model.addAttribute("serviceOfferList", serviceOfferService.findServiceOfferByCategory(serviceCategory.getId()));
-			
-		//}
-		//sessionContext.setServiceOffer(serviceOffer);
 		model.addAttribute("sessionContext", sessionContext);
 		model.addAttribute("subtitle", serviceOffer.getLabel());
-		model.addAttribute("editUrl","/author/serviceOffer/edit/"+id);
+		model.addAttribute("editUrl", "/author/serviceOffer/edit/" + id);
 		String imageUrl = getImageUrl(request, id);
 		if (imageUrl != null)
 			model.addAttribute("imageUrl", imageUrl);
@@ -102,16 +86,14 @@ public class ServiceController {
 		statusList.add("draft");
 		statusList.add("released");
 		model.addAttribute("serviceOffer", new ServiceOffer());
-		
 		model.addAttribute("statusList", statusList);
-		model.addAttribute("bigPlayList", bigPlayRepository.findAll(new Sort(Direction.ASC,"sortOrderNo","level1","level2")));
+		model.addAttribute("bigPlayList", bigPlayRepository.findAll(new Sort(Direction.ASC, "sortOrderNo", "level1", "level2")));
 		return "serviceofferEdit";
 	}
 
 	@RequestMapping(value = "author/serviceOffer/uploadImage/{id}", method = RequestMethod.POST)
 	public @ResponseBody
 	FileMeta uploadImage(@PathVariable String id, MultipartHttpServletRequest request, HttpServletResponse response) {
-		System.out.println("upload image");
 		MongoLocalEntity mongoLocalEntity = new MongoLocalEntity(serviceOfferService.getCollectionName(), id, FOLDER_IMAGE);
 		FileMeta fileMeta = fileFormService.upload(mongoLocalEntity, request, response, true);
 		fileMeta.setUrl(request.getContextPath() + "/file-controller/get/" + fileMeta.getId() + "/" + fileMeta.getFileName());
@@ -125,44 +107,38 @@ public class ServiceController {
 		statusList.add("released");
 		ServiceOffer serviceOffer = serviceOfferService.findServiceOfferById(id);
 		model.addAttribute("serviceOffer", serviceOffer);
-		//model.addAttribute("serviceCategoryList", serviceCategoryService.listServiceCategory());
 		model.addAttribute("statusList", statusList);
-		model.addAttribute("bigPlayList", bigPlayRepository.findAll(new Sort(Direction.ASC,"sortOrderNo","level1","level2")));
+		model.addAttribute("bigPlayList", bigPlayRepository.findAll(new Sort(Direction.ASC, "sortOrderNo", "level1", "level2")));
 		String imageUrl = getImageUrl(request, id);
 		if (imageUrl != null)
 			model.addAttribute("imageUrl", imageUrl);
-		
 		return "serviceofferEdit";
 	}
 
 	@RequestMapping(value = "author/serviceOffer/submit", method = RequestMethod.POST)
-	public String serviceOfferEditSubmit(@RequestParam String action, @Valid @ModelAttribute ServiceOffer serviceOffer, BindingResult bindingResult, ModelMap model) {
-
+	public String serviceOfferEditSubmit(@RequestParam String action, @Valid @ModelAttribute ServiceOffer serviceOffer, BindingResult bindingResult,
+			ModelMap model) {
 		if (action.equals("Save")) {
-if (bindingResult.hasErrors())
-	return "serviceofferEdit";
+			if (bindingResult.hasErrors())
+				return "serviceofferEdit";
 			if (StringUtils.hasText(serviceOffer.getId())) {
 				serviceOfferService.updateServiceOffer(serviceOffer);
 			} else {
 				serviceOfferService.addServiceOffer(serviceOffer);
 			}
 		}
-		
 		if (serviceOffer.getId() == null || serviceOffer.getId().equals(""))
 			return "redirect:/serviceOfferList";
-		model.addAttribute("editUrl","author/serviceOffer/edit/"+serviceOffer.getId());
+		model.addAttribute("editUrl", "author/serviceOffer/edit/" + serviceOffer.getId());
 		return "redirect:/serviceOffer/" + serviceOffer.getId();
 	}
 
 	private String getImageUrl(HttpServletRequest request, String serviceOfferId) {
 		List<GridFSDBFile> files = fileFormService.findFiles(new MongoLocalEntity(serviceOfferService.getCOLLECTION_NAME(), serviceOfferId, FOLDER_IMAGE));
-
 		if (files.size() > 0) {
 			GridFSDBFile file = files.get(0);
 			return request.getContextPath() + "/file-controller/get/" + file.getId().toString() + "/" + file.getFilename();
-
 		}
 		return null;
-
 	}
 }

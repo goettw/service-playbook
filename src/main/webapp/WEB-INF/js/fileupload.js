@@ -1,8 +1,8 @@
 $(function() {
-	$('#fileupload').fileupload(
+	$('#fileupload')
+			.fileupload(
 					{
 						dataType : 'json',
-
 
 						progressall : function(e, data) {
 							var progress = parseInt(data.loaded / data.total
@@ -11,15 +11,11 @@ $(function() {
 						},
 
 						dropZone : $('#dropzone'),
-						done :   function(e, data) {
-							
-						
+						done : function(e, data) {
 							$("#imgcontainer").html(data.result.url);
-							$("#imgcontainer").html("<img src='" + data.result.url + "' style='width:100%;'/>");
-						}		
-					}
-			);
-
-
+							$("#imgcontainer").html(
+									"<img src='" + data.result.url
+											+ "' style='width:100%;'/>");
+						}
+					});
 });
-

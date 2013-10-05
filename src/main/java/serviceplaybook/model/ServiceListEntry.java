@@ -1,6 +1,12 @@
 package serviceplaybook.model;
 
-public class ServiceListEntry {
+import java.io.Serializable;
+
+public class ServiceListEntry implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1256007955855394059L;
 	private String id, label;
 
 	public String getId() {
