@@ -128,7 +128,7 @@ public class ServiceController {
 			}
 		}
 		if (serviceOffer.getId() == null || serviceOffer.getId().equals(""))
-			return "redirect:/serviceOfferList";
+			return "redirect:/admin/serviceOfferList";
 		model.addAttribute("editUrl", "author/serviceOffer/edit/" + serviceOffer.getId());
 		return "redirect:/serviceOffer/" + serviceOffer.getId();
 	}

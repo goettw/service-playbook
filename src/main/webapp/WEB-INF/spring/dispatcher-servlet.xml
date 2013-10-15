@@ -17,15 +17,12 @@
 		<!-- instructs the container to proxy the surrounding bean -->
 		<aop:scoped-proxy />
 		<property name="serviceNavigator" ref="serviceNavigator" />
-
 	</bean>
 	<bean id="serviceNavigator" class="serviceplaybook.controller.ServiceNavigator" />
 	<!-- Factory bean that creates the Mongo instance -->
 	<bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
-		<property name="host" value="192.168.232.156" />
+		<property name="host" value="localhost" />
 	</bean>
-
-
 	<mongo:repositories base-package="serviceplaybook.mongorepo" />
 	<!-- repoTemplate for connecting and quering the documents in the database -->
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
@@ -33,24 +30,23 @@
 			value="test" / -->
 		<constructor-arg ref="mongoDbFactory" />
 	</bean>
-<bean id="gridFsTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+	<bean id="gridFsTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
 		<constructor-arg ref="mongoDbFactory" />
 		<constructor-arg ref="mongoMappingConverter" />
-</bean>
+	</bean>
 	<bean id="mongoMappingConverter"
 		class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
 		<constructor-arg ref="mongoDbFactory" />
 		<constructor-arg ref="mappingContext" />
-
 	</bean>
 	<bean id="mappingContext"
 		class="org.springframework.data.mongodb.core.mapping.MongoMappingContext">
 	</bean>
 
-	<!--mongo:db-factory id="mongoDbFactory" dbname="test"
-		host="192.168.232.156" /-->
+	<!--mongo:db-factory id="mongoDbFactory" dbname="test" host="192.168.232.156" 
+		/ -->
 	<mongo:db-factory id="mongoDbFactory" dbname="test"
-		host="192.168.232.156" />
+		host="localhost" />
 
 	<!-- Use this post processor to translate any MongoExceptions thrown in 
 		@Repository annotated classes -->
