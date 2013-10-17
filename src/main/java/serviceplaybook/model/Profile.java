@@ -41,7 +41,8 @@ public class Profile implements UserDetails, Serializable {
 	}
 
 	private String password;
-	@Id
+	@Id 
+	@NotEmpty
 	private String username;
 
 	public String getTitle() {
@@ -129,8 +130,7 @@ public class Profile implements UserDetails, Serializable {
 
 	public void setPassword(String password) {
 
-
-this.password=password;
+		this.password = password;
 	}
 
 	public String getUsername() {

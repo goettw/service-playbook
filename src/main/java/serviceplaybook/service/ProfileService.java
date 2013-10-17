@@ -16,7 +16,7 @@ public class ProfileService implements UserDetailsService {
 	private ProfileRepository profileRepository;
 
 
-
+ 
 	public UserDetails loadUserByUsername(String arg0)
 			throws UsernameNotFoundException {
 		System.out.println("arg01=" + arg0);

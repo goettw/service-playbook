@@ -1,7 +1,10 @@
 package serviceplaybook.controller;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,8 +74,16 @@ public class AdminController {
 	 */
 	@RequestMapping(value = "/admin/profile/new", method = RequestMethod.GET)
 	public String profileNew(ModelMap model) {
-
-		model.addAttribute("profile", new Profile());
+		Profile profile = new Profile();
+		profile.setAccountNonExpired(true);
+		profile.setAccountNonLocked(true);
+		profile.setCredentialsNonExpired(true);
+		profile.setEnabled(true);
+		ArrayList <String>list = new ArrayList<String>();
+		list.add(authorityList.get(0));
+		profile.setAuthorityValues(list);
+		model.addAttribute("profile", profile);
+		
 		model.addAttribute("authorityList", authorityList);
 		return "profileEdit";
 	}
@@ -87,9 +98,8 @@ public class AdminController {
 
 	@RequestMapping(value = "admin/profile/submit", method = RequestMethod.POST)
 	public String profileSubmit(@RequestParam String action,
-			@ModelAttribute Profile profile, ModelMap model,
-			BindingResult result) {
-		System.out.println("profile" + profile);
+			@Valid @ModelAttribute Profile profile, BindingResult result, ModelMap model) {
+
 
 		for (Iterator<GrantedAuthorityContainer> it = profile.getAuthorities()
 				.iterator(); it.hasNext();) {
@@ -111,8 +121,9 @@ public class AdminController {
 			}
 
 			ValidationUtils.rejectIfEmptyOrWhitespace(result, "password",
-					"field.required");
+					"NotEmpty.profile.password");
 			 if (result.hasErrors()) {
+					model.addAttribute("authorityList", authorityList);
 			      return "profileEdit";
 			    }
 
@@ -124,7 +135,10 @@ public class AdminController {
 
 			profile = profileRepository.save(profile);
 		}
-		model.put("editUrl", "/admin/profile/edit/" + profile.getUsername());
+		else {
+			return ("redirect:/");
+		}
+		//model.put("editUrl", "/admin/profile/edit/" + profile.getUsername());
 		return "redirect:/profile/" + profile.getUsername();
 	}
 

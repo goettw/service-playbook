@@ -24,8 +24,7 @@
 		</div>
 		<div class="control-group">
 			<input type="submit" value="Login" name="action"
-				class="btn btn-default btn-xs" /> <input type="Submit"
-				value="Cancel" name="action" class="btn btn-default btn-xs" />
+				class="btn btn-default btn-xs" /> 
 		</div>
 	</form:form>
 	</div>

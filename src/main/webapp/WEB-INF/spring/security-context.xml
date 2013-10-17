@@ -31,7 +31,7 @@
                              login-processing-url="/login" 
                              default-target-url="/" 
                              authentication-failure-url="/loginForm?login_error=1" />
-        <!--security:logout logout-url="/logout" logout-success-url="/logoutSuccess.html"/-->
+        <security:logout logout-url="/logout" logout-success-url="/loginForm"/>
     </security:http>
 	<bean id='bCryptPasswordEncoder' class='org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder'/>
     <security:authentication-manager>

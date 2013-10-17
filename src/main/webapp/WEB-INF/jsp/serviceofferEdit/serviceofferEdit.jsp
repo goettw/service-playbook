@@ -66,11 +66,8 @@
 							<a href="${imageUrl}" target="_blank"><img
 								style="width: 100%;" src="${imageUrl}" /></a>
 						</div>
-
-
 					</div>
 				</div>
-
 			</div>
 			<div id="tabs-6">
 				<div class="form-group">
@@ -79,7 +76,7 @@
 					<form:select id="status" path="status" items="${statusList}"
 						class="form-control" />
 				</div>
-	
+
 				<div class="form-group">
 					<form:label path="bigPlay" for="bigPlay">Big Plays</form:label>
 					<form:select class="form-control" id="bigPlay" path="bigPlay"
@@ -115,7 +112,7 @@
 					<form:label path="whyEMC">Why EMC</form:label>
 					<form:textarea class="form-control" path="whyEMC"
 						style="height:250px" />
-						<form:errors path="whyEMC" class="error"></form:errors>
+					<form:errors path="whyEMC" class="error"></form:errors>
 				</div>
 				<div class="form-group">
 					<form:label path="price">Price</form:label>

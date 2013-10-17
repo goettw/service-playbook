@@ -37,10 +37,10 @@
 	<bean id="mappingContext"
 		class="org.springframework.data.mongodb.core.mapping.MongoMappingContext">
 	</bean>
-
+<bean id="webexpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
 	<util:list id="authorities" value-type="java.lang.String">
+		<value>User</value> <!-- keep this first as this value will be pre-populated into new profiles -->
 		<value>Author</value>
-		<value>User</value>
 		<value>Administrator</value>
 		<value>Reviewer</value>
 	</util:list>
