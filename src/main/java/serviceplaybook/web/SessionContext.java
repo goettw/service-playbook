@@ -3,10 +3,10 @@ package serviceplaybook.web;
 import java.io.Serializable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import serviceplaybook.controller.ServiceNavigator;
-import serviceplaybook.model.ServiceOffer;
-
+@Component
 public class SessionContext implements Serializable{
 	/**
 	 * 

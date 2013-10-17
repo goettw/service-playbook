@@ -95,7 +95,7 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/bigPlayList.jsp"
 			cascade="true" />
 	</definition>
-<!-- DESCRIPTION -->
+	<!-- DESCRIPTION -->
 	<definition name="servicePlaybookDescriptionEdit" extends=".wideTemplate">
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/admin/servicePlaybookDescriptionEdit.jsp"
@@ -111,6 +111,25 @@
 			value="/WEB-INF/jsp/admin/servicePlaybookDescriptionHeader.jsp"
 			cascade="true" />
 	</definition>
+	<!-- PROFILE -->
+	<definition name="profileEdit" extends=".wideTemplate">
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/profile/profileHeader.jsp" cascade="true"></put-attribute>
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/profile/profileEdit.jsp" cascade="true"></put-attribute>
+	</definition>
+	
+	<definition name="profile" extends=".wideTemplate">
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/profile/profileHeader.jsp" cascade="true"></put-attribute>
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/profile/profile.jsp" cascade="true"></put-attribute>
+	</definition>
 
-
+	<definition name="profileList" extends=".wideTemplate">
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/profile/profileListHeader.jsp" cascade="true" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/profile/profileList.jsp" cascade="true" />
+	</definition>
 </tiles-definitions>
