@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+	http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.1.xsd
+	http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util-3.1.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+	http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<context:component-scan base-package="serviceplaybook" />
+
+
+	<!-- Factory bean that creates the Mongo instance -->
+	<bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+		<property name="host" value="localhost" />
+	</bean>
+	<mongo:repositories base-package="serviceplaybook.mongorepo" />
+	<!-- repoTemplate for connecting and quering the documents in the database -->
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<!-- constructor-arg name="mongo" ref="mongo" /> <constructor-arg name="databaseName" 
+			value="test" / -->
+		<constructor-arg ref="mongoDbFactory" />
+	</bean>
+	<bean id="gridFsTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+		<constructor-arg ref="mongoDbFactory" />
+		<constructor-arg ref="mongoMappingConverter" />
+	</bean>
+	<bean id="mongoMappingConverter"
+		class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
+		<constructor-arg ref="mongoDbFactory" />
+		<constructor-arg ref="mappingContext" />
+	</bean>
+	<bean id="mappingContext"
+		class="org.springframework.data.mongodb.core.mapping.MongoMappingContext">
+	</bean>
+
+	<util:list id="authorities" value-type="java.lang.String">
+		<value>Author</value>
+		<value>User</value>
+		<value>Administrator</value>
+		<value>Reviewer</value>
+	</util:list>
+	<!--mongo:db-factory id="mongoDbFactory" dbname="test" host="192.168.232.156" 
+		/ -->
+	<mongo:db-factory id="mongoDbFactory" dbname="test"
+		host="localhost" />
+
+	<!-- Use this post processor to translate any MongoExceptions thrown in 
+		@Repository annotated classes -->
+	<bean
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
+
+
+	<!-- Localization Start -->
+	<bean class="org.springframework.web.servlet.i18n.SessionLocaleResolver"
+		id="localeResolver">
+		<property name="defaultLocale" value="de">
+		</property>
+	</bean>
+
+	<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"
+		id="localeChangeInterceptor">
+		<property name="paramName" value="language">
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="localeChangeInterceptor" />
+			</list>
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+		id="messageSource">
+		<property name="basenames">
+			<list>
+				<value>/WEB-INF/resourcebundle/messages</value>
+			</list>
+		</property>
+		<property name="cacheSeconds" value="0" />
+		<property name="defaultEncoding" value="UTF-8">
+		</property>
+	</bean>
+
+	<!-- Localization End -->
+</beans>
