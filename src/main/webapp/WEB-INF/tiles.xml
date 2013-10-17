@@ -132,4 +132,10 @@
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/profile/profileList.jsp" cascade="true" />
 	</definition>
+	<!-- SECURITY -->
+	<definition name="loginForm" extends=".wideTemplate">
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/security/login.jsp" cascade="true" />
+	</definition>
+	
 </tiles-definitions>

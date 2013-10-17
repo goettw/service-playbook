@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +30,8 @@ public class AdminController {
 	ServicePlaybookDescriptionRepository servicePlaybookDescriptionRepository;
 	@Autowired
 	ProfileRepository profileRepository;
+	@Autowired
+	org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	private List<String> authorityList;// = new ArrayList<String>();
 
@@ -82,15 +87,41 @@ public class AdminController {
 
 	@RequestMapping(value = "admin/profile/submit", method = RequestMethod.POST)
 	public String profileSubmit(@RequestParam String action,
-			@ModelAttribute Profile profile, ModelMap model) {
-System.out.println("profile" + profile);
+			@ModelAttribute Profile profile, ModelMap model,
+			BindingResult result) {
+		System.out.println("profile" + profile);
 
-for (Iterator <GrantedAuthorityContainer>it = profile.getAuthorities().iterator();it.hasNext();) {
-	GrantedAuthorityContainer grantedAuthorityContainer = it.next();
-	System.out.println("1:" + grantedAuthorityContainer.getAuthority());
-}
+		for (Iterator<GrantedAuthorityContainer> it = profile.getAuthorities()
+				.iterator(); it.hasNext();) {
+			GrantedAuthorityContainer grantedAuthorityContainer = it.next();
+			System.out.println("1:" + grantedAuthorityContainer.getAuthority());
+		}
 
 		if (action.equals("Save")) {
+			// if password has changed, we have to encrypt it
+			Profile oldProfile = profileRepository.findOne(profile
+					.getUsername());
+			boolean encryptPassword = true;
+
+			if (oldProfile != null && oldProfile.getPassword() != null) {
+				if (profile.getPassword() == null || profile.getPassword().isEmpty())
+					profile.setPassword(oldProfile.getPassword());
+				if (oldProfile.getPassword().equals(profile.getPassword()))
+					encryptPassword = false;
+			}
+
+			ValidationUtils.rejectIfEmptyOrWhitespace(result, "password",
+					"field.required");
+			 if (result.hasErrors()) {
+			      return "profileEdit";
+			    }
+
+			if (encryptPassword) {
+				bCryptPasswordEncoder = new BCryptPasswordEncoder();
+				profile.setPassword(bCryptPasswordEncoder.encode(profile
+						.getPassword()));
+			}
+
 			profile = profileRepository.save(profile);
 		}
 		model.put("editUrl", "/admin/profile/edit/" + profile.getUsername());
@@ -108,14 +139,15 @@ for (Iterator <GrantedAuthorityContainer>it = profile.getAuthorities().iterator(
 
 	@RequestMapping(value = "/admin/profileList", method = RequestMethod.GET)
 	public String getBigPlayList(ModelMap model) {
-		model.addAttribute("profileList", profileRepository.findAll(new Sort(Direction.ASC,"username")));
+		model.addAttribute("profileList",
+				profileRepository.findAll(new Sort(Direction.ASC, "username")));
 		return "profileList";
 	}
 
 	/*
 	 * END CRUD methods for profile administration
-	 */	
-	
+	 */
+
 	private ServicePlaybookDescription getServicePlaybookDescription() {
 		Iterable<ServicePlaybookDescription> it = servicePlaybookDescriptionRepository
 				.findAll();

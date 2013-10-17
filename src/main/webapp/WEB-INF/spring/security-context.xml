@@ -27,16 +27,16 @@
         <security:intercept-url pattern="/admin/**" access="ROLE_Author" />
 
         <!-- Override default login and logout pages -->
-        <!-- security:form-login login-page="/login.html" 
-                             login-processing-url="/loginProcess" 
-                             default-target-url="/index.jsp" 
-                             authentication-failure-url="/login.html?login_error=1" />
-        <security:logout logout-url="/logout" logout-success-url="/logoutSuccess.html" /-->
+        <security:form-login login-page="/loginForm" 
+                             login-processing-url="/login" 
+                             default-target-url="/" 
+                             authentication-failure-url="/loginForm?login_error=1" />
+        <!--security:logout logout-url="/logout" logout-success-url="/logoutSuccess.html"/-->
     </security:http>
-
+	<bean id='bCryptPasswordEncoder' class='org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder'/>
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="profileService">
-            
+          <security:password-encoder ref="bCryptPasswordEncoder"/>
         </security:authentication-provider>
     </security:authentication-manager>
 

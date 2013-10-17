@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
-public class Profile implements UserDetails , Serializable{
+@Component
+public class Profile implements UserDetails, Serializable {
 
 	private Collection<String> authorityValues;
 
@@ -27,8 +30,12 @@ public class Profile implements UserDetails , Serializable{
 
 	public Collection<GrantedAuthorityContainer> getAuthorities() {
 		Collection<GrantedAuthorityContainer> authorities = new ArrayList<GrantedAuthorityContainer>();
+		if (authorityValues == null || authorityValues.isEmpty())
+			return authorities;
 		for (Iterator<String> it = authorityValues.iterator(); it.hasNext();) {
-			authorities.add(new GrantedAuthorityContainer(it.next()));
+			String auth = "ROLE_" + it.next();
+			System.out.println("auth - " + auth);
+			authorities.add(new GrantedAuthorityContainer(auth));
 		}
 		return authorities;
 	}
@@ -36,6 +43,75 @@ public class Profile implements UserDetails , Serializable{
 	private String password;
 	@Id
 	private String username;
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getAboutMe() {
+		return aboutMe;
+	}
+
+	public void setAboutMe(String aboutMe) {
+		this.aboutMe = aboutMe;
+	}
+
+	public String getEmcFunction() {
+		return emcFunction;
+	}
+
+	public void setEmcFunction(String emcFunction) {
+		this.emcFunction = emcFunction;
+	}
+
+	public String getEmcProfileUrl() {
+		return emcProfileUrl;
+	}
+
+	public void setEmcProfileUrl(String emcProfileUrl) {
+		this.emcProfileUrl = emcProfileUrl;
+	}
+
+	String title;
+	@NotEmpty
+	private String firstName;
+	@NotEmpty
+	private String lastName;
+	@NotEmpty
+	private String emailAddress;
+
+	private String aboutMe;
+	private String emcFunction;
+	private String emcProfileUrl;
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
 	private boolean accountNonExpired, accountNonLocked, enabled,
 			credentialsNonExpired;
 
@@ -52,7 +128,9 @@ public class Profile implements UserDetails , Serializable{
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+
+
+this.password=password;
 	}
 
 	public String getUsername() {

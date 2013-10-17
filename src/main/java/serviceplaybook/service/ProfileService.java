@@ -21,7 +21,8 @@ public class ProfileService implements UserDetailsService {
 			throws UsernameNotFoundException {
 		System.out.println("arg01=" + arg0);
 		Profile profile = profileRepository.findOne(arg0);
-		System.out.println("use!!!r=" + profile);
+		if (profile == null)
+			throw new UsernameNotFoundException("Username not found");
 		return profile;
 	}
 
