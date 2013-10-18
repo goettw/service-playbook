@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
 <head>
@@ -40,34 +39,56 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="<%=request.getContextPath()%>">Home</a></li>
+					<li class="active"><a href="<%=request.getContextPath()%>"><spring:message code="home"/></a></li>
+
+					<!-- PROFILES -->
+					<sec:authorize access="isFullyAuthenticated()">
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"><spring:message code="profiles" /> <b
+								class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a
+									href="<%=request.getContextPath()%>/profileList"><spring:message
+											code="profileList" /></a></li>
+
+
+								<li class="divider" />
+								<li><a
+									href="<%=request.getContextPath()%>/profile/edit/<sec:authentication property="name" />">Edit</a></li>
+
+							</ul></li>
+					</sec:authorize>
+
 
 
 					<sec:authorize access="hasAnyRole('ROLE_Author')">
 
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown">Authoring <b class="caret"></b></a>
+							data-toggle="dropdown"><spring:message
+											code="authoring" /> <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a
-									href="<%=request.getContextPath()%>/admin/bigPlayItemList">BigPlays</a></li>
+									href="<%=request.getContextPath()%>/admin/bigPlayItemList"><spring:message
+											code="bigPlays" /></a></li>
 								<li><a
-									href="<%=request.getContextPath()%>/admin/serviceOfferList">Service
-										Offers</a></li>
+									href="<%=request.getContextPath()%>/admin/serviceOfferList"><spring:message
+											code="serviceOffers" /></a></li>
 								<c:if test="${not empty editUrl}">
 									<li class="divider" />
-									<li><a href="<%=request.getContextPath()%>${editUrl}">Edit</a></li>
+									<li><a href="<%=request.getContextPath()%>${editUrl}"><spring:message
+											code="edit" /></a></li>
 								</c:if>
 							</ul></li>
 
 					</sec:authorize>
-					
+
 					<sec:authorize access="hasAnyRole('ROLE_Administrator')">
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown">Admin <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a
-									href="<%=request.getContextPath()%>/admin/profileList">User
-										Profiles</a></li>
+									href="<%=request.getContextPath()%>/profileList"><spring:message
+											code="profileList" /></a></li>
 								<li><a
 									href="<%=request.getContextPath()%>/admin/profile/new">New
 										User Profile</a></li>
@@ -76,10 +97,11 @@
 					</sec:authorize>
 
 					<li><a
-						href="<%=request.getContextPath()%>/admin/servicePlaybookDescription">About</a></li>
+						href="<%=request.getContextPath()%>/servicePlaybookDescription"><spring:message
+											code="about" /></a></li>
 				</ul>
-				
-				
+
+
 				<div class="navbar-text pull-right">
 					<sec:authorize access="isAuthenticated()">
 						<spring:message code="welcome" />
@@ -92,6 +114,10 @@
 					</sec:authorize>
 					<sec:authorize access="isAnonymous()">
 						<c:url var="loginUrl" value="/loginForm" />
+						<c:url var="registerUrl" value="/register" />
+						<a class="navbar-link" href="${registerUrl}"><spring:message
+								code="register" /></a>
+						&nbsp;|&nbsp;
 						<a class="navbar-link" href="${loginUrl}"><spring:message
 								code="login" /></a>
 					</sec:authorize>

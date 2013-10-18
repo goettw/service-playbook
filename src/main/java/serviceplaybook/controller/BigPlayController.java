@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -68,6 +69,7 @@ public class BigPlayController {
 		return "redirect:/bigPlayItem/"+bigPlayItem.getId();
 	}
 	
+	@PreAuthorize("hasRole('ROLE_Administrator')")
 	@RequestMapping(value = "/admin/bigPlayItem/delete/{id}", method = RequestMethod.GET)
 	public String bigPlayItemDelete(@PathVariable String id, ModelMap model) {
 		bigPlayRepository.delete(id);		

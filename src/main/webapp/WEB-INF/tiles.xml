@@ -138,4 +138,10 @@
 			value="/WEB-INF/jsp/security/login.jsp" cascade="true" />
 	</definition>
 	
+		<!-- SECURITY -->
+	<definition name="registrationForm" extends=".wideTemplate">
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/profile/register.jsp" cascade="true" />
+	</definition>
+	
 </tiles-definitions>

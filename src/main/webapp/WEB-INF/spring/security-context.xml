@@ -10,10 +10,10 @@
                            http://www.springframework.org/schema/security
                            http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-    <security:global-method-security secured-annotations="enabled" />
+    <security:global-method-security secured-annotations="enabled" pre-post-annotations="enabled"/>
     <context:annotation-config/>
     
-    	
+    
     
     <security:http auto-config="true">
         <!-- Restrict URLs based on role -->
@@ -31,7 +31,7 @@
                              login-processing-url="/login" 
                              default-target-url="/" 
                              authentication-failure-url="/loginForm?login_error=1" />
-        <security:logout logout-url="/logout" logout-success-url="/loginForm"/>
+        <security:logout logout-url="/logout" logout-success-url="/"/>
     </security:http>
 	<bean id='bCryptPasswordEncoder' class='org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder'/>
     <security:authentication-manager>

@@ -1,7 +1,7 @@
 target
 bin
 src/test/*.json
-
+src/main/webapp/WEB-INF/spring/mail-context.xml
 # Eclipse metadata
 .classpath
 .project

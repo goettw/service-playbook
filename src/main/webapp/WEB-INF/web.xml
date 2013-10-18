@@ -15,6 +15,7 @@
 		<param-value> 
 		/WEB-INF/spring/security-context.xml 
 		/WEB-INF/spring/application-context.xml
+		/WEB-INF/spring/mail-context.xml <!-- see mail-context-template.xml as a blueprint -->
 		</param-value>
 	</context-param>
 
