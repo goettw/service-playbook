@@ -8,7 +8,7 @@
 	commandName="registrationBean">
 	
 	
-	
+	<c:if test="${success == null}">
 	<div class="control-group">
 			<form:label path="username" class="control-label">
 				<spring:message code="username" />
@@ -32,4 +32,12 @@
 			<input type="submit" value="register" name="action"
 				class="btn btn-default btn-xs" /> 
 		</div>
+		</c:if>
+		<p class="text-success">
+		<c:if test="${success == 'true'}">
+		
+		<spring:message code="registrationSuccessfull"/>
+		</c:if>
+		</p>
+		
 </form:form>

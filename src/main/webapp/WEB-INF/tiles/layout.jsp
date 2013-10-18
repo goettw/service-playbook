@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
-<%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
 <head>
@@ -39,7 +40,8 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="<%=request.getContextPath()%>"><spring:message code="home"/></a></li>
+					<li class="active"><a href="<%=request.getContextPath()%>"><spring:message
+								code="home" /></a></li>
 
 					<!-- PROFILES -->
 					<sec:authorize access="isFullyAuthenticated()">
@@ -47,14 +49,22 @@
 							data-toggle="dropdown"><spring:message code="profiles" /> <b
 								class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a
-									href="<%=request.getContextPath()%>/profileList"><spring:message
+								<li><a href="<%=request.getContextPath()%>/profileList"><spring:message
 											code="profileList" /></a></li>
 
 
 								<li class="divider" />
-								<li><a
-									href="<%=request.getContextPath()%>/profile/edit/<sec:authentication property="name" />">Edit</a></li>
+								<li>
+						
+									
+									
+									<c:url var="profileEditUrl" value='/profile/edit'>
+										<c:param name="id" value="<%=request.getRemoteUser() %>" />
+									</c:url> 
+									
+									
+									
+									<a href="${profileEditUrl}"><spring:message code="profileEdit"/></a></li>
 
 							</ul></li>
 					</sec:authorize>
@@ -64,8 +74,8 @@
 					<sec:authorize access="hasAnyRole('ROLE_Author')">
 
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown"><spring:message
-											code="authoring" /> <b class="caret"></b></a>
+							data-toggle="dropdown"><spring:message code="authoring" /> <b
+								class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a
 									href="<%=request.getContextPath()%>/admin/bigPlayItemList"><spring:message
@@ -76,29 +86,17 @@
 								<c:if test="${not empty editUrl}">
 									<li class="divider" />
 									<li><a href="<%=request.getContextPath()%>${editUrl}"><spring:message
-											code="edit" /></a></li>
+												code="edit" /></a></li>
 								</c:if>
 							</ul></li>
 
 					</sec:authorize>
 
-					<sec:authorize access="hasAnyRole('ROLE_Administrator')">
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown">Admin <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a
-									href="<%=request.getContextPath()%>/profileList"><spring:message
-											code="profileList" /></a></li>
-								<li><a
-									href="<%=request.getContextPath()%>/admin/profile/new">New
-										User Profile</a></li>
-							</ul>
-						<li>
-					</sec:authorize>
+					
 
 					<li><a
 						href="<%=request.getContextPath()%>/servicePlaybookDescription"><spring:message
-											code="about" /></a></li>
+								code="about" /></a></li>
 				</ul>
 
 
@@ -143,7 +141,8 @@
 		</footer>
 
 	</div>
-	<script src="<c:url value='/bootstrap/js/bootstrap.js'/>"></script>
+	<script
+		src="<c:url value='/bootstrap/js/bootstrap.js'/>"></script>
 
 </body>
 </html>

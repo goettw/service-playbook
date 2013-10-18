@@ -3,7 +3,7 @@
 
 
 
-<h1>${profile.username}</h1>
+<h1>${profile.firstName}&nbsp;${profile.lastName}</h1>
 
 
 

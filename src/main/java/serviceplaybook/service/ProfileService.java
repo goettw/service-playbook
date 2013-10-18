@@ -20,7 +20,7 @@ public class ProfileService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String arg0)
 			throws UsernameNotFoundException {
 		System.out.println("arg01=" + arg0);
-		Profile profile = profileRepository.findOne(arg0);
+	 	Profile profile = profileRepository.findOne(arg0);
 		if (profile == null)
 			throw new UsernameNotFoundException("Username not found");
 		return profile;

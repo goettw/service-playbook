@@ -11,20 +11,33 @@
 					<td>${profile.firstName}</td>
 					<td>${profile.emailAddress}</td>
 					<sec:authorize access="hasAnyRole('ROLE_Administrator')">
-						<td><a
-							href="<c:url value='/admin/profile/edit/${profile.username}'/>"><spring:message
-									code="edit" /></a></td>
+						<td><c:url var="editUrl" value='/admin/profile/edit'>
+								<c:param name="id" value="${profile.username}" />
+							</c:url> <a href="${editUrl}"><spring:message code="edit" /></a></td>
+						<td>
+						<c:url var="deleteUrl" value='/admin/profile/delete'>
+								<c:param name="id" value="${profile.username}" />
+							</c:url>
+						
+						<a
+							href="${deleteUrl}"><spring:message
+									code="delete" /></a></td>
 					</sec:authorize>
-					<td><a href="<c:url value='/profile/${profile.username}'/>"><spring:message
+					<td>
+					<c:url var="viewUrl" value='/profile'>
+								<c:param name="id" value="${profile.username}" />
+							</c:url>
+					<a
+						href="${viewUrl}"><spring:message
 								code="view" /></a></td>
 
 				</tr>
 
 			</c:forEach>
-				<sec:authorize access="hasAnyRole('ROLE_Administrator')">
-			<tr>
-				<td><a href="<c:url value='/admin/profile/new'/>">New</a></td>
-			</tr>
+			<sec:authorize access="hasAnyRole('ROLE_Administrator')">
+				<tr>
+					<td><a href="<c:url value='/admin/profile/new'/>">New</a></td>
+				</tr>
 			</sec:authorize>
 		</tbody>
 	</table>

@@ -2,16 +2,20 @@ package serviceplaybook.service;
 
 
 
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
  
 @Service("mailService")
 public class ApplicationMailer 
 {
     @Autowired
-    private MailSender mailSender;
+    private JavaMailSender mailSender;
      
     @Autowired
     private SimpleMailMessage preConfiguredMessage;
@@ -25,16 +29,38 @@ public class ApplicationMailer
         message.setTo(to);
         message.setSubject(subject);
         message.setText(body);
+        
         mailSender.send(message);
     }
  
     /**
      * This method will send a pre-configured message
      * */
-    public void sendPreConfiguredMail(String message) 
+    public void sendRegistrationMail(final String to, final String messageText) 
     {
-        SimpleMailMessage mailMessage = new SimpleMailMessage(preConfiguredMessage);
-        mailMessage.setText(message);
-        mailSender.send(mailMessage);
+	MimeMessagePreparator preparator = new MimeMessagePreparator() {
+
+	     public void prepare(MimeMessage mimeMessage) throws Exception {
+
+	        MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+
+	        message.setTo(to);
+
+	        message.setFrom(preConfiguredMessage.getFrom());
+
+	        message.setReplyTo(preConfiguredMessage.getFrom());
+
+	        message.setSubject(preConfiguredMessage.getSubject());
+
+	        message.setText(messageText,true);
+
+	     }
+
+	    };
+
+        //SimpleMailMessage mailMessage = new SimpleMailMessage(preConfiguredMessage);
+     
+        
+        mailSender.send(preparator);
     }
 }

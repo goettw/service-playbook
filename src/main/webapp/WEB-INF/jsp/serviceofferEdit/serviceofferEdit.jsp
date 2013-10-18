@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 
 <script src="<c:url value='/js/jquery/jquery-1.9.1.js' />"></script>
@@ -37,13 +38,13 @@
 		</table>
 		<div id="tabs">
 			<ul>
-				<li><a href="#tabs-1">Header</a></li>
-				<li><a href="#tabs-7">Image</a></li>
-				<li><a href="#tabs-2">Contacts</a></li>
-				<li><a href="#tabs-3">Case Studies</a></li>
-				<li><a href="#tabs-4">Vertriebsmaterial</a></li>
-				<li><a href="#tabs-5">Info</a></li>
-				<li><a href="#tabs-6">Structure</a></li>
+				<li><a href="#tabs-1"><spring:message code="serviceOfferHeader"/></a></li>
+				<li><a href="#tabs-7"><spring:message code="image"/></a></li>
+				<li><a href="#tabs-2"><spring:message code="contacts"/></a></li>
+				<li><a href="#tabs-3"><spring:message code="caseStudies"/></a></li>
+				<li><a href="#tabs-4"><spring:message code="salesCollateral"/></a></li>
+				<li><a href="#tabs-5"><spring:message code="info"/></a></li>
+				<li><a href="#tabs-6"><spring:message code="serviceOfferStructure"/></a></li>
 			</ul>
 			<div id="tabs-7">
 				<!--[if lt IE 9]>
@@ -78,7 +79,7 @@
 				</div>
 
 				<div class="form-group">
-					<form:label path="bigPlay" for="bigPlay">Big Plays</form:label>
+					<form:label path="bigPlay" for="bigPlay"><spring:message code="bigPlays"/></form:label>
 					<form:select class="form-control" id="bigPlay" path="bigPlay"
 						multiple="true" style="height:250px">
 						<form:options items="${bigPlayList}" itemValue="id"
@@ -92,30 +93,30 @@
 					<form:input class="form-control" path="id" readonly="true" />
 				</div>
 				<div class="form-group">
-					<form:label path="label">Label</form:label>
+					<form:label path="label"><spring:message code="label"/></form:label>
 					<form:input class="form-control" path="label" />
 					<form:errors path="label" class="error"></form:errors>
 
 				</div>
 				<div class="form-group">
-					<form:label path="summary">Zusammenfassung</form:label>
+					<form:label path="summary"><spring:message code="summary"/></form:label>
 					<form:textarea class="form-control" path="summary" />
 					<form:errors path="summary" class="error"></form:errors>
 				</div>
 				<div class="form-group">
-					<form:label path="addedValue">Mehrwert f&uuml;r den Kunden</form:label>
+					<form:label path="addedValue"><spring:message code="addedValue"/></form:label>
 					<form:textarea class="form-control" path="addedValue"
 						style="height:250px" />
 					<form:errors path="addedValue" class="error"></form:errors>
 				</div>
 				<div class="form-group">
-					<form:label path="whyEMC">Why EMC</form:label>
+					<form:label path="whyEMC"><spring:message code="whyEMC"/></form:label>
 					<form:textarea class="form-control" path="whyEMC"
 						style="height:250px" />
 					<form:errors path="whyEMC" class="error"></form:errors>
 				</div>
 				<div class="form-group">
-					<form:label path="price">Price</form:label>
+					<form:label path="price"><spring:message code="price"/></form:label>
 					<form:input class="form-control" path="price" />
 
 				</div>
