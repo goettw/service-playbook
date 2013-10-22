@@ -2,21 +2,21 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-4">
-			<h3>Kundenqualifikation</h3>
+			<h4>Kundenqualifikation</h4>
 			<p>${bigPlayItem.customerQualificationAsHtml}</p>
 		</div>
 		<div class="col-md-4">
-			<h3>Typische Herausforderung</h3>
+			<h4>Typische Herausforderung</h4>
 			<p>${bigPlayItem.painPointsAsHtml}</p>
 		</div>
 		<div class="col-md-4">
-			<h3>Zielsetzung</h3>
+			<h4>Zielsetzung</h4>
 			<p>${bigPlayItem.visionAsHtml}</p>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<h3>Services</h3>
+			<h4>Services</h4>
 			<div class="container-fluid">
 				<div class="row">
 					<c:forEach items="${serviceOfferList}" var="serviceOffer"

@@ -5,6 +5,7 @@
 	<definition name=".mainTemplate" template="/WEB-INF/tiles/layout.jsp">
 		<!-- put-attribute name="meta" value="/WEB-INF/tiles/{2}/meta.jsp" / -->
 		<put-attribute name="header" value="/WEB-INF/tiles/blank.jsp" />
+		<put-attribute name="breadcrumb" value="/WEB-INF/tiles/blank.jsp" />
 		<put-attribute name="banner" value="/WEB-INF/tiles/banner.jsp" />
 		<put-attribute name="image" value="/WEB-INF/tiles/blank.jsp" />
 
@@ -13,135 +14,93 @@
 		<put-attribute name="floatRight" value="/WEB-INF/tiles/blank.jsp" />
 		<put-attribute name="navigation" value="/WEB-INF/jsp/navigation.jsp" />
 		<put-attribute name="title" value="Service Playbook" />
-		<!-- put-attribute name="footer" value="/WEB-INF/tiles/{2}/footer.jsp" 
-			/ -->
+		<!-- put-attribute name="footer" value="/WEB-INF/tiles/{2}/footer.jsp" / -->
 
 	</definition>
 	<definition name=".wideTemplate" template="/WEB-INF/tiles/layout.jsp">
 		<put-attribute name="banner" value="/WEB-INF/tiles/banner.jsp" />
-		<put-attribute name="body" value="/WEB-INF/tiles/blank.jsp"
-			cascade="true" />
-		<put-attribute name="header" value="/WEB-INF/tiles/blank.jsp"
-			cascade="true" />
-		<put-attribute name="content" value="/WEB-INF/tiles/layout-wide.jsp"
-			cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/tiles/blank.jsp" cascade="true" />
+		<put-attribute name="header" value="/WEB-INF/tiles/blank.jsp" cascade="true" />
+		<put-attribute name="content" value="/WEB-INF/tiles/layout-wide.jsp" cascade="true" />
 		<put-attribute name="title" value="Service Playbook" />
-
+<put-attribute name="breadcrumb" value="/WEB-INF/tiles/blank.jsp" cascade="true"/>
 		<put-attribute name="floatRight" value="/WEB-INF/tiles/blank.jsp" />
-		<put-attribute name="image" value="/WEB-INF/tiles/blank.jsp"
-			cascade="true" />
+		<put-attribute name="image" value="/WEB-INF/tiles/blank.jsp" cascade="true" />
 	</definition>
 	<definition name=".floatRightTemplate" extends=".wideTemplate">
-		<put-attribute name="floatRight" value="/WEB-INF/tiles/floatright.jsp"
-			cascade="true" />
-		<put-attribute name="content" value="/WEB-INF/tiles/layout-float.jsp"
-			cascade="true" />
+		<put-attribute name="floatRight" value="/WEB-INF/tiles/floatright.jsp" cascade="true" />
+		<put-attribute name="content" value="/WEB-INF/tiles/layout-float.jsp" cascade="true" />
+		
 	</definition>
 	<!-- SERVICE_OFFERS -->
 	<definition name="serviceoffer" extends=".floatRightTemplate">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/serviceoffer/serviceoffer.jsp" cascade="true" />
-		<put-attribute name="floatRightBody"
-			value="/WEB-INF/jsp/serviceoffer/serviceofferFloatRight.jsp" cascade="true" />
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/serviceoffer/serviceofferHeader.jsp" cascade="true" />
-		<put-attribute name="title" value="Service Offer"
-			cascade="true" />
-		<put-attribute name="image"
-			value="/WEB-INF/jsp/serviceoffer/serviceofferImage.jsp" cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/jsp/serviceoffer/serviceoffer.jsp" cascade="true" />
+		<put-attribute name="floatRightBody" value="/WEB-INF/jsp/serviceoffer/serviceofferFloatRight.jsp" cascade="true" />
+		<put-attribute name="header" value="/WEB-INF/jsp/serviceoffer/serviceofferHeader.jsp" cascade="true" />
+		<put-attribute name="title" value="Service Offer" cascade="true" />
+		<put-attribute name="image" value="/WEB-INF/jsp/serviceoffer/serviceofferImage.jsp" cascade="true" />
+		<put-attribute name="breadcrumb" value="/WEB-INF/jsp/serviceoffer/serviceofferBreadcrumb.jsp" cascade="true" />
 	</definition>
 	<definition name="serviceofferEdit" extends=".wideTemplate">
-		<put-attribute name="banner" value="/WEB-INF/tiles/banner.jsp"
-			cascade="true" />
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/serviceoffer/serviceofferHeader.jsp" cascade="true" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/serviceofferEdit/serviceofferEdit.jsp" cascade="true" />
-		<put-attribute name="title" value="Service Offer Editor"
-			cascade="true" />
+		<put-attribute name="banner" value="/WEB-INF/tiles/banner.jsp" cascade="true" />
+		<put-attribute name="header" value="/WEB-INF/jsp/serviceoffer/serviceofferHeader.jsp" cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/jsp/serviceofferEdit/serviceofferEdit.jsp" cascade="true" />
+		<put-attribute name="title" value="Service Offer Editor" cascade="true" />
 	</definition>
 	<definition name="serviceofferList" extends=".wideTemplate">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/serviceofferList/serviceofferList.jsp" cascade="true" />
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/serviceofferList/serviceofferListHeader.jsp"
-			cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/jsp/serviceofferList/serviceofferList.jsp" cascade="true" />
+		<put-attribute name="header" value="/WEB-INF/jsp/serviceofferList/serviceofferListHeader.jsp" cascade="true" />
 	</definition>
 	<!-- BIG PLAYS -->
 	<definition name="bigPlayOverview" extends=".wideTemplate">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/serviceofferList/bigplayoverview.jsp" cascade="true" />
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/admin/servicePlaybookDescriptionHeader.jsp"
-			cascade="true" />
-		<put-attribute name="title" value="Service Overview"
-			cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/jsp/serviceofferList/bigplayoverview.jsp" cascade="true" />
+		<put-attribute name="header" value="/WEB-INF/jsp/admin/servicePlaybookDescriptionHeader.jsp" cascade="true" />
+		<put-attribute name="title" value="Service Overview" cascade="true" />
 	</definition>
 	<definition name="bigPlayItem" extends=".wideTemplate">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/bigPlay/bigPlayItem.jsp" cascade="true" />
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/bigPlay/bigPlayHeader.jsp" cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/jsp/bigPlay/bigPlayItem.jsp" cascade="true" />
+		<put-attribute name="header" value="/WEB-INF/jsp/bigPlay/bigPlayHeader.jsp" cascade="true" />
 	</definition>
 	<definition name="bigPlayItemEdit" extends=".wideTemplate">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/admin/bigPlayItemEdit.jsp" cascade="true" />
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/bigPlay/bigPlayHeader.jsp" cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/bigPlayItemEdit.jsp" cascade="true" />
+		<put-attribute name="header" value="/WEB-INF/jsp/bigPlay/bigPlayHeader.jsp" cascade="true" />
 	</definition>
 	<definition name="bigPlayList" extends=".wideTemplate">
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/admin/bigPlayListHeader.jsp" cascade="true" />
-		<put-attribute name="body" value="/WEB-INF/jsp/admin/bigPlayList.jsp"
-			cascade="true" />
+		<put-attribute name="header" value="/WEB-INF/jsp/admin/bigPlayListHeader.jsp" cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/bigPlayList.jsp" cascade="true" />
 	</definition>
 	<!-- DESCRIPTION -->
 	<definition name="servicePlaybookDescriptionEdit" extends=".wideTemplate">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/admin/servicePlaybookDescriptionEdit.jsp"
-			cascade="true" />
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/admin/servicePlaybookDescriptionHeader.jsp"
-			cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/servicePlaybookDescriptionEdit.jsp" cascade="true" />
+		<put-attribute name="header" value="/WEB-INF/jsp/admin/servicePlaybookDescriptionHeader.jsp" cascade="true" />
 	</definition>
 	<definition name="servicePlaybookDescription" extends=".wideTemplate">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/admin/servicePlaybookDescription.jsp" cascade="true" />
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/admin/servicePlaybookDescriptionHeader.jsp"
-			cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/servicePlaybookDescription.jsp" cascade="true" />
+		<put-attribute name="header" value="/WEB-INF/jsp/admin/servicePlaybookDescriptionHeader.jsp" cascade="true" />
 	</definition>
 	<!-- PROFILE -->
 	<definition name="profileEdit" extends=".wideTemplate">
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/profile/profileHeader.jsp" cascade="true"></put-attribute>
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/profile/profileEdit.jsp" cascade="true"></put-attribute>
+		<put-attribute name="header" value="/WEB-INF/jsp/profile/profileHeader.jsp" cascade="true"></put-attribute>
+		<put-attribute name="body" value="/WEB-INF/jsp/profile/profileEdit.jsp" cascade="true"></put-attribute>
 	</definition>
-	
+
 	<definition name="profile" extends=".wideTemplate">
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/profile/profileHeader.jsp" cascade="true"></put-attribute>
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/profile/profile.jsp" cascade="true"></put-attribute>
+		<put-attribute name="header" value="/WEB-INF/jsp/profile/profileHeader.jsp" cascade="true"></put-attribute>
+		<put-attribute name="body" value="/WEB-INF/jsp/profile/profile.jsp" cascade="true"></put-attribute>
 	</definition>
 
 	<definition name="profileList" extends=".wideTemplate">
-		<put-attribute name="header"
-			value="/WEB-INF/jsp/profile/profileListHeader.jsp" cascade="true" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/profile/profileList.jsp" cascade="true" />
+		<put-attribute name="header" value="/WEB-INF/jsp/profile/profileListHeader.jsp" cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/jsp/profile/profileList.jsp" cascade="true" />
 	</definition>
 	<!-- SECURITY -->
 	<definition name="loginForm" extends=".wideTemplate">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/security/login.jsp" cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/jsp/security/login.jsp" cascade="true" />
 	</definition>
-	
-		<!-- SECURITY -->
+
+	<!-- SECURITY -->
 	<definition name="registrationForm" extends=".wideTemplate">
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/profile/register.jsp" cascade="true" />
+		<put-attribute name="body" value="/WEB-INF/jsp/profile/register.jsp" cascade="true" />
 	</definition>
-	
+
 </tiles-definitions>

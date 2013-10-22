@@ -10,10 +10,12 @@
 	<div class="container">
 		<div class="row">
 			<div class=" col-md-12">
+			
 				<div class="control-group">
-					<input type="submit" value="Save" name="action"
-						class="btn btn-default btn-xs" /> <input type="Submit"
-						value="Cancel" name="action" class="btn btn-default btn-xs" />
+					<button value="Save" name="action"
+					type="submit" class="btn btn-primary btn-xs" ><spring:message code="save"/></button>
+					<button value="Cancel" name="action"
+					type="submit" class="btn btn-default btn-xs" ><spring:message code="cancel"/></button>
 				</div>
 			</div>
 		</div>

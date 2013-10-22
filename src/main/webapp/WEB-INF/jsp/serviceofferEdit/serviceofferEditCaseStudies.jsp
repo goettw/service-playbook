@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="container">
 	
 					<script>
@@ -14,9 +15,9 @@
 																		"#caseStudies")
 																		.append(
 																				'<tr> \
-															<td><input class="form-control" id="caseStudies' + index +'.label" name="caseStudies[' + index + '].label" type="text" value=""/></td> \
-															<td><input class="form-control" id="caseStudies' + index +'.url" name="caseStudies[' + index + '].url" type="text" value=""/></td> \
-															<td><a href="javascript:void(0);" class="remCaseStudy btn btn-default">Remove</a></td>\
+															<td><input style="width:100%" id="caseStudies' + index +'.label" name="caseStudies[' + index + '].label" type="text" value=""/></td> \
+															<td><input style="width:100%" id="caseStudies' + index +'.url" name="caseStudies[' + index + '].url" type="text" value=""/></td> \
+															<td><a href="javascript:void(0);" class="remCaseStudy btn btn-xs btn-default"><spring:message code="remove"/></a></td>\
 														</tr>');
 															});
 
@@ -46,16 +47,16 @@
 					<table class="table" id="caseStudies">
 						<tbody>
 							<tr>
-								<th>Label</th>
-								<th>URL</th>
-								<th>Action</th>
+								<th><spring:message code="label"/></th>
+								<th><spring:message code="url"/></th>
+								<th><spring:message code="action"/></th>
 							</tr>
 							<c:forEach var="caseStudy" varStatus="status"
 								items="${serviceOffer.caseStudies}">
 								<tr>
-									<td><form:input class="form-control" path="caseStudies[${status.index}].label" /></td>
-									<td><form:input class="form-control" path="caseStudies[${status.index}].url" /></td>
-									<td><a href="javascript:void(0);" class="remCaseStudy btn btn-default">Remove</a>
+									<td><form:input style="width:100%" path="caseStudies[${status.index}].label" /></td>
+									<td><form:input style="width:100%" path="caseStudies[${status.index}].url" /></td>
+									<td><a href="javascript:void(0);" class="remCaseStudy btn-xs btn btn-default"><spring:message code="remove"/></a>
 
 									</td>
 								</tr>
@@ -63,7 +64,7 @@
 						</tbody>
 					</table>
 					<div style="text-align: right; width: 99%;">
-						<a href="javascript:void(0);" id="addCaseStudy" class="btn btn-default">Add</a>
+						<a href="javascript:void(0);" id="addCaseStudy" class="btn btn-xs btn-default"><spring:message code="add"/></a>
 					</div>
 
 				</div>

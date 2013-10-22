@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 	<div class="container">
 					<script>
@@ -13,10 +14,10 @@
 																$("#relatedInformation")
 																		.append(
 																				'<tr> \
-															<td><input id="relatedInformation' + index +'.label" name="relatedInformation[' + index + '].label" type="text" value=""/></td> \
-															<td><input id="relatedInformation' + index +'.url" name="relatedInformation[' + index + '].url" type="text" value=""/></td> \
-															<td><a href="javascript:void(0);" class="remAddInfo">Remove</a></td>\
-														</tr>');
+															<td><input style="width:100%" id="relatedInformation' + index +'.label" name="relatedInformation[' + index + '].label" type="text" value=""/></td> \
+															<td><input style="width:100%" id="relatedInformation' + index +'.url" name="relatedInformation[' + index + '].url" type="text" value=""/></td> \
+															<td><a href="javascript:void(0);" class="remAddInfo btn btn-xs btn-default"><spring:message code="remove"/></a></td>\
+														</tr>'); 
 															});
 
 											$("#relatedInformation").on(
@@ -40,19 +41,19 @@
 					<table id="relatedInformation" class="table">
 						<tbody>
 																	<tr>
-											<th>Label</th>
-											<th>URL</th>
-											<th>Action</th>
+											<th><spring:message code="label"/></th>
+											<th><spring:message code="url"/></th>
+											<th><spring:message code="action"/></th>
 										</tr>
 										<c:forEach var="link" varStatus="status"
 											items="${serviceOffer.relatedInformation}">
 											<tr>
 												<td><form:input
-														path="relatedInformation[${status.index}].label" /></td>
+														path="relatedInformation[${status.index}].label" style="width:100%" /></td>
 												<td><form:input
-														path="relatedInformation[${status.index}].url" /></td>
+														path="relatedInformation[${status.index}].url" style="width:100%" /></td>
 											
-									<td><a href="javascript:void(0);" class="remAddInfo">Remove</a>
+									<td><a href="javascript:void(0);" class="remAddInfo"><spring:message code="remove"/></a>
 
 									</td>
 								</tr>
@@ -60,7 +61,7 @@
 						</tbody>
 					</table>
 					<div style="text-align: right; width: 99%;">
-						<a href="javascript:void(0);" id="addAddInfo">Add</a>
+						<a href="javascript:void(0);" id="addAddInfo"  class="btn btn-xs btn-default"><spring:message code="add"/></a>
 					</div>
 
 				</div>

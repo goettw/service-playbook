@@ -3,7 +3,7 @@
 
 
 
-<h1>${bigPlayItem.label}</h1>
+<h1>${bigPlayItem.level1}<span style="padding:20px;color:#cccccc">/</span>${bigPlayItem.level2}</h1>
 
 
 

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <div class="container">
 				<script>
@@ -14,9 +15,9 @@
 																	"#salesCollateral")
 																	.append(
 																			'<tr> \
-															<td><input class="form-control" id="salesCollateral' + index +'.label" name="salesCollateral[' + index + '].label" type="text" value=""/></td> \
-															<td><input class="form-control" id="salesCollateral' + index +'.url" name="salesCollateral[' + index + '].url" type="text" value=""/></td> \
-															<td><a href="javascript:void(0);" class="remColl btn btn-default">Remove</a></td>\
+															<td><input style="width:100%" id="salesCollateral' + index +'.label" name="salesCollateral[' + index + '].label" type="text" value=""/></td> \
+															<td><input style="width:100%" id="salesCollateral' + index +'.url" name="salesCollateral[' + index + '].url" type="text" value=""/></td> \
+															<td><a href="javascript:void(0);" class="remColl btn btn-xs btn-default">Remove</a></td>\
 														</tr>');
 														});
 
@@ -41,17 +42,17 @@
 				<table id="salesCollateral" class="table">
 					<tbody>
 						<tr>
-							<th>Label</th>
-							<th>URL</th>
-							<th>Action</th>
+							<th><spring:message code="label"/></th>
+							<th><spring:message code="url"/></th>
+							<th><spring:message code="action"/></th>
 						</tr>
 						<c:forEach var="salesColItem" varStatus="status"
 							items="${serviceOffer.salesCollateral}">
 							<tr>
 								<td><form:input
-										class="form-control" path="salesCollateral[${status.index}].label" /></td>
-								<td><form:input class="form-control" path="salesCollateral[${status.index}].url" /></td>
-								<td><a href="javascript:void(0);" class="remColl  btn btn-default">Remove</a>
+										path="salesCollateral[${status.index}].label" style="width:100%"/></td>
+								<td><form:input path="salesCollateral[${status.index}].url" style="width:100%"/></td>
+								<td><a href="javascript:void(0);" class="remColl btn-xs btn btn-default"><spring:message code="remove"/></a>
 
 								</td>
 							</tr>
@@ -59,7 +60,7 @@
 					</tbody>
 				</table>
 				<div style="text-align: right; width: 99%;">
-					<a href="javascript:void(0);" id="addColl" class=" btn btn-default">Add</a>
+					<a href="javascript:void(0);" id="addColl" class=" btn btn-xs btn-default"><spring:message code="add"/></a>
 				</div>
 
 			</div>

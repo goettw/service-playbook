@@ -72,7 +72,7 @@ public class BigPlayItem {
 	}
 
 	public String getDisplay() {
-		return getLevel1() + "/" + getLevel2();
+		return getLevel1() + " / " + getLevel2();
 	}
 
 	public String getLevel1() {

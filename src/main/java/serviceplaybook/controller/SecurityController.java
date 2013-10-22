@@ -91,6 +91,8 @@ public class SecurityController {
 	    profile.setAccountNonExpired(true);
 	    profile.setAccountNonLocked(true);
 	    profile.setCredentialsNonExpired(true);
+	    profile.setFirstName(registrationBean.getFirstName());
+	    profile.setLastName(registrationBean.getLastName());
 	    profile.setEnabled(true);
 	    if (registrationBean.getUsername().equals("Attminn")) {
 		profile.setAuthorityValues(authorityList);
@@ -106,7 +108,10 @@ public class SecurityController {
 	    profile.setUsername(registrationBean.getUsername());
 	    profile.setEmailAddress(registrationBean.getEmailAddress());
 	    // Send a pre-configured mail
-	    mailer.sendRegistrationMail(registrationBean.getEmailAddress(), "Username: " + registrationBean.getUsername() + " - password=" + password + "\n Bitte ändern Sie Ihr passwort unter <a href=\"http://" + request.getServerName()+":"+request.getServerPort()+request.getContextPath() + "/profile/edit?id=" + URLEncoder.encode(registrationBean.getUsername())+ "\">Edit Profile</a>");
+	    mailer.sendRegistrationMail(registrationBean.getEmailAddress(), "<HTML> <HEAD/> <BODY>" 
+	    	+ "Welcome to the Service Playbook! <br> Your temporary Password for the Username: " + registrationBean.getUsername() + " is: " + password + 
+	    	"<br> Please change it as soon as possible using the following link: <a href=\"http://" + 
+	    	request.getServerName()+":"+request.getServerPort()+request.getContextPath() + "/profile/edit?id=" + URLEncoder.encode(registrationBean.getUsername()) + "\">Edit Profile</a>" );
 	    profileRepository.save(profile);
 	    model.addAttribute("success", "true");
 	    return "registrationForm";

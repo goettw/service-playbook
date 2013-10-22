@@ -39,10 +39,8 @@ div.panel {
 	overflow: hidden;
 	z-index: auto !important;
 }
-#emcLogo {
-	position: relative;
-	top: 35px;
-	left: 10px;
+textarea {
+	width:100%;
 }
 /*ul {
 	font-family: Arial, Helvetica, sans-serif;

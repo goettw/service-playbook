@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <div class="container">
 				<script>
@@ -13,11 +14,11 @@
 															$("#contacts")
 																	.append(
 																			'<tr> \
-															<td><input id="emcContacts' + index +'.label" name="emcContacts[' + index + '].label" type="text" value="" class="form-control"/></td> \
-															<td><input id="emcContacts' + index +'.url" name="emcContacts[' + index + '].url" type="text" value=""  class="form-control"/></td> \
-															<td><input id="emcContacts' + index +'.role" name="emcContacts[' + index + '].role" type="text" value=""  class="form-control"/></td> \
-															<td><input type="checkbox" id="emcContacts' + index +'.responsible" name="emcContacts[' + index + '].responsible" type="text" value=""  class="form-control"/></td> \
-															<td><a href="javascript:void(0);" class="remContact btn btn-default">Remove</a></td>\
+															<td><input style="width:100%" id="emcContacts' + index +'.label" name="emcContacts[' + index + '].label" type="text" value="" /></td> \
+															<td><input style="width:100%" id="emcContacts' + index +'.url" name="emcContacts[' + index + '].url" type="text" value=""  /></td> \
+															<td><input style="width:100%" id="emcContacts' + index +'.role" name="emcContacts[' + index + '].role" type="text" value=""  /></td> \
+															<td><input type="checkbox" id="emcContacts' + index +'.responsible" name="emcContacts[' + index + '].responsible" type="text" value="" /></td> \
+															<td><a href="javascript:void(0);" class="remContact btn btn-xs btn-default"><spring:message code="remove"/></a></td>\
 														</tr>');
 														});
 
@@ -85,33 +86,33 @@
 				<table id="contacts" class="table">
 					<tbody>
 						<tr>
-							<th>Label</th>
-							<th>URL</th>
-							<th>Role</th>
-							<th>Responsible</th>
-							<th>Action</th>
+							<th><spring:message code="label"/></th>
+							<th><spring:message code="url"/></th>
+							<th><spring:message code="role"/></th>
+							<th><spring:message code="responsible"/></th>
+							<th><spring:message code="action"/></th>
 						</tr>
 						<c:forEach var="contact" varStatus="status"
 							items="${serviceOffer.emcContacts}">
 							<tr>
 								<td><form:input path="emcContacts[${status.index}].label"
-										class="form-control" /></td>
+										 style="width:100%"/></td>
 								<td><form:input path="emcContacts[${status.index}].url"
-										class="form-control" /></td>
+										 style="width:100%"/></td>
 								<td><form:input path="emcContacts[${status.index}].role"
-										class="form-control" /></td>
+									 style="width:100%"/></td>
 								<td><form:checkbox
 										path="emcContacts[${status.index}].responsible"
-										class="form-control" /></td>
-								<td><a href="javascript:void(0);" class="remContact btn btn-default"
-									>Remove</a></td>
+									 /></td>
+								<td><a href="javascript:void(0);" class="remContact btn btn-xs btn-default"
+									><spring:message code="remove"/></a></td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 				<div style="text-align: right; width: 99%;">
 					<a href="javascript:void(0);" id="addContact"
-						class="btn btn-default">Add</a>
+						class="btn btn-xs btn-default"><spring:message code="add"/></a>
 				</div>
 
 			</div>

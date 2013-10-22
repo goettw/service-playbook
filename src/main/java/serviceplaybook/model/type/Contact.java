@@ -1,11 +1,10 @@
 package serviceplaybook.model.type;
 
-import org.hibernate.validator.constraints.NotEmpty;
 
 public class Contact extends Link {
-	@NotEmpty
+	
 	String role;
-	@NotEmpty
+	
 	boolean responsible;
 
 	public String getRole() {

@@ -48,7 +48,7 @@ public class ApplicationMailer
 
 	        message.setFrom(preConfiguredMessage.getFrom());
 
-	        message.setReplyTo(preConfiguredMessage.getFrom());
+	        //message.setReplyTo(preConfiguredMessage.getFrom());
 
 	        message.setSubject(preConfiguredMessage.getSubject());
 
