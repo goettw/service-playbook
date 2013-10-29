@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <c:if test="${not empty serviceOffer.emcContacts}">
 	<div class="panel panel-success">
@@ -11,8 +12,7 @@
 			<ul class="list-group">
 				<c:forEach var="contact" items="${serviceOffer.emcContacts}">
 
-					<a class="list-group-item" href="${contact.url}">${contact.label}
-						(${contact.role})<c:if test="${contact.responsible}">*</c:if>
+					<a class="list-group-item" href="${contact.url}">${contact.label} (${contact.role})<c:if test="${contact.responsible}">*</c:if>
 					</a>
 
 
@@ -90,3 +90,12 @@
 </c:if>
 
 
+<p>
+	<b><spring:message code="actionLog" /></b>
+</p>
+<small> <c:forEach items="${serviceOffer.actionLog}" var="actionLogItem">
+
+${actionLogItem.personName}, <fmt:formatDate type="both" value="${actionLogItem.dateTime}" timeZone="CET"/>  (<spring:message code="${actionLogItem.actionType}" />)
+<br>
+	</c:forEach>
+</small>

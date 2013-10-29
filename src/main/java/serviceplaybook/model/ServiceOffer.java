@@ -57,6 +57,12 @@ public class ServiceOffer {
 	public void setPrice(String price) {
 		this.price = price;
 	}
+	public List<ActionLogItem> getActionLog() {
+	    return actionLog;
+	}
+	public void setActionLog(List<ActionLogItem> actionLog) {
+	    this.actionLog = actionLog;
+	}
 	public String getServiceCategory() {
 		return serviceCategory;
 	}
@@ -67,7 +73,9 @@ public class ServiceOffer {
 	private List<Link> salesCollateral;
 	private List<Contact> emcContacts;
 	private List<Link> relatedInformation;
-
+	
+	private List<ActionLogItem> actionLog;
+	 
 	
 	public List<Link> getRelatedInformation() {
 		return relatedInformation;

@@ -1,6 +1,8 @@
 package serviceplaybook.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +14,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -24,11 +28,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import serviceplaybook.model.ActionLogItem;
 import serviceplaybook.model.BigPlayItem;
 import serviceplaybook.model.FileMeta;
 import serviceplaybook.model.MongoLocalEntity;
+import serviceplaybook.model.Profile;
 import serviceplaybook.model.ServiceOffer;
 import serviceplaybook.mongorepo.BigPlayRepository;
+import serviceplaybook.mongorepo.ProfileRepository;
 import serviceplaybook.service.AdminService;
 import serviceplaybook.service.FileFormService;
 import serviceplaybook.service.ServiceOfferService;
@@ -49,6 +56,9 @@ public class ServiceController {
     FileFormService fileFormService;
     @Autowired
     AdminService adminService;
+    @Autowired
+    private ProfileRepository profileRepository;
+
     private static final String FOLDER_IMAGE = "image";
 
     @RequestMapping(value = "/bigPlayOverview", method = RequestMethod.GET)
@@ -59,34 +69,33 @@ public class ServiceController {
     }
 
     @RequestMapping(value = "/admin/serviceOfferList", method = RequestMethod.GET)
-	public String getServiceOfferList(ModelMap model) {
-	    
-	    List<ServiceOffer> serviceOfferList = serviceOfferService.listServiceOffer();
-	    
-	    
-	    
-	    ArrayList<ServiceOffer> newServiceList = new ArrayList<ServiceOffer> ();
-	    for (Iterator<ServiceOffer> it = serviceOfferList.iterator();it.hasNext();) {
-		ServiceOffer serviceOffer = it.next();
-		List<String> bigplays = serviceOffer.getBigPlay();
-		ArrayList<String> newBigplayList = new ArrayList<String> ();
-		if (bigplays!=null && !bigplays.isEmpty()) {
-		    for (Iterator<String> it2 = bigplays.iterator();it2.hasNext();){
-			String bigplay = it2.next();
-			BigPlayItem bigPlayItem = bigPlayRepository.findOne(bigplay);
-			if (bigPlayItem != null){
-			    newBigplayList.add(bigPlayItem.getDisplay());
-			
+    public String getServiceOfferList(ModelMap model) {
+
+	List<ServiceOffer> serviceOfferList = serviceOfferService.listServiceOffer();
+
+	ArrayList<ServiceOffer> newServiceList = new ArrayList<ServiceOffer>();
+	for (Iterator<ServiceOffer> it = serviceOfferList.iterator(); it.hasNext();) {
+	    ServiceOffer serviceOffer = it.next();
+	    List<String> bigplays = serviceOffer.getBigPlay();
+	    ArrayList<String> newBigplayList = new ArrayList<String>();
+	    if (bigplays != null && !bigplays.isEmpty()) {
+		for (Iterator<String> it2 = bigplays.iterator(); it2.hasNext();) {
+		    String bigplay = it2.next();
+		    BigPlayItem bigPlayItem = bigPlayRepository.findOne(bigplay);
+		    if (bigPlayItem != null) {
+			newBigplayList.add(bigPlayItem.getDisplay());
+
 		    }
 		}
-		    serviceOffer.setBigPlay(newBigplayList);
-		    newServiceList.add(serviceOffer);
+		serviceOffer.setBigPlay(newBigplayList);
+		
 	    }
-	    }
-	    
-	    model.addAttribute("serviceOfferList",newServiceList );
-		return "serviceofferList";
+	    newServiceList.add(serviceOffer);
 	}
+
+	model.addAttribute("serviceOfferList", newServiceList);
+	return "serviceofferList";
+    }
 
     @RequestMapping(value = "author/serviceOffer/delete/{id}", method = RequestMethod.GET)
     public String deleteServiceOfferById(@PathVariable String id, ModelMap model) {
@@ -159,9 +168,44 @@ public class ServiceController {
 	if (action.equals("Save")) {
 	    if (bindingResult.hasErrors())
 		return "serviceofferEdit";
+
+	    ActionLogItem actionLogItem = new ActionLogItem();
+	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String userId = null;
+	    if (principal instanceof UserDetails) {
+		userId = ((UserDetails) principal).getUsername();
+	    } else {
+		userId = principal.toString();
+	    }
+	    if (userId != null) {
+		Profile profile = profileRepository.findOne(userId);
+		if (profile != null) {
+		    actionLogItem.setPersonId(userId);
+		    actionLogItem.setPersonName(profile.getDisplayName());
+		    actionLogItem.setDateTime(Calendar.getInstance().getTime());
+		}
+	    }
+
+	    List<ActionLogItem> actionLog = null;
+
 	    if (StringUtils.hasText(serviceOffer.getId())) {
+		ServiceOffer storedServiceOffer = serviceOfferService.findServiceOfferById(serviceOffer.getId());
+		if (storedServiceOffer != null) {
+		    actionLog = storedServiceOffer.getActionLog();
+		    if (actionLog == null)
+			actionLog = new ArrayList<ActionLogItem>();
+		} else {
+		    actionLog = new ArrayList<ActionLogItem>();
+		}
+		actionLogItem.setActionType("update");
+		actionLog.add(0, actionLogItem);
+		serviceOffer.setActionLog(actionLog);
 		serviceOfferService.updateServiceOffer(serviceOffer);
 	    } else {
+		actionLog = new ArrayList<ActionLogItem>();
+		actionLogItem.setActionType("create");
+		actionLog.add(actionLogItem);
+		serviceOffer.setActionLog(actionLog);
 		serviceOfferService.addServiceOffer(serviceOffer);
 	    }
 	}

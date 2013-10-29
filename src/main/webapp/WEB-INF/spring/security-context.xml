@@ -25,6 +25,7 @@
 
         <security:intercept-url pattern="/*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/admin/**" access="ROLE_Author" />
+        <security:intercept-url pattern="/author/**" access="ROLE_Author" />
 
         <!-- Override default login and logout pages -->
         <security:form-login login-page="/loginForm" 
