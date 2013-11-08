@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <div class="edit">
 	<c:url var="addUrl" value="/admin/servicePlaybookDescription/submit" />
@@ -29,6 +30,11 @@
 				<div class="form-group">
 					<form:label path="description">Description</form:label>
 					<form:textarea path="description" class="form-control" style="height:200px"/>
+				</div>
+				
+				<div class="form-group">
+					<form:label path="authorsHelp"><spring:message code="authorsHelp"/></form:label>
+					<form:textarea path="authorsHelp" class="form-control" style="height:200px"/>
 				</div>
 
 			</div>

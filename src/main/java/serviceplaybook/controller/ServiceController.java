@@ -2,7 +2,6 @@ package serviceplaybook.controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,11 +29,13 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import serviceplaybook.model.ActionLogItem;
 import serviceplaybook.model.BigPlayItem;
+import serviceplaybook.model.Comment;
 import serviceplaybook.model.FileMeta;
 import serviceplaybook.model.MongoLocalEntity;
 import serviceplaybook.model.Profile;
 import serviceplaybook.model.ServiceOffer;
 import serviceplaybook.mongorepo.BigPlayRepository;
+import serviceplaybook.mongorepo.CommentRepository;
 import serviceplaybook.mongorepo.ProfileRepository;
 import serviceplaybook.service.AdminService;
 import serviceplaybook.service.FileFormService;
@@ -58,6 +59,8 @@ public class ServiceController {
     AdminService adminService;
     @Autowired
     private ProfileRepository profileRepository;
+    @Autowired
+    private CommentRepository commentRepository;
 
     private static final String FOLDER_IMAGE = "image";
 
@@ -69,10 +72,25 @@ public class ServiceController {
     }
 
     @RequestMapping(value = "/admin/serviceOfferList", method = RequestMethod.GET)
+    public String getServiceOfferListAuthor(ModelMap model) {
+	prepareServiceList(model, "label", Direction.ASC);
+	return "serviceofferListAuthor";
+    }
+
+    @RequestMapping(value = "/auth/serviceList", method = RequestMethod.GET)
     public String getServiceOfferList(ModelMap model) {
+	prepareServiceList(model, "label", Direction.ASC);
+	return "serviceofferList";
+    }
 
-	List<ServiceOffer> serviceOfferList = serviceOfferService.listServiceOffer();
+    @RequestMapping(value = "/auth/serviceListByUpdate", method = RequestMethod.GET)
+    public String getServiceOfferListByUpdate(ModelMap model) {
+	prepareServiceList(model, "actionLog.dateTime", Direction.DESC);
+	return "serviceofferList";
+    }
 
+    private void prepareServiceList(ModelMap model, String sortBy, Direction direction) {
+	List<ServiceOffer> serviceOfferList = serviceOfferService.listServiceOffer(sortBy, direction);
 	ArrayList<ServiceOffer> newServiceList = new ArrayList<ServiceOffer>();
 	for (Iterator<ServiceOffer> it = serviceOfferList.iterator(); it.hasNext();) {
 	    ServiceOffer serviceOffer = it.next();
@@ -84,17 +102,13 @@ public class ServiceController {
 		    BigPlayItem bigPlayItem = bigPlayRepository.findOne(bigplay);
 		    if (bigPlayItem != null) {
 			newBigplayList.add(bigPlayItem.getDisplay());
-
 		    }
 		}
 		serviceOffer.setBigPlay(newBigplayList);
-		
 	    }
 	    newServiceList.add(serviceOffer);
 	}
-
 	model.addAttribute("serviceOfferList", newServiceList);
-	return "serviceofferList";
     }
 
     @RequestMapping(value = "author/serviceOffer/delete/{id}", method = RequestMethod.GET)
@@ -124,6 +138,14 @@ public class ServiceController {
 	String imageUrl = getImageUrl(request, id);
 	if (imageUrl != null)
 	    model.addAttribute("imageUrl", imageUrl);
+	Comment comment = new Comment();
+	MongoLocalEntity mongoLocalEntity = new MongoLocalEntity("ServiceOffer", id, MongoLocalEntity.FOLDER_COMMENT);
+
+	List<Comment> comments = commentRepository.findCommentsByLocalEntity(mongoLocalEntity, new Sort(Direction.DESC, "dateTime"));
+	model.addAttribute("comments", comments);
+	comment.setLocalEntity(mongoLocalEntity);
+
+	model.addAttribute("comment", comment);
 	return "serviceoffer";
     }
 
@@ -139,8 +161,7 @@ public class ServiceController {
     }
 
     @RequestMapping(value = "author/serviceOffer/uploadImage/{id}", method = RequestMethod.POST)
-    public @ResponseBody
-    FileMeta uploadImage(@PathVariable String id, MultipartHttpServletRequest request, HttpServletResponse response) {
+    public @ResponseBody FileMeta uploadImage(@PathVariable String id, MultipartHttpServletRequest request, HttpServletResponse response) {
 	MongoLocalEntity mongoLocalEntity = new MongoLocalEntity(serviceOfferService.getCollectionName(), id, FOLDER_IMAGE);
 	FileMeta fileMeta = fileFormService.upload(mongoLocalEntity, request, response, true);
 	fileMeta.setUrl(request.getContextPath() + "/file-controller/get/" + fileMeta.getId() + "/" + fileMeta.getFileName());
@@ -160,6 +181,45 @@ public class ServiceController {
 	if (imageUrl != null)
 	    model.addAttribute("imageUrl", imageUrl);
 	return "serviceofferEdit";
+    }
+
+    @RequestMapping(value = "auth/serviceOffer/submitComment", method = RequestMethod.POST)
+    public String serviceOfferSubmitComment(@RequestParam String action, @Valid @ModelAttribute Comment comment, BindingResult bindingResult, ModelMap model) {
+	if (bindingResult.hasErrors()) {
+	    ServiceOffer serviceOffer = serviceOfferService.findServiceOfferById(comment.getLocalEntity().getId());
+	    model.addAttribute("serviceOffer", serviceOffer);
+	    MongoLocalEntity mongoLocalEntity = new MongoLocalEntity("ServiceOffer", comment.getLocalEntity().getId(), MongoLocalEntity.FOLDER_COMMENT);
+
+	    List<Comment> comments = commentRepository.findCommentsByLocalEntity(mongoLocalEntity, new Sort(Direction.DESC, "dateTime"));
+	    model.addAttribute("comments", comments);
+	    return "serviceoffer";
+	}
+	ActionLogItem actionLogItem = prepareActionLog();
+	comment.setPersonId(actionLogItem.getPersonId());
+	comment.setPersonName(actionLogItem.getPersonName());
+	comment.setDateTime(actionLogItem.getDateTime());
+	commentRepository.save(comment);
+	return "redirect:/serviceOffer/" + comment.getLocalEntity().getId();
+    }
+
+    private ActionLogItem prepareActionLog() {
+	ActionLogItem actionLogItem = new ActionLogItem();
+	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	String userId = null;
+	if (principal instanceof UserDetails) {
+	    userId = ((UserDetails) principal).getUsername();
+	} else {
+	    userId = principal.toString();
+	}
+	if (userId != null) {
+	    Profile profile = profileRepository.findOne(userId);
+	    if (profile != null) {
+		actionLogItem.setPersonId(userId);
+		actionLogItem.setPersonName(profile.getDisplayName());
+		actionLogItem.setDateTime(Calendar.getInstance().getTime());
+	    }
+	}
+	return actionLogItem;
     }
 
     @RequestMapping(value = "author/serviceOffer/submit", method = RequestMethod.POST)

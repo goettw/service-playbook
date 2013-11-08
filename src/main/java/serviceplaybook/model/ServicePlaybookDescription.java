@@ -1,7 +1,15 @@
 package serviceplaybook.model;
 
 public class ServicePlaybookDescription {
-	private String id,label, summary, description;
+	private String id,label, summary, description,authorsHelp;
+
+	public String getAuthorsHelp() {
+	    return authorsHelp;
+	}
+
+	public void setAuthorsHelp(String authorsHelp) {
+	    this.authorsHelp = authorsHelp;
+	}
 
 	public String getId() {
 		return id;

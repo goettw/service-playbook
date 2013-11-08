@@ -35,10 +35,14 @@ public class ServiceOfferService {
 	}
 	
 	public List<ServiceOffer> listServiceOffer() {
+		return listServiceOffer("label", Direction.ASC);
+
+	}
+	
+	public List<ServiceOffer> listServiceOffer(String sortLabel, Direction sort) {
 		Query query = new Query();
-		query.with(new Sort(Direction.ASC,"label"));
+		query.with(new Sort(sort, sortLabel));
 		return mongoTemplate.find(query, ServiceOffer.class);
-		//return mongoTemplate.findAll(ServiceOffer.class, getCollectionName());
 	}
 	
 	public void deleteServiceOffer(ServiceOffer serviceOffer) {

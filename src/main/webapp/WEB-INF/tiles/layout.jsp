@@ -11,7 +11,7 @@
 <title><tiles:getAsString name="title" /> <c:if test="${subtitle} ">/</c:if> ${subtitle}</title>
 <script src="<c:url value='/bootstrap/assets/js/jquery.js'/>"></script>
 
-
+<link rel="icon" href="<%=request.getContextPath()%>/favicon.ico" type="image/x-icon">
 <link href="<c:url value='/bootstrap/dist/css/bootstrap-flatly.css'/>" type="text/css" rel="stylesheet" />
 <link href="getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet" />
 <link rel="stylesheet" href="<c:url value="/css/theme.css"/>">
@@ -33,22 +33,20 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="<%=request.getContextPath()%>/bigPlayOverview"><spring:message code="home" /></a></li>
-
-					<!-- PROFILES -->
-					<sec:authorize access="isFullyAuthenticated()">
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><spring:message code="profiles" /> <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="<%=request.getContextPath()%>/profileList"><spring:message code="profileList" /></a></li>
 
 
-								<li class="divider" />
-								<li><c:url var="profileEditUrl" value='/profile/edit'>
-										<c:param name="id" value="<%=request.getRemoteUser()%>" />
-									</c:url> <a href="${profileEditUrl}"><spring:message code="profileEdit" /></a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><spring:message code="serviceOffers" /> <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li class="active"><a href="<%=request.getContextPath()%>/bigPlayOverview"><spring:message code="serviceListByBigplay" /></a></li>
+							<li><a href="<%=request.getContextPath()%>/auth/serviceList"><spring:message code="serviceList" /></a></li>
+							<li><a href="<%=request.getContextPath()%>/auth/serviceListByUpdate"><spring:message code="serviceListByUpdate" /></a></li>
 
-							</ul></li>
-					</sec:authorize>
+
+
+
+						</ul></li>
+
+
 
 
 
@@ -57,7 +55,7 @@
 						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><spring:message code="authoring" /> <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="<%=request.getContextPath()%>/admin/bigPlayItemList"><spring:message code="bigPlays" /></a></li>
-								<li><a href="<%=request.getContextPath()%>/admin/serviceOfferList"><spring:message code="serviceOffers" /></a></li>
+								<li><a href="<%=request.getContextPath()%>/admin/serviceOfferList"><spring:message code="serviceOffersForAuthors" /></a></li>
 								<li class="divider" />
 								<c:if test="${not empty editUrl}">
 
@@ -69,33 +67,60 @@
 
 					</sec:authorize>
 
+					<!-- PROFILES -->
+
+					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><spring:message code="profiles" /> <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="<%=request.getContextPath()%>/auth/profileList"><spring:message code="profileList" /></a></li>
+
+
+							<li class="divider" />
+							<li><c:url var="profileEditUrl" value='/auth/profile/edit'>
+									<c:param name="id" value="<%=request.getRemoteUser()%>" />
+								</c:url> <a href="${profileEditUrl}"><spring:message code="profileEdit" /></a></li>
+
+						</ul></li>
 
 
 					<li><a href="<%=request.getContextPath()%>/servicePlaybookDescription"><spring:message code="about" /></a></li>
+
+
+
+
 				</ul>
 
 
-				<div class="navbar-text pull-right">
-					<sec:authorize access="isAuthenticated()">
-						<spring:message code="welcome" />
-						<sec:authentication property="principal.firstName" />&nbsp;<sec:authentication property="principal.lastName" />
-						<c:url var="logoutUrl" value="/logout" />&nbsp;|&nbsp;
-							<a class="navbar-link" href="${logoutUrl}"><spring:message code="logout" /></a>
 
-					</sec:authorize>
-					<sec:authorize access="isAnonymous()">
-						<c:url var="loginUrl" value="/loginForm" />
-						<c:url var="registerUrl" value="/register" />
-						<a class="navbar-link" href="${registerUrl}"><spring:message code="register" /></a>
-						&nbsp;|&nbsp;
-						<a class="navbar-link" href="${loginUrl}"><spring:message code="login" /></a>
-					</sec:authorize>
-				</div>
+
+				<ul class="pull-right">
+					<li class="navbar-text"><sec:authorize
+							access="isAuthenticated()">
+							<spring:message code="welcome" />
+							<sec:authentication property="principal.firstName" />&nbsp;<sec:authentication property="principal.lastName" />
+							<c:url var="logoutUrl" value="/logout" />&nbsp;|&nbsp; <a class="navbar-link" href="${logoutUrl}"><spring:message code="logout" /></a>
+						</sec:authorize> <sec:authorize access="isAnonymous()">
+							<c:url var="loginUrl" value="/loginForm" />
+							<c:url var="registerUrl" value="/register" />
+							<a class="navbar-link" href="${registerUrl}"><spring:message code="register" /></a> &nbsp;|&nbsp; <a class="navbar-link" href="${loginUrl}"><spring:message
+									code="login" /></a>
+
+						</sec:authorize>
+						
+						&nbsp;&nbsp; &nbsp; 
+						<a class="navbar-link" href="?language=en">EN</a> &nbsp;|&nbsp; <a class="navbar-link" href="?language=de">DE</a> 
+						</li>
+				</ul>
+
+
+
+
+
 			</div>
 			<!--/.nav-collapse -->
 
 		</div>
 	</div>
+
 	<div class="container">
 		<tiles:insertAttribute name="breadcrumb" />
 	</div>

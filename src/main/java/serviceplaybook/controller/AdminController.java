@@ -36,7 +36,7 @@ public class AdminController {
 			@RequestParam String action,
 			@ModelAttribute ServicePlaybookDescription servicePlaybookDescription) {
 		servicePlaybookDescriptionRepository.save(servicePlaybookDescription);
-		return "redirect:/admin/servicePlaybookDescription";
+		return "redirect:/servicePlaybookDescription";
 	}
 
 

@@ -140,7 +140,7 @@ public class SecurityController {
     }
 
     @PreAuthorize("#id == authentication.name")
-    @RequestMapping(value = "/profile/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/profile/edit", method = RequestMethod.GET)
     public String profileEdit(@RequestParam String id, ModelMap model, HttpServletRequest request) {
 
 	Profile profile = profileRepository.findOne(id);
@@ -242,7 +242,7 @@ public class SecurityController {
 	return profileSubmitHelper(action, profile, result, model, request, "/profile/submit");
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/profile", method = RequestMethod.GET)
     public String profileView(@RequestParam String id, ModelMap model) {
 	Profile profile = profileRepository.findOne(id);
 	model.addAttribute("profile", profile);
@@ -251,8 +251,8 @@ public class SecurityController {
 	return "profile";
     }
 
-    @RequestMapping(value = "/profileList", method = RequestMethod.GET)
-    public String getBigPlayList(ModelMap model) {
+    @RequestMapping(value = "/auth/profileList", method = RequestMethod.GET)
+    public String getProfileList(ModelMap model) {
 	model.addAttribute("profileList", profileRepository.findAll(new Sort(Direction.ASC, "lastName", "firstName", "username")));
 	return "profileList";
     }

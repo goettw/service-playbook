@@ -16,6 +16,7 @@
     
     
     <security:http auto-config="true">
+    <security:remember-me key="myAppKey"/>
         <!-- Restrict URLs based on role -->
         <security:intercept-url pattern="/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/logoutSuccess*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
@@ -26,6 +27,7 @@
         <security:intercept-url pattern="/*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/admin/**" access="ROLE_Author" />
         <security:intercept-url pattern="/author/**" access="ROLE_Author" />
+        <security:intercept-url pattern="/auth/**" access="ROLE_User" />
 
         <!-- Override default login and logout pages -->
         <security:form-login login-page="/loginForm" 

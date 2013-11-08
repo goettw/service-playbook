@@ -51,6 +51,10 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/serviceofferList/serviceofferList.jsp" cascade="true" />
 		<put-attribute name="header" value="/WEB-INF/jsp/serviceofferList/serviceofferListHeader.jsp" cascade="true" />
 	</definition>
+	<definition name="serviceofferListAuthor" extends=".wideTemplate">
+		<put-attribute name="body" value="/WEB-INF/jsp/serviceofferList/serviceofferListAuthor.jsp" cascade="true" />
+		<put-attribute name="header" value="/WEB-INF/jsp/serviceofferList/serviceofferListHeader.jsp" cascade="true" />
+	</definition>
 	<!-- BIG PLAYS -->
 	<definition name="bigPlayOverview" extends=".wideTemplate">
 		<put-attribute name="body" value="/WEB-INF/jsp/serviceofferList/bigplayoverview.jsp" cascade="true" />

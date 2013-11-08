@@ -24,7 +24,7 @@
 									code="delete" /></a></td>
 					</sec:authorize>
 					<td>
-					<c:url var="viewUrl" value='/profile'>
+					<c:url var="viewUrl" value='/auth/profile'>
 								<c:param name="id" value="${profile.username}" />
 							</c:url>
 					<a

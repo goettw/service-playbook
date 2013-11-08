@@ -10,11 +10,12 @@
 
 			</div>
 			<div class="col-md-11">
+			
 				<c:forEach items="${level1Item.entries}" var="level2Item">
 					<div class="col-md-4">
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								<div class="panel-title">${level2Item.label}</div>
+								<div class="panel-title"><a href="<c:url value='/bigPlayItem/${level2Item.localEntity.id}'/>">${level2Item.label}</a></div>
 							</div>
 							<div class="panel-body">
 								
