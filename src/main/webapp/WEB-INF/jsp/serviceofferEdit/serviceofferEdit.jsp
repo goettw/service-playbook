@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 
-<script src="<c:url value='/js/jquery/jquery-1.9.1.js' />"></script>
+
 <script src="<c:url value="/js/jquery/ui/jquery.ui.core.js"/>"></script>
 <script src="<c:url value="/js/jquery/ui/jquery.ui.widget.js"/>"></script>
 <script src="<c:url value="/js/jquery/ui/jquery.ui.tabs.js"/>"></script>
@@ -19,6 +19,7 @@
 
 
 	<c:url var="addUrl" value="/author/serviceOffer/submit" />
+	
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">

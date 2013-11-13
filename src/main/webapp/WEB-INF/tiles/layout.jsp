@@ -9,11 +9,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title><tiles:getAsString name="title" /> <c:if test="${subtitle} ">/</c:if> ${subtitle}</title>
-<script src="<c:url value='/bootstrap/assets/js/jquery.js'/>"></script>
 
 <link rel="icon" href="<%=request.getContextPath()%>/favicon.ico" type="image/x-icon">
+
 <link href="<c:url value='/bootstrap/dist/css/bootstrap-flatly.css'/>" type="text/css" rel="stylesheet" />
-<link href="getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet" />
+
 <link rel="stylesheet" href="<c:url value="/css/theme.css"/>">
 <!--[if lt IE 9]>
       <script src="<c:url value='/bootstrap/assets/js/html5shiv.js'/>"></script>
@@ -21,7 +21,7 @@
     <![endif]-->
 </head>
 <body>
-
+<script src="<c:url value='/js/jquery/jquery-1.10.2.min.js' />"></script>
 
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">

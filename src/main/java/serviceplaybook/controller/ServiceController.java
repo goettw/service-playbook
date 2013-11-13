@@ -2,6 +2,7 @@ package serviceplaybook.controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import serviceplaybook.controller.viewmodel.CommentViewBean;
 import serviceplaybook.model.ActionLogItem;
 import serviceplaybook.model.BigPlayItem;
 import serviceplaybook.model.Comment;
@@ -120,6 +123,8 @@ public class ServiceController {
     @RequestMapping(value = "/serviceOffer/{id}", method = RequestMethod.GET)
     public String getById(@PathVariable String id, ModelMap model, HttpServletRequest request) {
 	ServiceOffer serviceOffer = serviceOfferService.findServiceOfferById(id);
+
+	serviceOffer.setActionLog(cleanUpActionLog(serviceOffer.getActionLog()));
 	model.addAttribute("serviceOffer", serviceOffer);
 	model.addAttribute("sessionContext", sessionContext);
 	model.addAttribute("subtitle", serviceOffer.getLabel());
@@ -138,14 +143,23 @@ public class ServiceController {
 	String imageUrl = getImageUrl(request, id);
 	if (imageUrl != null)
 	    model.addAttribute("imageUrl", imageUrl);
-	Comment comment = new Comment();
+
 	MongoLocalEntity mongoLocalEntity = new MongoLocalEntity("ServiceOffer", id, MongoLocalEntity.FOLDER_COMMENT);
 
 	List<Comment> comments = commentRepository.findCommentsByLocalEntity(mongoLocalEntity, new Sort(Direction.DESC, "dateTime"));
-	model.addAttribute("comments", comments);
-	comment.setLocalEntity(mongoLocalEntity);
+	List<CommentViewBean> commentViewBeans = new ArrayList<CommentViewBean>();
+	for (Iterator<Comment> it = comments.iterator(); it.hasNext();) {
+	    Comment comment = it.next();
+	System.out.println ("comment="+comment.getComment());
+	    CommentViewBean commentViewBean = new CommentViewBean(comment);
+	    commentViewBean.setAllowDelete(allowedToDelete(comment));
+	    commentViewBeans.add(commentViewBean);
+	}
+	model.addAttribute("comments", commentViewBeans);
 
-	model.addAttribute("comment", comment);
+	Comment newComment = new Comment();
+	newComment.setLocalEntity(mongoLocalEntity);
+	model.addAttribute("comment", newComment);
 	return "serviceoffer";
     }
 
@@ -161,7 +175,8 @@ public class ServiceController {
     }
 
     @RequestMapping(value = "author/serviceOffer/uploadImage/{id}", method = RequestMethod.POST)
-    public @ResponseBody FileMeta uploadImage(@PathVariable String id, MultipartHttpServletRequest request, HttpServletResponse response) {
+    public @ResponseBody
+    FileMeta uploadImage(@PathVariable String id, MultipartHttpServletRequest request, HttpServletResponse response) {
 	MongoLocalEntity mongoLocalEntity = new MongoLocalEntity(serviceOfferService.getCollectionName(), id, FOLDER_IMAGE);
 	FileMeta fileMeta = fileFormService.upload(mongoLocalEntity, request, response, true);
 	fileMeta.setUrl(request.getContextPath() + "/file-controller/get/" + fileMeta.getId() + "/" + fileMeta.getFileName());
@@ -177,6 +192,7 @@ public class ServiceController {
 	model.addAttribute("serviceOffer", serviceOffer);
 	model.addAttribute("statusList", statusList);
 	model.addAttribute("bigPlayList", bigPlayRepository.findAll(new Sort(Direction.ASC, "sortOrderNo", "level1", "level2")));
+	model.addAttribute("contacts", serviceOffer.getEmcContacts());
 	String imageUrl = getImageUrl(request, id);
 	if (imageUrl != null)
 	    model.addAttribute("imageUrl", imageUrl);
@@ -200,6 +216,42 @@ public class ServiceController {
 	comment.setDateTime(actionLogItem.getDateTime());
 	commentRepository.save(comment);
 	return "redirect:/serviceOffer/" + comment.getLocalEntity().getId();
+    }
+
+    private boolean allowedToDelete(Comment comment) {
+
+	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	boolean allow = false;
+	if (principal instanceof UserDetails) {
+	    Collection<GrantedAuthority> grantedAuthorities = (Collection<GrantedAuthority>)((UserDetails) principal).getAuthorities();
+	    
+	    for (Iterator<GrantedAuthority> it = grantedAuthorities.iterator();it.hasNext();){
+		GrantedAuthority authority = (GrantedAuthority)it.next();
+		if (authority.getAuthority().equals("ROLE_Administrator"))
+			return true;
+	    }
+	    String userId = ((UserDetails) principal).getUsername();
+	    if (userId.equals(comment.getPersonId()))
+		allow = true;
+	}
+	return allow;
+    }
+
+    
+
+    @RequestMapping(value = "auth/serviceOffer/deleteComment/{id}", method = RequestMethod.GET)
+    public String deleteComment(@PathVariable String id, ModelMap model, HttpServletRequest request) {
+	Comment comment = commentRepository.findOne(id);
+	if (comment == null)
+	    return "serviceOffer";
+
+	if (allowedToDelete(comment))
+	    commentRepository.delete(comment);
+	else
+	    System.out.println ("not allowed");
+	String serviceId = comment.getLocalEntity().getId();
+
+	return "redirect:/serviceOffer/" + serviceId;
     }
 
     private ActionLogItem prepareActionLog() {
@@ -229,6 +281,7 @@ public class ServiceController {
 	    if (bindingResult.hasErrors())
 		return "serviceofferEdit";
 
+	    // Create Action Log Item
 	    ActionLogItem actionLogItem = new ActionLogItem();
 	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String userId = null;
@@ -246,17 +299,28 @@ public class ServiceController {
 		}
 	    }
 
+	    // now, put into the action log list
 	    List<ActionLogItem> actionLog = null;
 
-	    if (StringUtils.hasText(serviceOffer.getId())) {
+	    if (StringUtils.hasText(serviceOffer.getId())) { // already have an
+							     // id (service
+							     // exists already
+							     // in database)
+		// load it to get the existing actionLog
 		ServiceOffer storedServiceOffer = serviceOfferService.findServiceOfferById(serviceOffer.getId());
 		if (storedServiceOffer != null) {
 		    actionLog = storedServiceOffer.getActionLog();
 		    if (actionLog == null)
 			actionLog = new ArrayList<ActionLogItem>();
+		    else
+			actionLog = cleanUpActionLog(actionLog);
+		    if (!actionLog.isEmpty() && differentEnoughToSave(actionLogItem, actionLog.get(0)))
+			actionLog.remove(0);
+
 		} else {
 		    actionLog = new ArrayList<ActionLogItem>();
 		}
+
 		actionLogItem.setActionType("update");
 		actionLog.add(0, actionLogItem);
 		serviceOffer.setActionLog(actionLog);
@@ -273,6 +337,58 @@ public class ServiceController {
 	    return "redirect:/admin/serviceOfferList";
 	model.addAttribute("editUrl", "author/serviceOffer/edit/" + serviceOffer.getId());
 	return "redirect:/serviceOffer/" + serviceOffer.getId();
+    }
+
+    private boolean differentEnoughToSave(ActionLogItem item1, ActionLogItem item2) {
+	return !(sameDate(item1, item2) && samePerson(item1, item2) && item1.getActionType().equals(item2.getActionType()));
+
+    }
+
+    private List<ActionLogItem> cleanUpActionLog(List<ActionLogItem> actionLog) {
+	if (actionLog == null || actionLog.isEmpty())
+	    return actionLog;
+
+	List<ActionLogItem> newActionLog = new ArrayList<ActionLogItem>();
+	ActionLogItem lastActionLogItemSaved = null;
+	for (Iterator<ActionLogItem> it = actionLog.iterator(); it.hasNext();) {
+	    ActionLogItem actionLogItem = it.next();
+	    boolean storeToCleanList = lastActionLogItemSaved == null || differentEnoughToSave(lastActionLogItemSaved, actionLogItem);
+
+
+	    if (storeToCleanList) {
+		Profile profile = profileRepository.findOne(actionLogItem.getPersonId());
+		if (profile != null)
+		    actionLogItem.setPersonName(profile.getDisplayName());
+
+		newActionLog.add(actionLogItem);
+		lastActionLogItemSaved = actionLogItem;
+	    }
+	}
+	return newActionLog;
+    }
+
+    private boolean samePerson(ActionLogItem item1, ActionLogItem item2) {
+	return item1.getPersonId().equals(item2.getPersonId());
+
+    }
+
+    private String toString(ActionLogItem actionLogItem) {
+	Calendar cal = Calendar.getInstance();
+	cal.setTime(actionLogItem.getDateTime());
+	return actionLogItem.getPersonId() + "-" + cal.get(Calendar.DAY_OF_MONTH) + "." + cal.get(Calendar.MONTH) + "." + cal.get(Calendar.YEAR) + " - "
+		+ actionLogItem.getActionType();
+
+    }
+
+    private boolean sameDate(ActionLogItem item1, ActionLogItem item2) {
+	Calendar cal1 = Calendar.getInstance();
+	Calendar cal2 = Calendar.getInstance();
+	cal1.setTime(item1.getDateTime());
+	cal2.setTime(item2.getDateTime());
+	if (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)
+		&& cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH))
+	    return true;
+	return false;
     }
 
     private String getImageUrl(HttpServletRequest request, String serviceOfferId) {

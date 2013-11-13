@@ -2,6 +2,14 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
+<script src="<c:url value='/bootstrap/js/bootstrap-typeahead.js'/>"></script>
+
+<script>
+	function test(item) {
+		$('#hiddenID').val(item.payload.username);
+		
+	}
+</script>
 <div class="container">
 				<script>
 					$(document)

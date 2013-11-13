@@ -2,6 +2,10 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+
+
+
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<spring:message code="comments" />
@@ -10,16 +14,24 @@
 
 		<c:forEach items="${comments}" var="commentItem">
 
+
+			<div class="pull-right">
+				<b>${commentItem.comment.personName}</b>:
+				<fmt:formatDate type="both" value="${commentItem.comment.dateTime}" timeZone="CET" />
+			</div>
+			<br />
+			<B>${commentItem.comment.headline}</B>
+			<br />
 			
-				<div class="pull-right"><b>${commentItem.personName}</b>:
-				<fmt:formatDate type="both" value="${commentItem.dateTime}" timeZone="CET" /></div>
-				<br/>
-			<B>${commentItem.headline}</B>
-<br/>
-			
-	${commentItem.comment}
-	<hr/> 
-	</c:forEach>
+	${commentItem.comment.comment}
+	
+	<c:if test="${commentItem.allowDelete}">
+	<span class="pull-right">
+	
+	<a href="<c:url value="/auth/serviceOffer/deleteComment/${commentItem.comment.id}"/>"><spring:message code="delete"/></a></span>
+	</c:if>
+	<hr />
+		</c:forEach>
 		<c:url var="addUrl" value="/auth/serviceOffer/submitComment" />
 		<form:form method="POST" action="${addUrl}" commandName="comment" role="form">
 

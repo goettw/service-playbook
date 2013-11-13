@@ -1,5 +1,7 @@
 package serviceplaybook.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,18 +17,23 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.UrlUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import serviceplaybook.model.GrantedAuthorityContainer;
 import serviceplaybook.model.Profile;
+import serviceplaybook.model.TypeaheadData;
+import serviceplaybook.model.TypeaheadQuery;
 import serviceplaybook.mongorepo.ProfileRepository;
 import serviceplaybook.service.ApplicationMailer;
 
@@ -181,7 +188,7 @@ public class SecurityController {
      * @param addUrl
      * @return
      */
-    String profileSubmitHelper(String action, Profile profile, BindingResult result, ModelMap model, HttpServletRequest request, String addUrl) {
+    String profileSubmitHelper(String action, Profile profile, BindingResult result, ModelMap model, HttpServletRequest request, String addUrl, String editPath) {
 	for (Iterator<GrantedAuthorityContainer> it = profile.getAuthorities().iterator(); it.hasNext();) {
 	    GrantedAuthorityContainer grantedAuthorityContainer = it.next();
 	    System.out.println("1:" + grantedAuthorityContainer.getAuthority());
@@ -204,7 +211,7 @@ public class SecurityController {
 	    if (result.hasErrors()) {
 		model.addAttribute("authorityList", authorityList);
 		model.addAttribute("addUrl", request.getContextPath() + addUrl);
-		return "profileEdit";
+		return editPath;
 	    }
 
 	    if (encryptPassword) {
@@ -217,14 +224,41 @@ public class SecurityController {
 	    return ("redirect:/");
 	}
 	// model.put("editUrl", "/admin/profile/edit/" + profile.getUsername());
-	return "redirect:/profile?id=" + URLEncoder.encode(profile.getUsername());
+	return "redirect:/auth/profile?id=" + URLEncoder.encode(profile.getUsername());
 
     }
 
+    
+    @RequestMapping(value = "/rest/searchProfileByName", method = RequestMethod.POST)
+    public @ResponseBody List<TypeaheadData> profileRestSearchByName(@RequestBody String query) {
+	try {
+	    query=URLDecoder.decode(query.substring(0, query.length()-1),"UTF-8");
+	} catch (UnsupportedEncodingException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	System.out.println("query="+query);
+	
+	List<Profile> profileList=profileRepository.findProfilesByName(query);
+	ArrayList<TypeaheadData> thList = new ArrayList<TypeaheadData>();
+	for (Iterator<Profile> it = profileList.iterator();it.hasNext();){
+	    Profile profile=it.next();
+	    TypeaheadData typeaheadData = new TypeaheadData();
+	    typeaheadData.setId(profile.getUsername());
+	    typeaheadData.setName(profile.getDisplayName());
+	    typeaheadData.setPayload(profile);
+	    thList.add(typeaheadData);
+	    
+	}
+	    
+	return  thList;
+    }
+
+    
     @RequestMapping(value = "/admin/profile/submit", method = RequestMethod.POST)
     public String profileAdminSubmit(@RequestParam String action, @Valid @ModelAttribute Profile profile, BindingResult result, ModelMap model,
 	    HttpServletRequest request) {
-	return profileSubmitHelper(action, profile, result, model, request, "/admin/profile/submit");
+	return profileSubmitHelper(action, profile, result, model, request, "/admin/profile/submit","/admin/profile/edit");
     }
 
     @RequestMapping(value = "/profile/submit", method = RequestMethod.POST)
@@ -239,7 +273,7 @@ public class SecurityController {
 	profile.setEnabled(oldProfile.isEnabled());
 	profile.setCredentialsNonExpired(oldProfile.isCredentialsNonExpired());
 	profile.setAuthorityValues(oldProfile.getAuthorityValues());
-	return profileSubmitHelper(action, profile, result, model, request, "/profile/submit");
+	return profileSubmitHelper(action, profile, result, model, request, "/profile/submit","auth/profile/edit");
     }
 
     @RequestMapping(value = "/auth/profile", method = RequestMethod.GET)
