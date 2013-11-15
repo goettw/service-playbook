@@ -11,6 +11,6 @@ import serviceplaybook.model.Profile;
 public interface ProfileRepository extends PagingAndSortingRepository<Profile, String> {
 	 List<Profile> findProfilesByEmailAddress (String emailAddress);
 	 List<Profile> findProfilesByLastNameLike (String lastName);
-	 @Query("{$or : [{lastName:{$regex:?0,$options:'i'}},{firstName:{$regex:?0,$options:'i'}}]}") 
+	 @Query(value="{$or : [{lastName:{$regex:?0,$options:'i'}},{firstName:{$regex:?0,$options:'i'}}]}", fields="{title:1,lastName:1,firstName:1,emcFunction:1,emailAddress:1}") 
 	 List<Profile> findProfilesByName (String query);
 }

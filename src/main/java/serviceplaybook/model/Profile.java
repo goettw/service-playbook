@@ -61,12 +61,13 @@ public class Profile implements UserDetails, Serializable {
 	this.aboutMe = aboutMe;
     }
 
+   
     public String getEmcFunction() {
-	return emcFunction;
+        return emcFunction;
     }
 
     public void setEmcFunction(String emcFunction) {
-	this.emcFunction = emcFunction;
+        this.emcFunction = emcFunction;
     }
 
     public String getEmcProfileUrl() {

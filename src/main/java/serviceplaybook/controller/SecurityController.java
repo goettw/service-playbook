@@ -17,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.UrlUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -32,9 +31,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import serviceplaybook.model.GrantedAuthorityContainer;
 import serviceplaybook.model.Profile;
+import serviceplaybook.model.ServiceOffer;
 import serviceplaybook.model.TypeaheadData;
-import serviceplaybook.model.TypeaheadQuery;
 import serviceplaybook.mongorepo.ProfileRepository;
+import serviceplaybook.mongorepo.ServiceOfferRepository;
 import serviceplaybook.service.ApplicationMailer;
 
 @Controller
@@ -43,6 +43,8 @@ public class SecurityController {
     private ApplicationMailer mailer;
     @Autowired
     ProfileRepository profileRepository;
+    @Autowired
+    private ServiceOfferRepository serviceOfferRepository;
     @Autowired
     org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -279,7 +281,9 @@ public class SecurityController {
     @RequestMapping(value = "/auth/profile", method = RequestMethod.GET)
     public String profileView(@RequestParam String id, ModelMap model) {
 	Profile profile = profileRepository.findOne(id);
+	List<ServiceOffer> serviceOffers = serviceOfferRepository.findServiceOffersByContactId(id, new Sort (Direction.ASC,"label"));
 	model.addAttribute("profile", profile);
+	model.addAttribute("serviceOfferList",serviceOffers);
 
 	
 	return "profile";

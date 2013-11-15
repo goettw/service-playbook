@@ -151,6 +151,7 @@
 						</div>
 						<div id="tabs-2" class="tab-pane">
 							<jsp:include page="serviceofferEditContacts.jsp"></jsp:include>
+							
 						</div>
 
 						<div id="tabs-3" class="tab-pane">

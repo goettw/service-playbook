@@ -22,8 +22,8 @@
 </head>
 <body>
 <script src="<c:url value='/js/jquery/jquery-1.10.2.min.js' />"></script>
-
-	<div class="navbar navbar-inverse navbar-fixed-top">
+	<script src="<c:url value='/bootstrap/js/bootstrap.js'/>"></script>
+	<div class="navbar-inverse navbar-default navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -96,7 +96,11 @@
 					<li class="navbar-text"><sec:authorize
 							access="isAuthenticated()">
 							<spring:message code="welcome" />
-							<sec:authentication property="principal.firstName" />&nbsp;<sec:authentication property="principal.lastName" />
+							<sec:authentication property="principal.username" var="username"/>
+							<c:url var="profileUrl" value="/auth/profile?id=${username}" />
+							<a class="navbar-link" href="${profileUrl}"><sec:authentication property="principal.firstName" />&nbsp;<sec:authentication property="principal.lastName" /></a>
+							
+							
 							<c:url var="logoutUrl" value="/logout" />&nbsp;|&nbsp; <a class="navbar-link" href="${logoutUrl}"><spring:message code="logout" /></a>
 						</sec:authorize> <sec:authorize access="isAnonymous()">
 							<c:url var="loginUrl" value="/loginForm" />
@@ -134,12 +138,12 @@
 
 		<hr />
 
-		<footer>
+		<!-- >footer>
 			<p>Service Playbook is created by Wolfgang G&ouml;tte, based on Pivotal 3rd Generation Platform Technology</p>
-		</footer>
+		</footer-->
 
 	</div>
-	<script src="<c:url value='/bootstrap/js/bootstrap.js'/>"></script>
+
 
 </body>
 </html>

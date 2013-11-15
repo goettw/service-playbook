@@ -3,13 +3,16 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <div class="container">
-	<table class="table">
+	<table class="table table-hover">
 		<tbody>
 			<c:forEach items="${profileList}" var="profile">
-				<tr>
+			<c:url var="viewUrl" value='/auth/profile'>
+								<c:param name="id" value="${profile.username}" />
+							</c:url>
+				<tr onclick="javascript:document.location=${$url}">
 					<td>${profile.lastName}</td>
 					<td>${profile.firstName}</td>
-					<td>${profile.emailAddress}</td>
+					<td>${profile.emcFunction}</td>
 					<sec:authorize access="hasAnyRole('ROLE_Administrator')">
 						<td><c:url var="editUrl" value='/admin/profile/edit'>
 								<c:param name="id" value="${profile.username}" />
@@ -24,9 +27,7 @@
 									code="delete" /></a></td>
 					</sec:authorize>
 					<td>
-					<c:url var="viewUrl" value='/auth/profile'>
-								<c:param name="id" value="${profile.username}" />
-							</c:url>
+					
 					<a
 						href="${viewUrl}"><spring:message
 								code="view" /></a></td>

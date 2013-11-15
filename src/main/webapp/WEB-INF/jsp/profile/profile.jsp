@@ -1,8 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+
 <div class="container">
 
-	<div class="row">
+	<!-- >div class="row">
 		<div class="col-md-4">
 			<b> <spring:message code="title"></spring:message>
 			</b>
@@ -18,7 +20,7 @@
 			</b>
 			<p>${profile.lastName}</p>
 		</div>
-	</div>
+	</div-->
 	<div class="row">
 		<div class="col-md-4">
 			<b> <spring:message code="emailAddress"></spring:message>
@@ -46,7 +48,8 @@
 
 	</div>
 	<hr>
-	<div class="row">
+	<sec:authorize access="hasAnyRole('ROLE_Administrator')">
+		<!-- >div class="row">
 		<div class="col-md-4">
 			<b> <spring:message code="username"></spring:message>
 			</b>
@@ -56,6 +59,42 @@
 			<b><spring:message code="authorities"></spring:message></b>
 			<p>${profile.authorityValues}</p>
 		</div>
-	</div>
+	</div-->
+	</sec:authorize>
 
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				<h3>
+					<spring:message code="serviceOfferPersonalList" />
+				</h3>
+
+				<table class="table table-hover">
+					<tbody>
+						<c:forEach items="${serviceOfferList}" var="serviceOffer">
+							<c:choose>
+								<c:when test="${serviceOffer.status == 'released'}">
+									<tr>
+										<td><a href="<c:url value='/serviceOffer/${serviceOffer.id}'/>">${serviceOffer.label}</a></td>
+									</tr>
+								</c:when>
+								<c:otherwise>
+									<sec:authorize access="hasAnyRole('ROLE_Administrator','ROLE_Reviewer')" var="admin" />
+										<sec:authentication property="principal.username" var="username"/>
+									<c:if test="${admin == true || username == profile.username}">
+										<tr>
+											<td class="muted"><i><a href="<c:url value='/serviceOffer/${serviceOffer.id}'/>">${serviceOffer.label}</a></i></td>
+										</tr>
+
+									</c:if>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
 </div>

@@ -3,7 +3,7 @@ package serviceplaybook.model;
 import org.springframework.security.core.GrantedAuthority;
 
 public class GrantedAuthorityContainer implements GrantedAuthority {
-	/**
+	 /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1068577768276509604L;

@@ -11,12 +11,11 @@ import serviceplaybook.mongorepo.ProfileRepository;
 
 @Service
 public class ProfileService implements UserDetailsService {
-	
+ 	
 	@Autowired
-	private ProfileRepository profileRepository;
-
-
- 
+ 	private ProfileRepository profileRepository;
+        
+       
 	public UserDetails loadUserByUsername(String arg0)
 			throws UsernameNotFoundException {
 		System.out.println("arg01=" + arg0);
@@ -27,4 +26,4 @@ public class ProfileService implements UserDetailsService {
 	}
 
 }
- 
+   

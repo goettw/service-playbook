@@ -16,16 +16,11 @@
 
 <script>
 	function test(item,target) {
-		
-		
-		var id = target.getAttribute('id');
-		
-		var index =  id.indexOf(".") ;
-		var prefix = id.substring(0,index) ;
+		var index =  target.id.indexOf(".") ;
+		var prefix = target.id.substring(0,index) ;
 		$("#"+prefix+"\\.url").val("${profileUrl}"+item.payload.username);
 		$("#"+prefix+"\\.role").val(item.payload.emcFunction);
 		$("#"+prefix+"\\.username").val(item.payload.username);
-		$("#"+prefix+"\\.icon").addClass("glyphicon glyphicon-link");
 		console.log("TEST"+target.id.substring(0,index) );
 		
 	}
@@ -33,43 +28,27 @@
 <div class="container">
 				<script>
 				
-				function setTypeaheadonClick () {
-					$(".typeahead").on("click",function(){
-						$(this).val("");
-						var id = $(this).attr("id");
-						var index =  id.indexOf(".") ;
-						var prefix = id.substring(0,index) ;
-						$("#"+prefix+"\\.role").val("");
-						$("#"+prefix+"\\.username").val("");
-						$("#"+prefix+"\\.url").val("");
-						$("#"+prefix+"\\.icon").removeClass("glyphicon glyphicon-link");
-			console.log(prefix);			
-					});
-	
-				} 
+				
 				
 			
 					$(document).ready(function() {
 
-	setTypeaheadonClick();							
+								
+									
 										
 										$("#addContact").on("click",function() {
 															var index = $('#contacts tr').length - 1;
 															$("#contacts").append(
 														 '<tr> \
-															<td><input style="width:100%" readonly="true" id="emcContacts' + index +'.username" name="emcContacts[' + index + '].username" type="hidden" value=""  /></td> \
-															<td><span id="emcContacts' + index +'.icon" ></td> \
-															<td><input class="typeahead" style="width:100%" id="emcContacts' + index +'.label" name="emcContacts[' + index + '].label" type="text" value="" data-provide="typeahead" autocomplete="off" /></td> \
+															<td><input style="width:100%" readonly="true" id="emcContacts' + index +'.username" name="emcContacts[' + index + '].username" type="hidden" value=""  /> \
+															<input class="typeahead" style="width:100%" id="emcContacts' + index +'.label" name="emcContacts[' + index + '].label" type="text" value="" data-provide="typeahead" autocomplete="off" /></td> \
 															<td><input style="width:100%" id="emcContacts' + index +'.url" name="emcContacts[' + index + '].url" type="text" value=""  /></td> \
 															<td><input style="width:100%" id="emcContacts' + index +'.role" name="emcContacts[' + index + '].role" type="text" value=""  /></td> \
 															<td><input type="checkbox" id="emcContacts' + index +'.responsible" name="emcContacts[' + index + '].responsible" type="text" value="" /></td> \
 															<td><a href="javascript:void(0);" class="remContact btn btn-xs btn-default"><spring:message code="remove"/></a></td>\
 														</tr>');
-															 $('.typeahead').typeahead(typeaheadSettings);
-															 
-															//$('.typeahead').trigger('added');
-
-															//setTypeaheadonClick();
+															
+															$('.typeahead').trigger('added');	
 															
 														});
 
@@ -79,8 +58,6 @@
 															while (index <= (length)) {
 																var thisName = "#emcContacts" + index;
 																var otherName = "#emcContacts" + (index + 1);
-																console.log(thisName + "-" + otherName);
-																
 																$(thisName	+ "\\.username").val($(otherName	+ "\\.username").val());
 																$(thisName	+ "\\.url").val($(otherName	+ "\\.url").val());
 																$(thisName	+ "\\.label").val($(otherName + "\\.label").val());
@@ -108,19 +85,7 @@
 							<tr>
 								
 								<td style="width:0%"><form:input path="emcContacts[${status.index}].username" readonly="true" style="width:50%" type="hidden"/></td>
-								<td style="width:0%">
-								<c:choose>
-									<c:when test="${not empty contact.username }">
-										<span id="emcContacts${status.index}.icon" class="glyphicon glyphicon-link"></span>
-									</c:when>
-									<c:otherwise>
-										<span id="emcContacts${status.index}.icon" ></span>
-									
-									</c:otherwise>
-								</c:choose>
-								
-								
-								</td>
+								<td style="width:0%"><c:if test="${contact.username != null}"><span class="glyphicon glyphicon-link"></span></c:if></td>
 								<td><form:input class="typeahead" path="emcContacts[${status.index}].label" data-provide="typeahead" autocomplete="off" style="width:100%"/></td>
 								<td><form:input path="emcContacts[${status.index}].url"	 style="width:100%"/></td>
 								<td><form:input path="emcContacts[${status.index}].role" style="width:100%"/></td>

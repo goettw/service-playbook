@@ -2,26 +2,7 @@
 	
 
 				<script>
-				var target;	
 				
-				function getTarget(evt){
-					 evt = evt || window.event; // get window.event if argument is falsy (in IE)
-
-					 // get srcElement if target is falsy (IE)
-					 var targetElement = evt.target || evt.srcElement;
-
-					 //return id of <li> element when hovering over <li> or <a>
-					 if (targetElement.nodeName.toLowerCase() == 'li'){
-					  return targetElement;
-					 }
-					 else if (targetElement.parentNode.nodeName.toLowerCase() == 'li'){
-
-					    return targetElement.parentNode;
-					 }
-					 else{
-					    return targetElement;
-					 }
-				}
 				var typeaheadSettings = {
 						
 						
@@ -29,10 +10,8 @@
 						        var $url =${param.url};
 						        var $items = new Array;
 						        var obj = this;
-						        //target = event.target;
-						        target = getTarget(event);
+						        target = event.target;
 						        console.log(target);
-						        
 						        $items = [""];
 						        $.ajax({
 						            url: $url,
@@ -89,11 +68,12 @@
 						        return item.name;
 						    }
 						};				
-
+				var target;
 				 $(document).ready(function() {
-					 $(${param.selector}).typeahead(typeaheadSettings);
-					 $(${param.selector}).on('added',function(){
-							$(${param.selector}).typeahead(typeaheadSettings);
+					 
+					
+					 $('.typeahead').on('added',function(){
+							$('.typeahead').typeahead(typeaheadSettings);
 						}); 
 
 				 });

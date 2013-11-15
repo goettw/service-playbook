@@ -307,6 +307,7 @@ public class ServiceController {
 							     // exists already
 							     // in database)
 		// load it to get the existing actionLog
+		actionLogItem.setActionType("update");
 		ServiceOffer storedServiceOffer = serviceOfferService.findServiceOfferById(serviceOffer.getId());
 		if (storedServiceOffer != null) {
 		    actionLog = storedServiceOffer.getActionLog();
@@ -321,7 +322,7 @@ public class ServiceController {
 		    actionLog = new ArrayList<ActionLogItem>();
 		}
 
-		actionLogItem.setActionType("update");
+		
 		actionLog.add(0, actionLogItem);
 		serviceOffer.setActionLog(actionLog);
 		serviceOfferService.updateServiceOffer(serviceOffer);
@@ -340,6 +341,7 @@ public class ServiceController {
     }
 
     private boolean differentEnoughToSave(ActionLogItem item1, ActionLogItem item2) {
+	
 	return !(sameDate(item1, item2) && samePerson(item1, item2) && item1.getActionType().equals(item2.getActionType()));
 
     }
