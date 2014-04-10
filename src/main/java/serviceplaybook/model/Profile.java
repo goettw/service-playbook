@@ -34,7 +34,7 @@ public class Profile implements UserDetails, Serializable {
 	    return authorities;
 	for (Iterator<String> it = authorityValues.iterator(); it.hasNext();) {
 	    String auth = "ROLE_" + it.next();
-	    System.out.println("auth - " + auth);
+
 	    authorities.add(new GrantedAuthorityContainer(auth));
 	}
 	return authorities;

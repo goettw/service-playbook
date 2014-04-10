@@ -150,7 +150,7 @@ public class ServiceController {
 	List<CommentViewBean> commentViewBeans = new ArrayList<CommentViewBean>();
 	for (Iterator<Comment> it = comments.iterator(); it.hasNext();) {
 	    Comment comment = it.next();
-	System.out.println ("comment="+comment.getComment());
+	
 	    CommentViewBean commentViewBean = new CommentViewBean(comment);
 	    commentViewBean.setAllowDelete(allowedToDelete(comment));
 	    commentViewBeans.add(commentViewBean);
@@ -247,8 +247,7 @@ public class ServiceController {
 
 	if (allowedToDelete(comment))
 	    commentRepository.delete(comment);
-	else
-	    System.out.println ("not allowed");
+
 	String serviceId = comment.getLocalEntity().getId();
 
 	return "redirect:/serviceOffer/" + serviceId;
@@ -274,6 +273,14 @@ public class ServiceController {
 	return actionLogItem;
     }
 
+    private void printActionLog (List <ActionLogItem> actionLog) {
+	int i = 0;
+	for (Iterator<ActionLogItem> it = actionLog.iterator();it.hasNext();) {
+	    ActionLogItem item = it.next();
+	    System.out.println("item " + i++ + ": " + item);
+	}	
+    }
+    
     @RequestMapping(value = "author/serviceOffer/submit", method = RequestMethod.POST)
     public String serviceOfferEditSubmit(@RequestParam String action, @Valid @ModelAttribute ServiceOffer serviceOffer, BindingResult bindingResult,
 	    ModelMap model) {
@@ -311,12 +318,20 @@ public class ServiceController {
 		ServiceOffer storedServiceOffer = serviceOfferService.findServiceOfferById(serviceOffer.getId());
 		if (storedServiceOffer != null) {
 		    actionLog = storedServiceOffer.getActionLog();
+		    System.out.println ("original actionLog");
+		    printActionLog(actionLog);
 		    if (actionLog == null)
 			actionLog = new ArrayList<ActionLogItem>();
 		    else
 			actionLog = cleanUpActionLog(actionLog);
-		    if (!actionLog.isEmpty() && differentEnoughToSave(actionLogItem, actionLog.get(0)))
+		   
+		    System.out.println("actionLogCleaned");
+		    printActionLog(actionLog);
+
+		    if (!actionLog.isEmpty() && !differentEnoughToSave(actionLogItem, actionLog.get(0))) {
+			System.out.println("remove head of actionlog");
 			actionLog.remove(0);
+		    }
 
 		} else {
 		    actionLog = new ArrayList<ActionLogItem>();
@@ -325,6 +340,9 @@ public class ServiceController {
 		
 		actionLog.add(0, actionLogItem);
 		serviceOffer.setActionLog(actionLog);
+		    System.out.println("new actionLog ");
+		    printActionLog(actionLog);
+
 		serviceOfferService.updateServiceOffer(serviceOffer);
 	    } else {
 		actionLog = new ArrayList<ActionLogItem>();
@@ -341,12 +359,13 @@ public class ServiceController {
     }
 
     private boolean differentEnoughToSave(ActionLogItem item1, ActionLogItem item2) {
-	
-	return !(sameDate(item1, item2) && samePerson(item1, item2) && item1.getActionType().equals(item2.getActionType()));
-
+	boolean differentEnough = !(sameDate(item1, item2) && samePerson(item1, item2) && item1.getActionType().equals(item2.getActionType())); 
+	System.out.println ("differentEnoughToSave ?" + " item1 " + item1 + " item2 " + item2 + " -> " + differentEnough);
+	return differentEnough;
     }
 
     private List<ActionLogItem> cleanUpActionLog(List<ActionLogItem> actionLog) {
+	System.out.println("cleanUpActionLog");
 	if (actionLog == null || actionLog.isEmpty())
 	    return actionLog;
 
@@ -355,7 +374,6 @@ public class ServiceController {
 	for (Iterator<ActionLogItem> it = actionLog.iterator(); it.hasNext();) {
 	    ActionLogItem actionLogItem = it.next();
 	    boolean storeToCleanList = lastActionLogItemSaved == null || differentEnoughToSave(lastActionLogItemSaved, actionLogItem);
-
 
 	    if (storeToCleanList) {
 		Profile profile = profileRepository.findOne(actionLogItem.getPersonId());
@@ -371,7 +389,6 @@ public class ServiceController {
 
     private boolean samePerson(ActionLogItem item1, ActionLogItem item2) {
 	return item1.getPersonId().equals(item2.getPersonId());
-
     }
 
     private String toString(ActionLogItem actionLogItem) {

@@ -119,8 +119,8 @@ public class SecurityController {
 	    // Send a pre-configured mail
 	    mailer.sendRegistrationMail(registrationBean.getEmailAddress(), "<HTML> <HEAD/> <BODY>" 
 	    	+ "Welcome to the Service Playbook! <br> Your temporary Password for the Username: " + registrationBean.getUsername() + " is: " + password + 
-	    	"<br> Please change it as soon as possible using the following link: <a href=\"http://" + 
-	    	request.getServerName()+":"+request.getServerPort()+request.getContextPath() + "/profile/edit?id=" + URLEncoder.encode(registrationBean.getUsername()) + "\">Edit Profile</a>" );
+	    	"<br> Please log in and change your password as soon as possible by editing your profile accordingly.");//using the following link: <a href=\"http://" + 
+	    	//request.getServerName()+":"+request.getServerPort()+request.getContextPath() + "/profile/edit?id=" + URLEncoder.encode(registrationBean.getUsername()) + "\">Edit Profile</a>" );
 	    profileRepository.save(profile);
 	    model.addAttribute("success", "true");
 	    return "registrationForm";
@@ -193,7 +193,7 @@ public class SecurityController {
     String profileSubmitHelper(String action, Profile profile, BindingResult result, ModelMap model, HttpServletRequest request, String addUrl, String editPath) {
 	for (Iterator<GrantedAuthorityContainer> it = profile.getAuthorities().iterator(); it.hasNext();) {
 	    GrantedAuthorityContainer grantedAuthorityContainer = it.next();
-	    System.out.println("1:" + grantedAuthorityContainer.getAuthority());
+	    
 	}
 
 	if (action.equals("Save")) {
@@ -239,7 +239,7 @@ public class SecurityController {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
-	System.out.println("query="+query);
+	
 	
 	List<Profile> profileList=profileRepository.findProfilesByName(query);
 	ArrayList<TypeaheadData> thList = new ArrayList<TypeaheadData>();

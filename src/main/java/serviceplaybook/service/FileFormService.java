@@ -88,20 +88,18 @@ public class FileFormService {
 		Iterator<String> it = request.getFileNames();
 		MultipartFile mpf = null;
 
-		System.out.println("gridfs-upload");
 		// 2. get each file
 
 		if (it.hasNext()) {
 
 			// 2.1 get next MultipartFile
 			mpf = request.getFile(it.next());
-			System.out.println(mpf.getOriginalFilename() + " uploaded! ");
+
 			if (unique) {
 				List<GridFSDBFile> files = findFiles(mongoLocalEntity);
 				for (Iterator<GridFSDBFile> it2 = files.iterator(); it2.hasNext();) {
 					GridFSDBFile file = it2.next();
 					gridFsTemplate.delete(query(where("_id").is(file.getId())));
-					System.out.println("deleted " + file.getId());
 				}
 			}
 			// 2.3 create new fileMeta
@@ -122,7 +120,6 @@ public class FileFormService {
 				}
 				GridFSFile gridfsfile = gridFsTemplate.store(mpf.getInputStream(), mpf.getOriginalFilename(), metaData);
 				fileMeta.setId(gridfsfile.getId().toString());
-				System.out.println("gridfs-id" + gridfsfile.getId());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -155,8 +152,6 @@ public class FileFormService {
 	 ****************************************************/
 
 	public void get(String id, HttpServletResponse response) throws IOException {
-		System.out.println("get-id" + id);
-
 		GridFSDBFile gridfsdbfile = gridFsTemplate.findOne(query(where("_id").is(new ObjectId(id))));
 		response.setContentType( (String)gridfsdbfile.getMetaData().get("contentType"));
 		gridfsdbfile.writeTo(response.getOutputStream());

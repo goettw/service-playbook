@@ -40,7 +40,7 @@ public class FileController {
 	
 	@RequestMapping(value = "/remove/{value}", method = RequestMethod.POST) 
 	public @ResponseBody LinkedList<FileMeta> remove(HttpServletResponse response,@PathVariable String value){
-		System.out.println ("REMOVE " + value);
+
 		files.remove(Integer.parseInt(value));
 		return files;
 	}
