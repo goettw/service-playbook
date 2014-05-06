@@ -275,6 +275,7 @@ public class ServiceController {
 
     private void printActionLog (List <ActionLogItem> actionLog) {
 	int i = 0;
+	if (actionLog == null) return;
 	for (Iterator<ActionLogItem> it = actionLog.iterator();it.hasNext();) {
 	    ActionLogItem item = it.next();
 	    System.out.println("item " + i++ + ": " + item);
